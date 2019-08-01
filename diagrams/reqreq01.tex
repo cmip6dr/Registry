@@ -1,0 +1,213 @@
+ 
+% Author: Martin Juckes (based on work from Qrrbrbirlbel)
+% pdflatex -shell-escape mgtchart.tex for fancy NERC Research font
+\documentclass[tikz,border=10pt]{standalone}
+%%%<
+\usepackage{verbatim}
+%%%>
+
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\rmdefault}{phv} % Arial
+\renewcommand{\sfdefault}{phv} % Arial
+
+%%\usepackage{auto-pst-pdf}% for running it with pdflatex -shell-escape
+\usepackage{pst-light3d}
+%%\DeclareFixedFont{\Sf}{T1}{fxb}{b}{n}{16pt}
+\DeclareFixedFont{\Sf}{T1}{phv}{b}{n}{16pt}
+
+\begin{comment}
+:Title: Flowchart
+:Tags: Diagrams;Flowcharts;Node positioning;Nodes and shapes
+:Author: Qrrbrbirlbel
+:Slug: flowchart
+
+This example flowchart uses the positioning-plus library and the
+node-families library by the same author. The fit library is implicitly loaded
+by positioning-plus, the backgrounds library is used to draw stuff behind
+other stuff, the calc library for some coordinate calculations and the
+shapes.geometric library for the ellipse shape.
+
+This example was written by Qrrbrbirlbel answering a question on TeX.SE.
+\end{comment}
+\usetikzlibrary{shapes.geometric,backgrounds,
+  positioning-plus,node-families,calc}
+% for chamfered rectangle
+\usetikzlibrary{shapes.misc,shapes.symbols}
+\tikzset{
+  clear box/.style = {
+    shape = rectangle,
+    align = center,
+    draw  = #1,
+    rounded corners},
+  basic box/.style = {
+    shape = rectangle,
+    align = center,
+    draw  = #1,
+    fill  = #1!25,
+    rounded corners},
+  management func/.style = {signal, draw, thick, 
+               signal to=west and east,
+               text width=22mm, minimum height=9mm, align=center},
+  wp box/.style = {
+    shape = rectangle,
+    align = center,
+    draw  = blue,
+    minimum width=1.1cm,
+    fill  = blue!25!yellow,
+    rounded corners},
+  wp ellipse/.style = {
+    shape = ellipse,
+    inner sep = 0,
+    minimum size = 1pt,
+    align = center,
+    draw  = blue,
+    x radius=0.9cm,
+    y radius=0.4cm,
+    fill  = blue!25!yellow
+    },
+  dc box/.style = {
+    shape = chamfered rectangle,
+    align = center,
+    draw  = blue,
+    minimum width=2.5cm,
+    minimum height=4.2cm,
+    fill  = green!25!yellow},
+  rc box/.style = {
+    shape = ellipse,
+    align = center,
+    draw  = blue,
+    minimum width=2.5cm,
+    fill  = red!25,
+    rounded corners},
+  header node/.style = {
+    Minimum Width = header nodes,
+    %%font          = \strut\Large\ttfamily,
+    font          = \strut\large,
+    text depth    = +0pt,
+    fill          = white,
+    anchor = west,
+    draw},
+  wpheader node/.style = {
+    font          = \strut,
+    text depth    = +0pt,
+    fill          = white,
+    draw},
+  dclabel/.style = {%
+    inner ysep = +1.5em,
+    append after command = {
+      \pgfextra{\let\TikZlastnode\tikzlastnode}
+      node [wpheader node] (lab-\TikZlastnode) at (\TikZlastnode.south) {#1}
+    }
+    },
+  wpheader/.style = {%
+    inner ysep = +1.5em,
+    append after command = {
+      \pgfextra{\let\TikZlastnode\tikzlastnode}
+      node [wpheader node] (header-\TikZlastnode) at (\TikZlastnode.north east) {#1}
+    }
+  },
+  header/.style = {%
+    inner ysep = +1.5em,
+    append after command = {
+      \pgfextra{\let\TikZlastnode\tikzlastnode}
+      node [header node] (header-\TikZlastnode) at (\TikZlastnode.north west) {#1}
+      node [span = (\TikZlastnode)(header-\TikZlastnode)]
+        at (fit bounding box) (h-\TikZlastnode) {}
+    }
+  },
+  hv/.style = {to path = {-|(\tikztotarget)\tikztonodes}},
+  vh/.style = {to path = {|-(\tikztotarget)\tikztonodes}},
+  fat red line/.style = {ultra thick, red, rounded corners},
+  fat blue line/.style = {ultra thick, blue, rounded corners}
+}
+\newlength{\vpathoff}
+\setlength{\vpathoff}{0.3cm}
+\newlength{\hpo}
+\setlength{\hpo}{0.3cm}
+\newlength{\po}
+\setlength{\po}{0.3cm}
+\newlength{\poc}
+\setlength{\poc}{0.05cm}
+\newlength{\dcsk}
+\setlength{\dcsk}{0.4cm}
+\newlength{\wpsk}
+\setlength{\wpsk}{0.8cm}
+\begin{document}
+
+  \pgfdeclarelayer{base}
+  \pgfdeclarelayer{back}
+  \pgfdeclarelayer{mid}
+  \pgfdeclarelayer{fore}
+  \pgfsetlayers{base,back,mid,fore}
+\begin{tikzpicture}[node distance = 1.2cm, thick, nodes = {align = center},
+    >=latex]
+
+\begin{pgfonlayer}{fore}
+  \node[wp box, wpheader=WP1] (wp1) {Documentation};
+  \node[wp box, wpheader=WP2, right = \wpsk of wp1] (wp2) {Software};
+  \node[wp box, wpheader=WP3, below = .7cm of wp1.south west, anchor = north west] (wp3) {Standards};
+
+  \node[dc box, wpheader=CMIP, below = 4.6cm of wp3.west, anchor=west] (reg1) {};
+  \node[dc box, right = \dcsk of reg1.east, anchor = west]  (reg2)  {};
+  \node[dc box, right = \dcsk of reg2.east, anchor = west]  (reg3)  {};
+  \node[wp box, below = .5cm of reg1.north, anchor=north] (cmip) {config.};
+  \node[wp box, below = .5cm of cmip, anchor=north] (cmip) {content};
+  \node[wp box, wpheader=Reference, below = .1cm of reg2.north, anchor=north] (ref) {};
+  \node[wp box, wpheader=H2020, below = .1cm of reg3.north, anchor=north] (h2020) {};
+
+  \begin{scope}
+    \node[fit = {(reg1.west)(header-h2020.north east)(reg3)}, clear box = blue,
+      header = Registers] (registers) {};
+  \end{scope}
+   
+\end{pgfonlayer}{fore}
+
+\begin{pgfonlayer}{mid}
+  \begin{scope}
+    \node[fit = {(wp1)(header-wp2)(wp3)}, clear box = blue,
+      header = Framework] (framework) {};
+  \end{scope}
+  \node[management func, above = 1cm of framework.north east, anchor = south east] (oper) {Operations};
+\end{pgfonlayer}{mid}
+
+\begin{pgfonlayer}{back}
+  \begin{scope}
+    \node[fit = {(framework)(registers)(oper)}, basic box = blue, inner sep=10pt,
+      header = Hosted Registers] (hosted) {};
+  \end{scope}
+  \node[management func, above = 0.7cm of hosted.north, anchor = south] (mgt) {Registry\\Management};
+\end{pgfonlayer}{back}
+
+\begin{pgfonlayer}{base}
+    \node[fit = {($(hosted.north west)+(0,20pt)$)(mgt)(oper)(hosted.south east)},
+             basic box = orange, inner sep=10pt,
+      header = Registry] (registry) {};
+\end{pgfonlayer}{base}
+
+\begin{pgfonlayer}{mid}
+
+  \node[rc box, left = 1.5cm of reg1] (wip) {WIP};
+  \node[rc box, above = of wip] (dtf) {DTF};
+
+  \node[management func, above = 0.4cm of registry] (ceda) {CEDA};
+
+
+\end{pgfonlayer}{mid}
+
+\begin{pgfonlayer}{fore}
+
+
+  \path[fat blue line, dashed, vh] (wp2.east) -- (ceda.east);
+
+  \path let \p1=(wip.west), \p2=(registry.south) in coordinate (caa) at ($(\x1,\y2)+(-.2cm,-0.6cm)$);
+  \path let \p1=(wip.east), \p2=(registry.south) in coordinate (caaa) at ($(\x1,\y2)+(0,-0.6cm)$);
+  \path[draw, fat blue line, rounded corners] (reg1.south) |- (caaa) -| (wip.south);
+  
+  \path[draw, fat blue line, rounded corners] (reg3.south) |- ($(caa)+(-2\po,-3\po)$) |- (dtf.west);
+%%
+%% Research Centres to NERC
+  
+\end{pgfonlayer}{fore}
+\end{tikzpicture}
+\end{document}
