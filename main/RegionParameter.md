@@ -45,5 +45,31 @@ Specification of the string in the form `m s-1`: i.e. space separated list of ba
 
 To aid alignment with ISO 80000, a dimensionality in the sense of ISO 80000 is added. 
 
+## ParameterClassifier
+
+### title
+
+### units
+
+### description
+
+### constraint [NEW]
+
+The constraint specifies restrctions on the usage of this parameter. 
+For instance, it may require the specification of a height which is near the Earth's surface. 
+
+### constraint_language [NEW]
+
+The constraint may be expressed in `natural` language, `json` or `EBNF`.
+
+### quantity [NEW]
+
+In ISO 80000, the concept of `quantity` is used. For example, there is a "thermodynamic temperature" and a "flow of energy across a surface". Several parameters may share a `quantity`, for example, both `Air Temperaure` and `Sea Surface Temperature` are specialisations of `thermodynamic temperature`, but `potential temperature` is not. The introduction of `quantity` is designed to provide both a link to the ISO standard and a level of aggregation which can aid the review process for new names.
+
+### realm [NEW]
+
+The `realm` attribute in schema 1.0 was attached to the CMOR Variable (configured parameter region) rather than the MIP Variable. The move reflects the revised approach to naming variables and the implication attached to that that each MIP variable should apply to a unique realm. The realm of the MIP variable indicates the realm which the parameter is describing. 
+
+
 
 
