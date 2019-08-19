@@ -1,0 +1,46 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
+\tikzset{
+  pck/.style = {
+    minimum width = 3cm,
+    node distance=2in,
+    },
+  note/.style = {
+    width = 6cm,
+    }
+  }
+
+\begin{document}
+\begin{tikzpicture}
+\def\vsp{1.5cm}
+\def\vspd{.8cm}
+\begin{umlpackage}[pck,x=0,y=0]{apex}
+\end{umlpackage}
+%% "width" is not a standard style parameter here ... cannot be passed using tikzset ...
+\umlnote[width=7cm,right=1cm of apex]{apex}{The apex layer describes the framing of the problem, including the conceptual framework of the meta-model layers}
+\begin{umlpackage}[pck,below=\vsp of apex]{metaschema}
+\end{umlpackage}
+\umlnote[width=7cm,right=1cm of metaschema]{metaschema}{The metaschema layer provides a formal description of the structure and layout of the schema document.}
+
+%% weird ... but \vsp does not work here ...
+\begin{umlpackage}[pck,below=1.5cm of metaschema]{schema}
+\end{umlpackage}
+\umlnote[width=7cm,right=1cm of schema]{schema}{The schema layer provides a formal description of the user objects}
+
+\begin{umlpackage}[pck,below=1.5cm of schema]{application}
+\end{umlpackage}
+\umlnote[width=7cm,right=1cm of application]{application}{The application layer ..}
+\begin{umlpackage}[pck,below=1.5cm of application]{user}
+\end{umlpackage}
+\umlnote[width=7cm,right=1cm of user]{user}{The user layer is characterised by fully defined objects, with no capability for further refinement through instantiation.}
+\path[draw,dashed] ($(apex.south west)-(1cm,\vspd)$) -- ($(apex.south east)+(3cm,-\vspd)$);
+\path[draw,dashed] ($(metaschema.south west)-(1cm,\vspd)$) -- ($(metaschema.south east)+(3cm,-\vspd)$);
+\path[draw,dashed] ($(schema.south west)-(1cm,\vspd)$) -- ($(schema.south east)+(3cm,-\vspd)$);
+\path[draw,dashed] ($(application.south west)-(1cm,\vspd)$) -- ($(application.south east)+(3cm,-\vspd)$);
+
+\end{tikzpicture}
+\end{document}
+

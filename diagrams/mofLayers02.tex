@@ -1,0 +1,39 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
+\tikzset{
+  pck/.style = {
+    minimum width = 3cm,
+    node distance=2in,
+    },
+  note/.style = {
+    width = 6cm,
+    }
+  }
+
+\begin{document}
+
+\begin{tikzpicture}
+
+\umlclass[]{DataElement}{}{}
+
+\umlclass[above=2cm of DataElement]{DataElementConcept}{header : section instance\\
+attributes : attribute class list}{}
+\umlclass[right=1cm of DataElementConcept]{DataElementAttribute}{}{}
+\umlclass[left=1cm of DataElementConcept]{OrganisationalUnit}{ }{}
+\node[fit=(DataElementConcept) (DataElementAttribute) (OrganisationalUnit)] (fitxx) {};
+\umlclass[x=0,y=0,above=2cm of fitxx]{apex}{}{}
+
+\umlreal[stereo={instantiates}]{apex}{OrganisationalUnit}
+\umlreal[stereo={instantiates}]{apex}{DataElementConcept}
+\umlreal[stereo={instantiates}]{apex}{DataElementAttribute}
+
+\umlreal[stereo={instantiates}]{DataElementConcept}{DataElement}
+
+
+\end{tikzpicture}
+
+\end{document}
+
