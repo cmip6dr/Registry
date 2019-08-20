@@ -1,0 +1,18 @@
+\documentclass[]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{tikz-uml}
+
+\begin{document}
+  \begin{tikzpicture}
+    \umlclass[type=interface]{InterfaceA}{}{}
+    \umlclass[y=-4]{ClassA}{}{}  
+    \umlimpl[stereo=realizes, pos stereo=0.5]{ClassA}{InterfaceA}
+
+    \umlclass[x=4, type=interface]{InterfaceB}{}{}
+    \umlclass[x=4, y=-4]{ClassB}{}{}  
+    \umlimpl[]{ClassB}{InterfaceB}
+    \node[] at (3,-2) {<<realizes>>}; 
+  \end{tikzpicture}  
+\end{document}
