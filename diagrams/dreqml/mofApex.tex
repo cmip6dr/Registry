@@ -1,0 +1,72 @@
+\documentclass[tikz,border=10pt]{article}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
+\tikzset{
+  pck/.style = {
+    minimum width = 3cm,
+    node distance=2in,
+    },
+  note/.style = {
+    width = 6cm,
+    }
+  }
+
+\begin{document}
+
+\begin{tikzpicture}
+
+%%\umlclass[]{DataElement}{}{}
+
+%%\umlclass[]{DataElementClass}{}{}
+
+%%\umlclass[above=2cm of DataElement]{DataElementConcept}{header : section instance\\
+%%attributes : attribute class list}{}
+%%\umlclass[right=1cm of DataElementConcept]{DataElementAttribute}{}{}
+%%\umlclass[left=1cm of DataElementConcept]{OrganisationalUnit}{ }{}
+%%\node[fit=(DataElementConcept) (DataElementAttribute) (OrganisationalUnit)] (fitxx) {};
+
+\umlclass[type=superclass,x=-2,y=2]{apex}{}{}
+
+\begin{umlpackage}[x=2,y=2]{Stereotypes}
+\umlclass[type=stereotype,x=0]{superclass}{}{}
+\umlclass[type=stereotype,x=3]{instance}{}{}
+\umlclass[type=stereotype,x=1,y=-1]{simpleclass}{}{}
+\umlclass[type=stereotype,x=4,y=-1]{mclass}{}{}
+\end{umlpackage}
+
+\begin{umlpackage}[x=-7,y=-3]{Organisation}
+\end{umlpackage}
+
+\begin{umlpackage}[x=-3,y=-3]{Services}
+\umlclass[type=superclass,x=0]{Access}{}{}
+\umlclass[type=superclass,x=.5,y=-1]{Ingest}{}{}
+\umlclass[type=superclass,x=1.,y=-2]{Support}{}{}
+\end{umlpackage}
+
+\begin{umlpackage}[x=2,y=-3]{Artefacts}
+\umlclass[type=superclass,x=0]{DatabaseApex}{}{}
+\umlclass[x=3]{MasterAttributes}{}{}
+\umlclass[type=superclass,x=1,y=-2]{Software}{}{}
+\umlclass[type=superclass,x=4,y=-2]{Documents}{}{}
+\end{umlpackage}
+
+
+\umlreal[stereo={instantiates},geometry=-|]{apex}{Organisation-caption}
+\umlreal[stereo={instantiates},geometry=-|]{apex}{Artefacts}
+\umlreal[stereo={instantiates},geometry=|-|]{apex}{Services}
+
+\begin{umlpackage}[x=0,y=-9]{Database}
+\umlclass[type=class,x=0,y=0]{TableClass}{}{}
+\umlclass[type=metaclass,x=3,y=0]{ItemMetaClass}{}{}
+\umlclass[type=instance,x=1,y=-2]{Attribute}{}{}
+\end{umlpackage}
+
+%%\umlreal[stereo={instantiates}]{DataElementConcept}{DataElement}
+
+
+\end{tikzpicture}
+
+\end{document}
+
