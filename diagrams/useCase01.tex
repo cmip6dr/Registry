@@ -1,0 +1,48 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
+\tikzset{
+  pck/.style = {
+    minimum width = 3cm,
+    node distance=2in,
+    },
+  note/.style = {
+    width = 6cm,
+    }
+  }
+
+\begin{document}
+
+\begin{tikzpicture}
+
+\begin{umlsystem}[x=4, fill=red!10]{The data request registry}
+\umlusecase [name=AA] {Registry}
+\umlusecase [below = 1cm of AA, name=A] {Register Collection}
+\umlusecase [below = 1cm of A, name=B] {Register}
+\umlusecase [below right = 0.5cm and 1cm of B, name=dec] {Item Specs}
+\umlusecase [below left = 0.5cm and 1cm of B, name=ri] {Registered Item}
+\umlusecase [x=2cm,y=-3cm, name=mon] {Monitor}
+\end{umlsystem}
+
+\umlactor[x=-2cm,y=0.5cm]{registrar}
+\umlactor[x=-2cm,y=-1.5cm]{programme}
+\umlactor[x=-2cm,y=-3.5cm]{pi}
+\umlactor[x=-2cm,y=-5.5cm]{experts}
+\umlactor[x=8cm,y=-3cm]{oversight}
+
+%% would be nice to place stereotype above line ... probably need to change anchor .... occurs dozens of times in style file
+%% should be straight mapping of code used for "stereo pos"
+%% can use arg1, arg2, mult1, mult2 for additional info, but quickly becomes crowded
+%%
+\umlassoc[draw=black!50, very thick, arg1=operate,stereo=own]{registrar}{AA}
+\umlassoc[arg1=govern,stereo=coordinate]{programme}{A}
+\umlassoc[arg1=define,stereo=ipr]{experts}{ri}
+\umlassoc{pi}{B}
+
+
+\end{tikzpicture}
+
+\end{document}
+

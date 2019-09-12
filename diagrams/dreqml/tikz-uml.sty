@@ -201,7 +201,7 @@
 %
 \tikzstyle{tikzuml simpleclass style}=[rectangle, minimum height=2em, node distance=2em]%
 \tikzstyle{tikzuml simpleinterface style}=[circle, minimum height=1em, node distance=1em]%
-\tikzstyle{tikzuml class style}=[rectangle split, rectangle split parts=3, rectangle split part align={center, left, left}, minimum height=2em, node distance=2em, rectangle split part fill={blue!20,yellow!20,yellow!30}]%
+\tikzstyle{tikzuml class style}=[rectangle split, rectangle split parts=3, rectangle split part align={center, left, left}, minimum height=2em, node distance=2em, rectangle split part fill={yellow!15,yellow!20,yellow!30}]%
 \tikzstyle{tikzuml narynode style}=[diamond]%
 \tikzstyle{tikzuml template style}=[dashed, inner ysep=0.5em, inner xsep=1ex]%
 \tikzstyle{tikzuml control nodes style}=[fill=black, inner sep=1.5pt, circle]%
@@ -890,7 +890,7 @@
                              node[pos=\tikzumlRelationPosition, swap, \posMultiplicity, \multAlign] {\tikzumlRelationMultiplicity}%
                              node[pos=\tikzumlRelationPositionT, \posAttrNameT, \attrAlignT] {\tikzumlRelationAttrNameT}%
                              node[pos=\tikzumlRelationPositionT, swap, \posMultiplicityT, \multAlignT] {\tikzumlRelationMultiplicityT}%
-                             node[pos=\tikzumlRelationPositionStereotype, anchor=south] {\stereotype} }%
+                             node[pos=\tikzumlRelationPositionStereotype, anchor=center] {\stereotype} }%
         \xdef\tikzumlPath{(\tikzumlSrcClassNodeName) edge[in=\tikzumlRelationEndAngle, out=\tikzumlRelationStartAngle, distance=\tikzumlRelationLoopSize] \tikzumlLastArc%
                                                           node[midway, inner sep=0, name=\tikzumlRelationName-1, anchor=center] {} (\tikzumlDestClassNodeName) }%
       }{%
