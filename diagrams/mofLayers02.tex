@@ -6,7 +6,7 @@
 \tikzset{
   pck/.style = {
     minimum width = 3cm,
-    node distance=2in,
+    node distance=1cm,
     },
   note/.style = {
     width = 6cm,
@@ -17,20 +17,44 @@
 
 \begin{tikzpicture}
 
-\umlclass[]{DataElement}{}{}
 
-\umlclass[]{DataElementClass}{}{}
 
-\umlclass[above=2cm of DataElement]{DataElementConcept}{header : section instance\\
+%% not getting positioning right ...
+%% positioning of packages appears to be crippled by definitions in tikz-uml ....
+\begin{scope}[name=Packages, local bounding box=PackagesBox, ]
+\begin{umlpackage}[pck, x=-6, y=0]{Organisation}
+\umlclass[]{OrganisationalUnit}{}{}
+\end{umlpackage}
+%% this is not a true scope .... it fits tikz-uml objects, not misc other things.
+%% this is done with the tikz fit option ... with node names accumulated in a macro ....
+\node[] (ws) {WebService};
+\node[below of=ws] (sp) {ServicePlatform};
+\node[below of=sp] (supp) {Support};
+\node[pck, draw, fit=(ws) (sp) (supp)] (Services) {Services};
+\begin{umlpackage}[pck,x=2, y=0]{Capabilities}
+\end{umlpackage}
+\begin{umlpackage}[pck,x=6, y=0]{Registers}
+
+\end{umlpackage}
+\end{scope}
+
+%%\node[] (xxxx) at ($(PackagesBox.south)-(0,3cm)$) {};
+\begin{scope}[name=fitxx, shift={($(PackagesBox.south)-(0,3cm)$)}, anchor=north, local bounding box=fitxxBox]
+\umlclass[]{DataElementConcept}{header : section instance\\
 attributes : attribute class list}{}
 \umlclass[right=1cm of DataElementConcept]{DataElementAttribute}{}{}
 \umlclass[left=1cm of DataElementConcept]{OrganisationalUnit}{ }{}
-\node[fit=(DataElementConcept) (DataElementAttribute) (OrganisationalUnit)] (fitxx) {};
-\umlclass[x=0,y=0,above=2cm of fitxx]{apex}{}{}
+\end{scope}
+
+%%\node[fit=(DataElementConcept) (DataElementAttribute) (OrganisationalUnit)] (fitxx) {};
+
+\umlclass[below=2cm of fitxxBox.south]{DataElement}{}{}
+\umlclass[x=0,y=0,above=2cm of PackagesBox]{apex}{}{}
 
 \umlreal[stereo={instantiates}]{apex}{OrganisationalUnit}
 \umlreal[stereo={instantiates}]{apex}{DataElementConcept}
 \umlreal[stereo={instantiates}]{apex}{DataElementAttribute}
+\umlreal[stereo={instantiates}]{apex}{Organisation}
 
 \umlreal[stereo={instantiates}]{DataElementConcept}{DataElement}
 
