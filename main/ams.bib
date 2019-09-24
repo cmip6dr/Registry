@@ -2,6 +2,37 @@
 %% https://www.openoffice.org/bibliographic/bibtex-defs.pdf for help
 %%
 
+@article{sinaci2013,
+title = "A federated semantic metadata registry framework for enabling interoperability across clinical research and care domains",
+journal = "Journal of Biomedical Informatics",
+volume = "46",
+number = "5",
+pages = "784 - 794",
+year = "2013",
+issn = "1532-0464",
+doi = "https://doi.org/10.1016/j.jbi.2013.05.009",
+url = "http://www.sciencedirect.com/science/article/pii/S1532046413000750",
+author = "A. Anil Sinaci and Gokce B. Laleci Erturkmen",
+keywords = "Interoperability, Metadata Registry/Repository, ISO/IEC 11179, Semantic web, Linked Data, Common Data Elements",
+abstract = "In order to enable secondary use of Electronic Health Records (EHRs) by bridging the interoperability gap between clinical care and research domains, in this paper, a unified methodology and the supporting framework is introduced which brings together the power of metadata registries (MDR) and semantic web technologies. We introduce a federated semantic metadata registry framework by extending the ISO/IEC 11179 standard, and enable integration of data element registries through Linked Open Data (LOD) principles where each Common Data Element (CDE) can be uniquely referenced, queried and processed to enable the syntactic and semantic interoperability. Each CDE and their components are maintained as LOD resources enabling semantic links with other CDEs, terminology systems and with implementation dependent content models; hence facilitating semantic search, much effective reuse and semantic interoperability across different application domains. There are several important efforts addressing the semantic interoperability in healthcare domain such as IHE DEX profile proposal, CDISC SHARE and CDISC2RDF. Our architecture complements these by providing a framework to interlink existing data element registries and repositories for multiplying their potential for semantic interoperability to a greater extent. Open source implementation of the federated semantic MDR framework presented in this paper is the core of the semantic interoperability layer of the SALUS project which enables the execution of the post marketing safety analysis studies on top of existing EHR systems."
+}
+
+@Inbook{Pon2009,
+author="Pon, Raymond K.
+and Buttler, David J.",
+editor="LIU, LING
+and {\"O}ZSU, M. TAMER",
+title="Metadata Registry, ISO/IEC 11179",
+bookTitle="Encyclopedia of Database Systems",
+year="2009",
+publisher="Springer US",
+address="Boston, MA",
+pages="1724--1727",
+isbn="978-0-387-39940-9",
+doi="10.1007/978-0-387-39940-9_907",
+url="https://doi.org/10.1007/978-0-387-39940-9_907"
+}
+
 @ARTICLE{almasri2007,
 author={E. {Al-Masri} and Q. H. {Mahmoud}},
 journal={IEEE Internet Computing},
@@ -690,11 +721,63 @@ doi={10.1175/BAMS-D-11-00094.1}
   year = 2008
 }
 
+%% https://tex.stackexchange.com/questions/203901/how-to-cite-iso-or-british-standards-in-latex-bibtex 
+
 @techreport{iso80000-1,
+type = {Standard},
+number = {EN ISO 80000-1:2013(E)},
+url = {https://www.iso.org/standard/30669.html},
   institution = {ISO},
-  title = {Quantities and units - Part 1: General (ISO 80000-1:2009 + Cor 1:2011)},
+  title = {Quantities and units - Part 1: General},
+address = {Geneva, CH},
+institution = {International Organization for Standardization},
   year = 2011
 }
+
+@techreport{iso11179-1,
+type = {Standard},
+number = {ISO/IEC 11179-1:2015(E)},
+url = {https://www.iso.org/standard/61932.html},
+  institution = {ISO/IEC},
+  title = {Information technology — Metadata registries (MDR): Part 1: Framework},
+address = {Geneva, CH},
+institution = {International Organization for Standardization},
+  year = 2015
+}
+
+@techreport{iso19135-1,
+type = {Standard},
+url = {https://www.iso.org/standard/54721.html},
+number = {EN ISO 19135-1:2007},
+  institution = {ISO},
+  title = {Geographic information — Procedures for item registration Part 1: Fundamentals},
+address = {Geneva, CH},
+institution = {International Organization for Standardization},
+  year = 2007
+}
+
+@techreport{iso19115-1,
+type = {Standard},
+number = {EN ISO 19115-1:2014+A1:2018(E)},
+url = {https://www.iso.org/standard/53798.html},
+  institution = {ISO},
+  title = {Geographic information - Metadata Part 1: Fundamentals},
+address = {Geneva, CH},
+institution = {International Organization for Standardization},
+  year = 2007
+}
+
+@techreport{ISO13586,
+type = {Standard},
+key = {ISO 13586:2000(E)},
+month = mar,
+year = {2000},
+title = {{Plastics -- Determination of fracture toughness -- Linear elastic fracture mechanics ({LEFM}) approach}},
+volume = {2000},
+address = {Geneva, CH},
+institution = {International Organization for Standardization}
+}
+
 @techreport{Bray2008,
   added-at = {2011-02-07T11:31:28.000+0100},
   author = {Bray, Tim and Paoli, Jean Paoli and Sperberg-McQueen, C.M. and Maler, Eve and Yergeau, François},

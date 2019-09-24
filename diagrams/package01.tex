@@ -9,15 +9,39 @@
 \input{article-header}
 
 
+%% standards references not set well as stands ... can modify the titles or look for other styles in article-header.
+
+
+%% beging document is embedded in article-header
 %%\begin{document}
 
-\section{Introduction}
+\section{Introduction}\label{sec:intro}
 
-The 
+The CMIP6 Data Request provides detailed technical specifications of thousands of climate parameters which are being archived by climate modelling centres around the world as part of a global effort to update the set of reference climate simulations which guide global policy on climate change mitigation and adaptation. 
 
-\subsection{Exploiting the International Standards Organisation [ISO]}
+The DREQ is built on domain standards which have evolved with the CMIP project. In this paper we explore the feasibility and potential benefits associated with expressing
+these specifications through ISO standards. 
+
+The work cuts across a range of standards which are introduced in Section \ref{sec:iso} below, covering aspects of geospatial referencing, physical quantities, and the organisation and processes inherent in running a registry of metadata specifications. 
+
+The expected benefits will be both in terms of inter-operability with other standards which deal with environmental information and also in terms of learning from and exploiting practises which are embedded in the ISO standards. 
+
+\subsection{Exploiting the International Standards Organisation [ISO]}\label{sec:iso}
+
+[provisional literature notes]
+
+\cite{sinaci2013} describes the ise of 11179 to facilitate exchange across clinical work and care domains.
 
 
+The main pillars of the work will be: 
+
+\paragraph{ISO 11179} \citep[Metadata Registry][]{Pon2009,iso80000-1} provides a framework for the organisational structure of a metadata registry and for
+the technical specifications of the registers within that registry. Critically, this clarifies the decision processes and responsibilities surrounding 
+the registration of new items. 
+
+Here are two sample references: \cite{iso80000-1}.
+
+\cite{iso19135-1} provides information on geospatial referencing.
 
 \section{Overview of the metadata structures}
 
@@ -73,8 +97,11 @@ The
 \label{fig:packages}
 \end{figure}
 
-Here are two sample references: \cite{iso80000-1}.
+\section{Conclusions}\label{sec:conc}
 
+The mapping of the DREQ onto the ISO standards reveals areas where improvements can be made in terms of clarity of decisions making processes and a structured approach to definingthe attributes which characterise registered items.
+
+There does not appear to be any inherent obstacle to full compliance, though it has not been the purpose of this paper to compile a full technical specification.
 \section{References}
 
 \bibliography{ams}
