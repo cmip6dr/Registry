@@ -1,0 +1,61 @@
+%%
+%% from https://tex.stackexchange.com/questions/423507/how-to-position-a-node-with-respect-to-another-node?noredirect=1&lq=1
+
+%%
+%% use of "simplified" appears to avoid some bugs in the package ......
+%%
+\documentclass[tikz,border=3mm]{standalone}
+
+\usepackage[simplified]{pgf-umlcd} %<- added simplified here in order to avoid
+% empty splits
+% redefine enviroment
+\renewenvironment{class}[3][]%
+{
+\begin{classAndInterfaceCommon}{#1}{#2}{#3}
+}%
+{\calcuateNumberOfParts{}
+% Thorbjorns only change was in the following line, where "anchor=north" was moved before "this umlcd style"
+% but I replaced "this umlcd style" by "basic=\theumlcdClassSplitPartNum"
+% and changed the way you define the position. Essentially you need to put 
+% brackets around
+\node[anchor=north,basic=\theumlcdClassSplitPartNum] (\umlcdClassName) at \umlcdClassPos
+    {\textbf{\umlcdClassName}
+\insertAttributesAndOperations{}
+};
+
+\end{classAndInterfaceCommon}
+}
+\usetikzlibrary{positioning,shapes.multipart,shapes}
+\tikzset{basic/.style={
+        draw,
+        rectangle split,
+        rectangle split parts=#1,
+        rectangle split part fill={blue!20,white},
+        minimum width=2.5cm,
+        text width=2cm,
+        align=left,
+        font=\itshape
+    },
+    Diamond/.style={ diamond, 
+                        draw, 
+                        shape aspect=2, 
+                        inner sep = 2pt,
+                        text centered,
+                        fill=blue!10!white,
+                        font=\itshape
+                      }}
+\begin{document}
+\begin{tikzpicture}
+\begin{class}{foo}{(0,0)}
+\attribute{+ Public}
+\end{class}
+
+\begin{class}{bar}{([yshift=-10mm]foo.south)}
+\attribute{+ balance : Dollars}
+\operation{+ deposit( amount : Dollars )}
+\end{class}
+
+\begin{class}[anchor=west]{baz}{([xshift=20mm]bar.20)}
+\end{class}
+\end{tikzpicture}
+\end{document} 

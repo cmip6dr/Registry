@@ -1,4 +1,4 @@
-\documentclass[tikz,border=10pt]{standalone}
+\documentclass[tikz,border=10pt]{article}
 \usepackage{tikz-uml}
 \usetikzlibrary{positioning}
 \usetikzlibrary{calc}
@@ -13,36 +13,75 @@
     }
   }
 
+
+\tikzstyle{empty}=[]
+\tikzstyle{stereotype highlight}=[rounded rectangle, fill=green, opacity=.2, text opacity=1]
+\tikzstyle{stereotype highlight cyan}=[rounded rectangle, fill=cyan, opacity=.2, text opacity=1]
+\tikzstyle{stereotype highlight orange}=[rounded rectangle, fill=orange, opacity=.2, text opacity=1]
+
 \begin{document}
 
 \begin{tikzpicture}
 
 \begin{umlsystem}[x=4, fill=red!10]{The data request registry}
-\umlusecase [name=AA] {Registry}
-\umlusecase [below = 1cm of AA, name=A] {Register Collection}
-\umlusecase [below = 1cm of A, name=B] {Register}
-\umlusecase [below right = 0.5cm and 1cm of B, name=dec] {Item Specs}
-\umlusecase [below left = 0.5cm and 1cm of B, name=ri] {Registered Item}
-\umlusecase [x=2cm,y=-3cm, name=mon] {Monitor}
+\umlusecase [empty,x=-4.0cm,y=0cm,fill=,draw=,opacity=0] {}
+\umlusecase [y=0.5cm, name=AA] {Registry}
+\umlusecase [x=-0.5cm,y=-1.5cm, name=A, width=2cm] {Register Collection}
+\umlusecase [x=-0.5cm,y=-3.5cm, name=B] {Register}
+\umlusecase [x=-0.5cm,y=-5.5cm, name=ri, width=2cm] {Registered Item}
+\umlusecase [x=3cm,y=-0.5cm, name=ryspec] {Register Framework}
+\umlusecase [x=3cm,y=-2.5cm, name=regspec] {Register Specs}
+\umlusecase [x=3cm,y=-4.5cm, name=rispec] {Item Specs}
+
+\umlactor[x=-3.1cm, y=0.5cm]{registrar}
+\umlactor[x=-3.1cm, y=1cm]{oversight}
+\umlactor[x=-3.1cm, y=-1.5cm]{chief editor}
+\umlactor[x=-3.1cm, y=-3.5cm]{wg}
+\umlactor[x=-3.1cm, y=-5.5cm]{editor}
 \end{umlsystem}
 
-\umlactor[x=-2cm,y=0.5cm]{registrar}
-\umlactor[x=-2cm,y=-1.5cm]{programme}
-\umlactor[x=-2cm,y=-3.5cm]{pi}
-\umlactor[x=-2cm,y=-5.5cm]{experts}
-\umlactor[x=8cm,y=-3cm]{oversight}
+%% not getting definition done ...
+\umldep[stereo style=stereotype highlight cyan, anchor stereo=east, pos stereo=0.25]{AA}{A}
+\umldep[stereo style=stereotype highlight cyan, anchor stereo=east, pos stereo=0.25]{A}{B}
+\umldep[stereo style=stereotype highlight cyan, anchor stereo=east, pos stereo=0.25]{B}{ri}
+\umldep[stereo style=stereotype highlight cyan, anchor stereo=west, pos stereo=0.25]{AA}{ryspec}
+\umldep[stereo style=stereotype highlight cyan, anchor stereo=west, pos stereo=0.25]{A}{regspec}
+\umldep[stereo style=stereotype highlight cyan, anchor stereo=west, pos stereo=0.25]{B}{rispec}
+
+\umlactor[x=11.2cm,y=0.5cm]{programme}
+\umlactor[x=11.2cm,y=-1cm]{advisory}
+\umlactor[x=11.2cm,y=-3.3cm]{devel}
+\umlactor[x=11.2cm,y=-4.5cm]{specialist}
+\umlactor[x=11.2cm,y=-6cm]{user}
 
 %% would be nice to place stereotype above line ... probably need to change anchor .... occurs dozens of times in style file
 %% should be straight mapping of code used for "stereo pos"
 %% can use arg1, arg2, mult1, mult2 for additional info, but quickly becomes crowded
 %%
-\umlassoc[draw=black!50, very thick, arg1=operate,stereo=own]{registrar}{AA}
-\umlassoc[arg1=govern,stereo=coordinate]{programme}{A}
-\umlassoc[arg1=define,stereo=ipr]{experts}{ri}
-\umlassoc{pi}{B}
+
+\umlassoc[stereo style=stereotype highlight, draw=black!50, very thick, arg1=operate,stereo=own]{registrar}{AA}
+\umlassoc[stereo style=stereotype highlight, arg1=govern,stereo=coordinate]{chief editor}{A}
+\umlassoc[stereo style=stereotype highlight, arg1=define,stereo=ipr]{editor}{ri}
+\umlassoc[stereo style=stereotype highlight, arg1=steward, stereo=review]{wg}{B}
+
+\umlassoc[stereo style=stereotype highlight, stereo=exploit]{devel}{regspec}
+\umlassoc[stereo style=stereotype highlight, stereo=exploit]{devel}{rispec}
+\umlassoc[stereo style=stereotype highlight, stereo=exploit]{user}{ri}
+
+\umlimpl[stereo style=stereotype highlight orange]{rispec}{ri}
+\umlimpl[stereo style=stereotype highlight orange]{regspec}{B}
+\umlimpl[stereo style=stereotype highlight orange]{regspec}{rispec}
+\umlimpl[stereo style=stereotype highlight orange]{ryspec}{regspec}
 
 
 \end{tikzpicture}
+
+\newcommand{\cd}[1]{ {\it #1} }%
+
+The \cd{registrar} is responisble for the operation of the \cd{registry}. 
+The \cd{registry} can host multiple register collections,
+consisting of a group of related \cd{registers} supporting a common user community.
+Each 
 
 \end{document}
 

@@ -1,0 +1,182 @@
+% Author: Martin Juckes (based on work from Qrrbrbirlbel)
+% pdflatex -shell-escape mgtchart.tex for fancy NERC Research font
+\documentclass[tikz,border=10pt]{standalone}
+%%%<
+\usepackage{verbatim}
+%%%>
+
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\rmdefault}{phv} % Arial
+\renewcommand{\sfdefault}{phv} % Arial
+
+%%\usepackage{auto-pst-pdf}% for running it with pdflatex -shell-escape
+%%\usepackage{pst-light3d}
+%%\DeclareFixedFont{\Sf}{T1}{fxb}{b}{n}{16pt}
+\DeclareFixedFont{\Sf}{T1}{phv}{b}{n}{16pt}
+
+\begin{comment}
+:Title: Flowchart
+:Tags: Diagrams;Flowcharts;Node positioning;Nodes and shapes
+:Author: Qrrbrbirlbel
+:Slug: flowchart
+
+This example flowchart uses the positioning-plus library and the
+node-families library by the same author. The fit library is implicitly loaded
+by positioning-plus, the backgrounds library is used to draw stuff behind
+other stuff, the calc library for some coordinate calculations and the
+shapes.geometric library for the ellipse shape.
+
+This example was written by Qrrbrbirlbel answering a question on TeX.SE.
+\end{comment}
+\usetikzlibrary{shapes.geometric,backgrounds,
+  positioning-plus,node-families,calc}
+% for chamfered rectangle
+\usetikzlibrary{shapes.misc,shapes.symbols}
+\tikzset{
+  clear box/.style = {
+    shape = rectangle,
+    align = center,
+    draw  = #1,
+    rounded corners},
+  basic box/.style = {
+    shape = rectangle,
+    align = center,
+    draw  = #1,
+    fill  = #1!25,
+    rounded corners},
+  management func/.style = {signal, draw, thick, 
+               signal to=west and east,
+               text width=22mm, minimum height=9mm, align=center},
+  wp box/.style = {
+    shape = rectangle,
+    align = center,
+    draw  = blue,
+    minimum width=1.1cm,
+    fill  = blue!25!yellow,
+    rounded corners},
+  wp ellipse/.style = {
+    shape = ellipse,
+    inner sep = 0,
+    minimum size = 1pt,
+    align = center,
+    draw  = blue,
+    x radius=0.9cm,
+    y radius=0.4cm,
+    fill  = blue!25!yellow
+    },
+  dc box/.style = {
+    shape = chamfered rectangle,
+    align = center,
+    draw  = blue,
+    minimum width=2.5cm,
+    minimum height=4.2cm,
+    fill  = green!25!yellow},
+  rc box/.style = {
+    shape = ellipse,
+    align = center,
+    draw  = blue,
+    minimum width=2.5cm,
+    fill  = red!25,
+    rounded corners},
+  header node/.style = {
+    Minimum Width = header nodes,
+    %%font          = \strut\Large\ttfamily,
+    font          = \strut\large,
+    text depth    = +0pt,
+    fill          = white,
+    anchor = west,
+    draw},
+  wpheader node/.style = {
+    font          = \strut,
+    text depth    = +0pt,
+    fill          = white,
+    draw},
+  methods/.style = {
+    font          = \strut,
+    text depth    = +0pt,
+    fill          = white,
+    },
+  attributes/.style = {
+    font          = \strut,
+    text depth    = +0pt,
+    fill          = white,
+    },
+  dclabel/.style = {%
+    inner ysep = +1.5em,
+    append after command = {
+      \pgfextra{\let\TikZlastnode\tikzlastnode}
+      node [wpheader node] (lab-\TikZlastnode) at (\TikZlastnode.south) {#1}
+    }
+    },
+  set umlclass/.code={\pgfqkeys{/tikz/umlclass}{#1}},
+  set umlclass={a/.initial=>, m/.initial=},
+  umlclass/.style 2 args = {%
+    inner ysep = +1.5em,
+    append after command = {
+        \pgfextra{\let\TikZlastnode\tikzlastnode}
+        \pgfextra{\let\attribute\pgfkeysvalueof{/tikz/umlclass/a}}
+        \pgfextra{\let\methods\pgfkeysvalueof{/tikz/umlclass/m}}
+        node [attributes, anchor=north] (attrib-\TikZlastnode) at (\TikZlastnode.south) {#1}
+        node [methods, anchor=north] (meth-\TikZlastnode) at (attrib-\TikZlastnode.south) {#2}
+        node [draw, fit=(\TikZlastnode)(attrib-\TikZlastnode)(meth-\TikZlastnode)] (the\TikZlastnode) {}
+      }
+    },
+  umlpackage/.style = {%
+    inner ysep = +1.5em,
+    append after command = {
+        \pgfextra{\let\TikZlastnode\tikzlastnode}
+        \pgfpointdiff{\pgfpointanchor{\TikZlastnode}{south east}}{\pgfpointanchor{\TikZlastnode}{north east}}
+        %%\pgfmathsetmacro\mytemp{\csname pgf@y\endcsname}
+        %%node [rectangle, minimum width=\mytemp, fill=green] (xx) at (\TikZlastnode.north east) {} 
+      }
+    },
+  wpheader/.style = {%
+    inner ysep = +1.5em,
+    append after command = {
+      \pgfextra{\let\TikZlastnode\tikzlastnode}
+      node [wpheader node] (header-\TikZlastnode) at (\TikZlastnode.north east) {#1}
+    }
+  },
+  header/.style = {%
+    inner ysep = +1.5em,
+    append after command = {
+      \pgfextra{\let\TikZlastnode\tikzlastnode}
+      node [header node] (header-\TikZlastnode) at (\TikZlastnode.north west) {#1}
+      node [span = (\TikZlastnode)(header-\TikZlastnode)]
+        at (fit bounding box) (h-\TikZlastnode) {}
+    }
+  },
+  hv/.style = {to path = {-|(\tikztotarget)\tikztonodes}},
+  vh/.style = {to path = {|-(\tikztotarget)\tikztonodes}},
+  fat red line/.style = {ultra thick, red, rounded corners},
+  fat blue line/.style = {ultra thick, blue, rounded corners}
+}
+
+
+%% not so easy to draw a path with "append after command" -- see https://tex.stackexchange.com/questions/55722/problem-with-append-after-command-and-insert-path#55748:w
+
+\newlength{\vpathoff}
+\setlength{\vpathoff}{0.3cm}
+
+\begin{document}
+
+  \pgfdeclarelayer{base}
+  \pgfdeclarelayer{back}
+  \pgfdeclarelayer{mid}
+  \pgfdeclarelayer{fore}
+  \pgfsetlayers{base,back,mid,fore}
+\begin{tikzpicture}[node distance = 1.2cm, thick, nodes = {align = center},
+    >=latex]
+
+
+%%
+%% works with braced arguments, key=value arguments not so easy ....
+\begin{pgfonlayer}{fore}
+
+  \node[umlclass={{attributes}{methods}},draw] (cls) {Class};
+  \node[umlpackage,draw] (pck) at (0,5) {Package};
+\end{pgfonlayer}{fore}
+   
+\end{tikzpicture}
+\end{document}

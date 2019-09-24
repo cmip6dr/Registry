@@ -1,0 +1,81 @@
+\documentclass[review]{elsarticle}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
+\usepackage{local-tikz-style}
+
+\input{article-header}
+
+
+%%\begin{document}
+
+\section{Introduction}
+
+The 
+
+\subsection{Exploiting the International Standards Organisation [ISO]}
+
+
+
+\section{Overview of the metadata structures}
+
+\begin{figure}[p]
+\begin{tikzpicture}
+
+
+\begin{umlpackage}[fill=green!20]{Metadata}
+\begin{umlpackage}[]{Parameters}
+\umlsimpleclass[sc1,y=0]{units}
+\umlsimpleclass[sc1,y=-0.8cm]{quantities}
+\umlsimpleclass[sc1,y=-1.6cm]{constraints}
+\umlsimpleclass[sc1,y=-2.4cm]{variables}
+\end{umlpackage}
+
+\begin{umlpackage}[]{Data Axes}
+\umlsimpleclass[sc1,x=5cm,y=0]{axes}
+\umlsimpleclass[sc1,x=5cm,y=-1cm]{coordinates}
+\umlsimpleclass[sc1,x=5cm,y=-2cm]{configurations}
+\end{umlpackage}
+
+\begin{umlpackage}[]{Data Types}
+\umlsimpleclass[sc1,x=5cm,y=-4.6cm]{\detokenize{data-type}}
+\umlsimpleclass[sc1,x=5cm,y=-5.4cm]{spatial-grid}
+\umlsimpleclass[sc1,x=5cm,y=-6.2cm]{temporal-grid}
+\umlsimpleclass[sc1,x=5cm,y=-7cm]{\detokenize{cell-methods}}
+\end{umlpackage}
+
+\begin{umlpackage}[]{Request}
+\umlsimpleclass[sc1,x=0cm,y=-4.6cm]{variable-group}
+\umlsimpleclass[sc1,x=0cm,y=-5.4cm]{experiment-group}
+\umlsimpleclass[sc1,x=0cm,y=-6.2cm]{objective}
+\begin{umlpackage}[fill=black!10]{Choices}
+\umlsimpleclass[sc1,x=0.4cm,y=-8.0cm]{options}
+\end{umlpackage}
+\end{umlpackage}
+
+\begin{umlpackage}[]{Imports}
+\umlsimpleclass[sc1,x=0cm,y=-10.2cm]{MIP}
+\umlsimpleclass[sc1,x=0cm,y=-11cm]{standard-name}
+\umlsimpleclass[sc1,x=5cm,y=-10.2cm]{experiment}
+\end{umlpackage}
+
+
+\end{umlpackage}
+
+%%% Request .. linking
+%%% Experiment ... [obsolete ... only need a class with links to experiments]
+%%% Data types (structure).
+%%% Data axes (structure).
+\end{tikzpicture}
+\caption{The metadata package is split into 5 sub-packages characterised by different harmonization and conformance requirements and mechanisms.}
+\label{fig:packages}
+\end{figure}
+
+Here are two sample references: \cite{iso80000-1}.
+
+\section{References}
+
+\bibliography{ams}
+\end{document}

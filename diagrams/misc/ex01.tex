@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{tikz}
+
+\makeatletter
+
+\pgfkeys{/thissty/.cd,
+  % The following two lines are from:
+  % https://tex.stackexchange.com/q/85637/86
+  execute style/.style = {#1},
+  execute macro/.style = {execute style/.expand once=#1},
+  left/.code=            {\def\thissty@left{#1}},
+  top/.code=             {\def\thissty@top{#1}},
+  label/.code=           {\def\thissty@label{#1}},
+  nodes/.code=           {\def\thissty@nodes{#1}},
+  colour/.code=          {\def\thissty@colour{#1}},
+}
+\pgfkeys{/umlclass/.cd,
+  % The following two lines are from:
+  % https://tex.stackexchange.com/q/85637/86
+  execute style/.style = {#1},
+  execute macro/.style = {execute style/.expand once=#1},
+  left/.code=            {\def\thissty@left{#1}},
+  top/.code=             {\def\thissty@top{#1}},
+  label/.code=           {\def\thissty@label{#1}},
+  nodes/.code=           {\def\thissty@nodes{#1}},
+  colour/.code=          {\def\thissty@colour{#1}},
+}
+
+\newcommand\myDiagram[1][]{%
+  \pgfkeys{/thissty/.cd,colour=black,nodes={},#1}
+  \node[text=\thissty@colour] at (0,0) {My Diagram...};
+  \foreach \i/\values in \thissty@nodes {
+    \pgfkeys{/thissty/.cd,left=0,top=0,label={},%
+      execute macro=\values}
+    \node[shape=circle,draw=black]
+      at (\thissty@left, \thissty@top) 
+      {\thissty@label};
+  }
+}
+
+\makeatother
+
+\begin{document}
+
+\begin{tikzpicture}[x=1mm,y=-1mm]
+\myDiagram[% 
+  colour=red, %
+  nodes={%
+    a/{left=0,top=10,label={$\sqrt{2}+2$}}, %
+    b/{left=15,top=10,label={$\log 4$}}%
+  }%
+]
+\end{tikzpicture}
+
+\end{document}
