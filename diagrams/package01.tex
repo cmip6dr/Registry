@@ -39,11 +39,28 @@ The main pillars of the work will be:
 the technical specifications of the registers within that registry. Critically, this clarifies the decision processes and responsibilities surrounding 
 the registration of new items. 
 
+\begin{itemize}
+\item DS  Dataset (19115-1)
+\item MD  Geographic informaton - metadata (19115-1)
+\iter MDR Metadata Registries (11179-3)
+\end{itemize}
+
+
+MD_Metadata describes aspects of datatype, including information about accuracy of georeferencing which of importance in observational contexts.
+Dimensions are present as unordered associates of the MD_Metadata class, with a sequence number. Key information is repeated. 
+
+
 Here are two sample references: \cite{iso80000-1}.
 
 \cite{iso19135-1} provides information on geospatial referencing.
 
 \section{Overview of the metadata structures}
+
+\subsection{Activities and Roles}\label{sec:roles}
+
+\input{useCase01.itex}
+
+\subsection{Metadata Packages}\label{sec:packages}
 
 \begin{figure}[p]
 \begin{tikzpicture}
@@ -97,11 +114,107 @@ Here are two sample references: \cite{iso80000-1}.
 \label{fig:packages}
 \end{figure}
 
+\subsection{The Metadata Region of MDR}\label{sec:mdrmdr}
+
+MDR-3 [How to refer?] provides the framework for specifying the metadata requirements for "registered items". In this case the objective is to specify the requirements for datasets which will be archived and distributed through the ESGF distributed archive. The \cd{MDR:Data Entitity} class which provides the registry component of the specifcations of these datasets corresponds to the \cd{DREQ:CMORvar}, a record defining a physical variable sepcified as a mutli-dimensional field spanning time, space and potentially, other dimensions
+such as wavelength, land cover type, ...
+
+The \cd{MDR:CMORvar} defines a range of properties such as the temporal sampling frequency and spatial processing requirements (e.g. masking and averaging), in addition to the structure of the field and the specification of the physical property.
+
+In the new framework, these metadata elements are distributed among \cd{datatypes}, \cd{classifications}, \cd{descriptions}, \cd{value domain subsets} [[not sure if the last is needed]]
+
+The information relevant to the \cd{datatype} is specified in terms of concepts from the CF Conventions which build on the NetCDF data model of arrays, dimensions and attributes.
+
+
+\section{Data Types}
+
+The aim here is to establish a pathway to formal description. Implementation will continue to be via the CF and NetCDF structures.
+
+
+Base data types are perhaps more easily specified in CDL, but need to define a templating syntax.
+
+Code MD: 19115-1 Metadata
+
+This extends \cd{MD_Dimension}
+
+\begin{verbatim}
+bounded latitude (n:integer,data:sequence) {
+dimensions:
+  integer lat = %(n)s;
+variables:
+  double lat(lat);
+     lat.standard name = "latitude";
+     lat.units = "degree north";
+     lat.long name = "latitude" ;
+     lat.bounds = "lat bnds";
+     lat.axes = "Y";
+data:
+  lat = %(data)s;
+}
+\end{verbatim}
+
+
+This can be expressed in the language of 11404:
+
+\begin{verbatim}
+parametric data type: type bounded latitude(values: sequence of (real(8,64) ) = \
+      record (values,name: "lat", \
+             long name: "latitude", \
+             lat.bounds,..) ;
+\end{verbatim}
+
+The \cd{NetCDF:double} datatype corresponds to ISO 11404 \cd{real(8,64)}. The remaining parameters are key-value pairs which define the physical
+interpretation of the datatype through the CF Convention.
+
+With this approach, however, the attributes \cd{lat.units} etc become external to the administrative structure of the registry, only the bundled entity 
+is explicitly represented.
+
+Express Datatype as a subclass of {\cd MDR:Concept} and define records to accomodate ....
+
+The required data type elements will be (1) simple dimension, bounded dimension (inc. coordinate), fixed simple dimension, (4) fixed bounded dimension.
+
+There are 35 land surface types used to express masking requirements of data. Desirable to move these to a \cd{mask} record, and express the CMOR grid table via a method of the registry. 
+
+Similarly, there are a significant number of ancillary variables ("a", "b", etc) which should be expressed in the data type. Also "orog", which is a 2-d field.
+
+.e.g \cd{hybrid height half} requires \cd{a, b, a bnds, b bnds, orog}.
+
+The bounds variables have dimensions (n,2), and the orog variable is the shape of the spatial grid.
+
+We can, however, express the fact that "level" must be one of "hybrid half height, alternate hybrid sigma, ...".
+
+
+\begin{verbatim}
+parametric data type: type values_type(n: integer) = array (1...n) of real(8,64);
+
+parametric data type: type regular_longitude(m: integer) = record (values(n),name,long_name,bounds,..) ;
+parametric data type: type regular_lat_lon(n: integer, m: integer) = record (values(n,m),name,dimensions(regular_latitude(n),regular_longitude(m));
+type name = string-literal selecting ("latitude");
+\end{verbatim}
+
+
+11179 allows data types to be specified via a reference to a document.
+
+Here, we use the notation of 11404 to specify the datatypes, since the underlying standards do not provide a formal specification. [illustrative sample]
+
+The \cd{DREQ:cell measures} atttribute contains a string which is to be transferred into the eventual data files,
+but which also carries some inferred meaning which is derived from the CMIP6 data format specifications and naming rules. 
+
+There are consistency rules.
+
+
+
+
 \section{Conclusions}\label{sec:conc}
 
 The mapping of the DREQ onto the ISO standards reveals areas where improvements can be made in terms of clarity of decisions making processes and a structured approach to definingthe attributes which characterise registered items.
 
 There does not appear to be any inherent obstacle to full compliance, though it has not been the purpose of this paper to compile a full technical specification.
+
+The \cd{structure} record in DREQ-1.0 contained a complex mix of metadata specifications.
+Guided by MDR, this can be divided between specification of a data type and processing instructions.
+The resulting split improves the clarity of the specifications.
+
 \section{References}
 
 \bibliography{ams}
