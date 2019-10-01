@@ -1,3 +1,6 @@
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
 
 \tikzset{
   sc1/.style = {
@@ -7,6 +10,13 @@
     inner sep=1pt,
     anchor=south west
     },
+  cl1/.style = {
+    minimum width = 3cm,
+    minimum height = 0.3cm,
+    %%execute at begin node=\setlength{\baselineskip}{0em},
+    inner sep=1pt,
+    anchor=south
+    },
 }
 
 
@@ -14,3 +24,21 @@
 \tikzstyle{stereotype highlight}=[rounded rectangle, fill=green, opacity=.2, text opacity=1]
 \tikzstyle{stereotype highlight cyan}=[rounded rectangle, fill=cyan, opacity=.2, text opacity=1]
 \tikzstyle{stereotype highlight orange}=[rounded rectangle, fill=orange, opacity=.2, text opacity=1]
+
+
+\tikzset{
+  pck/.style = {
+    minimum width = 3cm,
+    node distance=2in,
+    },
+  note/.style = {
+    width = 6cm,
+    }
+  }
+
+
+\tikzstyle{empty}=[]
+\tikzstyle{stereotype highlight}=[rounded rectangle, fill=white, opacity=.4, text opacity=1]
+\tikzstyle{stereotype highlight cyan}=[rounded rectangle, fill=cyan, opacity=.2, text opacity=1]
+\tikzstyle{stereotype highlight orange}=[rounded rectangle, fill=orange, opacity=.2, text opacity=1]
+
