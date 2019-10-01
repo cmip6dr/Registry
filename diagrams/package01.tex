@@ -1,8 +1,12 @@
-\documentclass[review]{elsarticle}
+%\documentclass[review]{elsarticle}
+\documentclass[]{elsarticle}
+\usepackage{underscore}
 \usepackage{tikz}
 \usepackage{tikz-uml}
 \usetikzlibrary{positioning}
 \usetikzlibrary{calc}
+\usetikzlibrary{shapes.misc}
+\usetikzlibrary{through,arrows} % for circle of nodes ...
 
 \usepackage{local-tikz-style}
 
@@ -26,6 +30,55 @@ The work cuts across a range of standards which are introduced in Section \ref{s
 
 The expected benefits will be both in terms of inter-operability with other standards which deal with environmental information and also in terms of learning from and exploiting practises which are embedded in the ISO standards. 
 
+We look at four principle areas of the activity.
+Firstly, the description the overall orangisational structure and community interaction. This involves a broad and rapidly growing network,
+with participants from hundreds of institutions and dozens of countries. The structure has evolved organically, always pressured by the rapid 
+expansion of the global climate modelling activity and the societal pressures associated with growing awareness of the risks posed by anthropogenic climate change. One of the consequences of the broad and loosely [who contributes ...]
+
+
+Secondly, the definition of data types, including specification
+of multi-dimensional arrays which combine geospatial coordinates with additional domain specific dimensions.
+
+Thirdly, the specifications of physical quantities and associated units. The DREQ includes thousands of different quantities, 
+all of which are defined in and registered in the CF Convention. In order to increase interoperability with
+other communities this paper develops a mapping from the terms in the data request to ISO standard quantities.
+
+Fourthly, the overall design is framed using the Object Management Group's metamodeling standards. 
+
+AND ALSO GIVERNANCE AND DECISION BODIES ....
+\begin{figure}[p]
+\begin{tikzpicture}[
+  thick,
+  every pin edge/.style={<-},
+  >=latex,
+  declare function/.list={
+    outerR=2.0;,
+    innerR=3.3;,
+    angleofNode(\a)=\a/5*360-90;},
+  std/.style={rounded rectangle, align=center, fill=blue!40, draw=cyan}
+  ]
+
+\node [circle through=(0:outerR)] (c) {};
+
+\node[draw,std,anchor=angleofNode(2.5)] at (c.{angleofNode(0)}) {Design\\Meta-modeling\\framework\\19508};
+\node[draw,std,anchor=angleofNode(3.5)] at (c.{angleofNode(1)}) {Organisation\\People, assets\\and decisisons\\38500};
+\node[draw,std,anchor=angleofNode(4.5)] at (c.{angleofNode(2)}) {Registers\\Data Elements,\\Registered Items,\\Status Codes\\11179};
+\node[draw,std,anchor=angleofNode(0.8)] at (c.{angleofNode(3)}) {Geospatial\\Space and Time\\19115};
+\node[draw,std,anchor=angleofNode(1.5)] at (c.{angleofNode(4)}) {Quantities and Units\\Properties and Measures\\80000};
+
+\end{tikzpicture}
+\caption{The five core standards explored in this paper. The scope of these five standards overlaps in many areas, but
+there do not appear to be any inconsistencies in the application discussed here.}
+\label{fig:pentad}
+\end{figure}
+
+The ability to discuss the whole range of issues from governance to comprehensive technical details is a valuable 
+strength of the ISO standards. This is of particular relevance in the context of a metadata registry which is
+constructed through wide community engagement. Different categories of technical information require different
+forms of approval and harmonisation. This paper aims to clarify the procedures, roles and responsibilities
+through the ISO framework.
+
+
 \subsection{Exploiting the International Standards Organisation [ISO]}\label{sec:iso}
 
 [provisional literature notes]
@@ -39,12 +92,23 @@ The main pillars of the work will be:
 the technical specifications of the registers within that registry. Critically, this clarifies the decision processes and responsibilities surrounding 
 the registration of new items. 
 
+\cite{iso38500}
+
+\cite{iso19508}
+
 \begin{itemize}
-\item DS  Dataset (19115-1)
-\item MD  Geographic informaton - metadata (19115-1)
-\iter MDR Metadata Registries (11179-3)
+\item QU-GE Quantities and Units (80000-1 {General})
+\item QU-ST Quantities and Units (80000-3 {Space and Time})
+\item QU-ME Quantities and Units (80000-4 {Mechanics})
+\item QU-TH Quantities and Units (80000-5 {Thermodynamics})
+\item QU-AC Quantities and Units (80000-7 {Light and Radiation})
+\item QU-NP Quantities and Units (80000-9 {Physical Chemistry and Molecular Physics})
+\item GI-DS  Geographic Information (19115-1 {Dataset})
+\item GI-MD  Geographic Information (19115-1 {metadata})
+\item MDR Metadata Registries (11179)
 \end{itemize}
 
+{\bf NB -- currently using old 80000-4: new version August 2019.}
 
 MD_Metadata describes aspects of datatype, including information about accuracy of georeferencing which of importance in observational contexts.
 Dimensions are present as unordered associates of the MD_Metadata class, with a sequence number. Key information is repeated. 
@@ -119,28 +183,87 @@ Here are two sample references: \cite{iso80000-1}.
 MDR-3 [How to refer?] provides the framework for specifying the metadata requirements for "registered items". In this case the objective is to specify the requirements for datasets which will be archived and distributed through the ESGF distributed archive. The \cd{MDR:Data Entitity} class which provides the registry component of the specifcations of these datasets corresponds to the \cd{DREQ:CMORvar}, a record defining a physical variable sepcified as a mutli-dimensional field spanning time, space and potentially, other dimensions
 such as wavelength, land cover type, ...
 
-The \cd{MDR:CMORvar} defines a range of properties such as the temporal sampling frequency and spatial processing requirements (e.g. masking and averaging), in addition to the structure of the field and the specification of the physical property.
+The \cd{DREQ:CMORvar} defines a range of properties such as the temporal sampling frequency and spatial processing requirements (e.g. masking and averaging), in addition to the structure of the field and the specification of the physical property.
 
 In the new framework, these metadata elements are distributed among \cd{datatypes}, \cd{classifications}, \cd{descriptions}, \cd{value domain subsets} [[not sure if the last is needed]]
 
 The information relevant to the \cd{datatype} is specified in terms of concepts from the CF Conventions which build on the NetCDF data model of arrays, dimensions and attributes.
 
 
+\section{Quantities and Units of Measure}
+
+The concept of "quantity" is discussed in 19115, 11179 and 80000 (where it is the main focus of the standard). In all cases, a "quantity" is physical property which can be expressed via a measure.
+
+The 19115 and 80000 define a range of specific quantities, and 11179 defines a framework for defining additional quantities. There is some
+duplication between 19115 and 80000. Where possible we will use terms defined in 19115.
+
+In both 19115 and 80000, the quantities defined generally have a broader scope that the variables defined in DREQ. For instance, the ISO 80000 quantity "Thermodynamic Temperature" corresponds to 33 different DREQ variables, such as "Near-Surface Air Temperature", "Temperature at Snow-Ice Interface".
+
+There are 7 quantities from 19115 which are used (implicitly) in DREQ: angle, scale, distance, speed, area, volume, weight.
+
+From 80000 the following: acceleration, time (duration), pressure, surface density, mass density, kinematic velocity, mass flow rate,
+heat flow rate, density of heat flow rate, Celsius temperature(*), thermodynamic temperature, attenuation rate, mass fraction,
+volume fraction, amount-of-mass fraction, amount-of-substance concentration.
+
+These come from parts 3 (Space and Time), 4 (Mechanics), 5 (Thermodynamics), 7 (Light and Radiation) and
+9 (Physical chemistry and molecular physics) of the standard.
+
+(*) "Celsius temperature" could, according to the guidance given in ISO 80000, be considered as the same quantity as thermodynamic temperature. They only differ by a fixed offset.
+
+The parameters in DREQ which do not appear to fit any of the specific quantities defined in ISO 11179 or ISO 80000 will be defined covered by defining new quantities as registered items in a consistent style and granularity. For instance, energy flow, temperature flux, stress, pressure tendency. 
+
+In this way, it is possible to express the portfolio of parameters in around 100 quantities. Labelling the parameters with appropriate ISO quantities is likely to increase interoperability with other archives supporting fields, such as engineering or medicine, which may be involved in climate mitigation, adaptation or emergency response.
+
 \section{Data Types}
 
 The aim here is to establish a pathway to formal description. Implementation will continue to be via the CF and NetCDF structures.
 
+It would be possible to develop a complex data type representing the full range of information required in a dataset. This consists of the required data array, the coordinates used to represent the data, and ancillary variables. 
 
-Base data types are perhaps more easily specified in CDL, but need to define a templating syntax.
+An alternative approach is to represent the data requested as a MDR_data_entity with associated MDR_sub_data_entity concepts, such that each individual element corresponds to a single array of data.
 
-Code MD: 19115-1 Metadata
+This latter approach conforms to GI-MD. 
+
+The top level data entity is a record specifying the dimensions of all the required arrays, some of which may be user specified.
+e.g.
+\begin{verbatim}
+parametric data type: 
+      type dimensions (lat: integer, lon: integer, time: integer ) = 
+             record ( lat, lon, time, bnd=2);
+\end{verbatim}
+or perhaps, the data array ...
+\begin{verbatim}
+parametric data type:
+      type data (lat: integer, lon: integer, time: integer ) =
+             array ( 1..lat, 1..lon, 1..time) of real(8,64);
+\end{verbatim}
+
+
+The data field itself will then be held in a sub data entity,
+\begin{verbatim}
+parametric data type: type data = array (1...PA_time,1...PA_lon,1...PA_lat) of real(8,64);
+\end{verbatim}
+
+Additional sub-data entity elements will contain data for the dimensions and the ancillary variables.
+This approach allows a fairly direct mapping of DREQ records into data entity concepts, but draws the \cd{dimensions}/\cd{data} data type into the 
+top level data entity.
+
+At this point the details of the mapping are not as important as the demonstration that the mapping is feasible. 
+
+
+Base data types are perhaps more easily specified in CDL, but need to define a templating syntax. - use PEP 3101.
+The values to be replaced are placed in braces, e.g. "{n:d}" should be replaced by the value of "n" using the formatting designated by "d" (a "decimal integer").
+
+
+
+%% perhaps a table of class vs. attribute list {as itemize env}, showing data type and attributes. e.g. long_name : c"Near Surface Air-Temperature", where the 'C"..."' denotes a data entity with value given by the string
 
 This extends \cd{MD_Dimension}
 
 \begin{verbatim}
 bounded latitude (n:integer,data:sequence) {
 dimensions:
-  integer lat = %(n)s;
+  integer lat = {n};
 variables:
   double lat(lat);
      lat.standard name = "latitude";
@@ -149,21 +272,24 @@ variables:
      lat.bounds = "lat bnds";
      lat.axes = "Y";
 data:
-  lat = %(data)s;
+  lat = {data};
 }
 \end{verbatim}
+Note that in order to apply the POP 3101 templating rules \verb+sequence+ would need to be expressed as a string.
 
+The "data" needs to be expressed as a string .... not really what we want to say.
 
 This can be expressed in the language of 11404:
 
 \begin{verbatim}
-parametric data type: type bounded latitude(values: sequence of (real(8,64) ) = \
+parametric data type: type bounded latitude(values: sequence of (real(256,64) ) = \
       record (values,name: "lat", \
              long name: "latitude", \
              lat.bounds,..) ;
 \end{verbatim}
 
-The \cd{NetCDF:double} datatype corresponds to ISO 11404 \cd{real(8,64)}. The remaining parameters are key-value pairs which define the physical
+
+The \cd{NetCDF:double} datatype corresponds to ISO 11404 \cd{real(2,64)}, i.e. 64-bit floating point. The remaining parameters are key-value pairs which define the physical
 interpretation of the datatype through the CF Convention.
 
 With this approach, however, the attributes \cd{lat.units} etc become external to the administrative structure of the registry, only the bundled entity 

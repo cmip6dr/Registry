@@ -1452,9 +1452,9 @@
       %
       \ifnum\theposStereo>100%
         \pgfmathsetmacro{\tikzumlRelationPositionStereotype}{(\theposStereo-100)/100}%
-        \xdef\tikzumlLastArc{\tikzumlLastArc node[style=tikzuml stereotype style, fill=blue, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
+        \xdef\tikzumlLastArc{\tikzumlLastArc node[style=tikzuml stereotype style, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
       \else%
-        \xdef\tikzumlFirstArc{\tikzumlFirstArc node[style=tikzuml stereotype style, fill=blue, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
+        \xdef\tikzumlFirstArc{\tikzumlFirstArc node[style=tikzuml stereotype style, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
       \fi%
       %
       \ifnum\thepos>100%
@@ -1517,9 +1517,9 @@
         %
         \ifnum\theposStereo>100%
           \pgfmathsetmacro{\tikzumlRelationPositionStereotype}{(\theposStereo-100)/100}%
-          \xdef\tikzumlLastArc{\tikzumlLastArc node[style=tikzuml stereotype style, fill=blue, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
+          \xdef\tikzumlLastArc{\tikzumlLastArc node[style=tikzuml stereotype style, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
         \else%
-          \xdef\tikzumlFirstArc{\tikzumlFirstArc node[style=tikzuml stereotype style, fill=blue, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
+          \xdef\tikzumlFirstArc{\tikzumlFirstArc node[style=tikzuml stereotype style, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
         \fi%
         %
         \ifnum\thepos>100%
@@ -1598,13 +1598,13 @@
           %
           \ifnum\theposStereo>200%
             \pgfmathsetmacro{\tikzumlRelationPositionStereotype}{(\theposStereo-200)/100}%
-            \xdef\tikzumlLastArc{\tikzumlLastArc node[style=tikzuml stereotype style, fill=blue, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
+            \xdef\tikzumlLastArc{\tikzumlLastArc node[style=tikzuml stereotype style, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
           \else%
             \ifnum\theposStereo<100%
-              \xdef\tikzumlFirstArc{\tikzumlFirstArc node[style=tikzuml stereotype style, fill=blue, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
+              \xdef\tikzumlFirstArc{\tikzumlFirstArc node[style=tikzuml stereotype style, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
             \else%
               \pgfmathsetmacro{\tikzumlRelationPositionStereotype}{(\theposStereo-100)/100}%
-              \xdef\tikzumlMidOneArc{\tikzumlMidOneArc node[style=tikzuml stereotype style, fill=blue, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
+              \xdef\tikzumlMidOneArc{\tikzumlMidOneArc node[style=tikzuml stereotype style, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
             \fi%
           \fi%
           %
@@ -1704,13 +1704,13 @@
             %
             \ifnum\theposStereo>200%
               \pgfmathsetmacro{\tikzumlRelationPositionStereotype}{(\theposStereo-200)/100}%
-              \xdef\tikzumlLastArc{\tikzumlLastArc node[style=tikzuml stereotype style, fill=blue, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
+              \xdef\tikzumlLastArc{\tikzumlLastArc node[style=tikzuml stereotype style, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
             \else%
               \ifnum\theposStereo<100%
-                \xdef\tikzumlFirstArc{\tikzumlFirstArc node[style=tikzuml stereotype style, fill=blue, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
+                \xdef\tikzumlFirstArc{\tikzumlFirstArc node[style=tikzuml stereotype style, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
               \else%
                 \pgfmathsetmacro{\tikzumlRelationPositionStereotype}{(\theposStereo-100)/100}%
-                \xdef\tikzumlMidOneArc{\tikzumlMidOneArc node[style=tikzuml stereotype style, fill=blue, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
+                \xdef\tikzumlMidOneArc{\tikzumlMidOneArc node[style=tikzuml stereotype style, pos=\tikzumlRelationPositionStereotype, anchor=\tikzumlRelationAnchorStereo] {\stereotype} }%
               \fi%
             \fi%
             %

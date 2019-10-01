@@ -1,0 +1,74 @@
+\documentclass[review]{elsarticle}
+\usepackage{underscore}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
+\usepackage{local-tikz-style}
+
+%%\tikzstyle{tikzuml inherit style}=[color=\tikzumlDefaultDrawColor, triangle 90-open triangle 45]%
+%%\renewcommand{\umlinherit}[3][]{\umlrelation[style={tikzuml inherit style}, #1]{#2}{#3}}%
+
+\begin{document}
+
+
+\begin{figure}[p]
+\begin{tikzpicture}
+
+
+
+\umlclass[cl1,x=2cm,y=3cm]{DataVariableType}{units : Units [1]}{}
+
+\umlnote[x=9,y=4]{DataVariableType}{Units must conform to axes.standard_name}
+
+\begin{umlpackage}[]{Data Axes}
+\umlclass[cl1,x=2cm,y=0]{axes}{standard_name : CF Standard Name [0..1]\\output name : string [1]}{}
+\umlclass[cl1,x=0cm,y=-1cm,anchor=north]{fixed}{values : ValueArray [1] (double, int or string)\\bounds: BoundsArray [0..1]}{}
+\umlclass[cl1,x=7cm,y=-1cm,anchor=north]{model}{values : ArrayDataType [1]\\bounds: BoundsArray [1]\\axisType : axisEnumeration [1]}{}
+\umlclass[cl1,x=1cm,y=-6cm]{options}{option set: ModelAxisEnum [1] }{}
+\umlclass[cl1,x=8cm,y=-6cm]{scalar}{value : ScalarValue [1]}{}
+\umlclass[cl1,x=5cm,y=-9cm]{fixedExternal}{datatype : DataTypeCLass [1]\\source : URL [1]}{}
+\umlnote[x=8,y=1]{axes}{model.axisType must  conform to standard_name}
+\end{umlpackage}
+
+\umlinherit{axes}{DataVariableType}
+\umlinherit[geometry=|-|]{fixed}{axes}
+\coordinate (cc) at (4.0cm,-4cm);
+\coordinate (cca) at (cc|-axes.south);
+\coordinate (ccb) at ($(axes.south east)-(.2cm,0cm)$);
+\coordinate (ccc) at (cc|-fixedExternal.north);
+\umlinherit[geometry=|-|]{model}{ccb}
+\umlinherit[geometry=-|,stereo style=empty]{cc}{cca}
+\umlassoc[geometry=|-]{scalar}{cc}
+\umlassoc[geometry=|-]{options}{cc}
+\umlassoc[]{ccc}{cc}
+
+
+%%% Request .. linking
+%%% Experiment ... [obsolete ... only need a class with links to experiments]
+%%% Data types (structure).
+%%% Data axes (structure).
+\end{tikzpicture}
+\caption{The metadata package is split into 5 sub-packages characterised by different harmonization and conformance requirements and mechanisms.}
+\label{fig:packages}
+\end{figure}
+
+The axisType combines the "axis", "direction" and "positive" attributes into a single list in order to preserve semantic simplicity.
+\begin{table}
+\begin{tabular}{|c|p{5cm}|p{5cm}|}
+\hline
+Code & Description & annotation \cr
+\hline
+X & Horizontal X-axis & axis="X",increasing=True \cr
+Y & Horizontal Y-axis & axis="Y",increasing=True \cr
+Z-inc-up & Vertical, values ordered monotonic increasing, positive direction upwards  & axis="Z", stored_direction="increasing", positive="up" \cr
+Z-inc-down & Vertical, values ordered monotonic increasing, positive direction downwards   & axis="Z", stored_direction="increasing", positive="down" \cr
+Z-dec-up & Vertical, values ordered monotonic dereasing, positive direction upwards  & axis="Z", stored_direction="dereasing", positive="up" \cr
+Z-dec-down & Vertical, values ordered monotonic dereasing, positive direction downwards  & axis="Z", stored_direction="dereasing", positive="down" \cr
+O & Other axes & \cr
+\hline
+\end{tabular}
+\end{table}
+
+\end{document}
