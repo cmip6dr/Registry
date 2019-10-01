@@ -8,6 +8,10 @@
 \usetikzlibrary{shapes.misc}
 \usetikzlibrary{through,arrows} % for circle of nodes ...
 
+\newif\ifsummary
+\summarytrue % or \draftfalse
+
+
 \usepackage{local-tikz-style}
 
 \input{article-header}
@@ -30,7 +34,7 @@ The work cuts across a range of standards which are introduced in Section \ref{s
 
 The expected benefits will be both in terms of inter-operability with other standards which deal with environmental information and also in terms of learning from and exploiting practises which are embedded in the ISO standards. 
 
-We look at four principle areas of the activity.
+We look at five principle areas of the activity.
 Firstly, the description the overall orangisational structure and community interaction. This involves a broad and rapidly growing network,
 with participants from hundreds of institutions and dozens of countries. The structure has evolved organically, always pressured by the rapid 
 expansion of the global climate modelling activity and the societal pressures associated with growing awareness of the risks posed by anthropogenic climate change. One of the consequences of the broad and loosely [who contributes ...]
@@ -45,8 +49,9 @@ other communities this paper develops a mapping from the terms in the data reque
 
 Fourthly, the overall design is framed using the Object Management Group's metamodeling standards. 
 
-AND ALSO GIVERNANCE AND DECISION BODIES ....
-\begin{figure}[p]
+Finally, the standard for governance of IT can be used to describe the connection between decision centres and services.
+
+\begin{figure}[h]
 \begin{tikzpicture}[
   thick,
   every pin edge/.style={<-},
@@ -118,6 +123,9 @@ Here are two sample references: \cite{iso80000-1}.
 
 \cite{iso19135-1} provides information on geospatial referencing.
 
+\ifsummary
+ %% [additional content omitted]
+\else
 \section{Overview of the metadata structures}
 
 \subsection{Activities and Roles}\label{sec:roles}
@@ -340,6 +348,8 @@ There does not appear to be any inherent obstacle to full compliance, though it 
 The \cd{structure} record in DREQ-1.0 contained a complex mix of metadata specifications.
 Guided by MDR, this can be divided between specification of a data type and processing instructions.
 The resulting split improves the clarity of the specifications.
+
+\fi
 
 \section{References}
 
