@@ -1,5 +1,5 @@
 %\documentclass[review]{elsarticle}
-\documentclass[]{elsarticle}
+\documentclass[review]{elsarticle}
 \usepackage{underscore}
 \usepackage{tikz}
 \usepackage{tikz-uml}
@@ -7,49 +7,84 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{shapes.misc}
 \usetikzlibrary{through,arrows} % for circle of nodes ...
+\usetikzlibrary{shapes.arrows, fadings}
 
 \newif\ifsummary
 \summarytrue % or \draftfalse
-
+\summaryfalse % or \draftfalse
 
 \usepackage{local-tikz-style}
 
 \input{article-header}
 
-
 %% standards references not set well as stands ... can modify the titles or look for other styles in article-header.
-
 
 %% beging document is embedded in article-header
 %%\begin{document}
 
 \section{Introduction}\label{sec:intro}
 
-The CMIP6 Data Request provides detailed technical specifications of thousands of climate parameters which are being archived by climate modelling centres around the world as part of a global effort to update the set of reference climate simulations which guide global policy on climate change mitigation and adaptation. 
+The wide exchange of climate model output underpins a growing awareness of the severe challenges of accelerating climate change.
+This paper considers one aspect of the standardisation work which is needed to ensure the timely distribution of
+accessible data products: the specification of thousands of physical parameters calculated and shared from all participating
+institutions. The specifications include definitions of parameters, technical metadata requirements and information on the intended use of 
+the parameter.
 
-The DREQ is built on domain standards which have evolved with the CMIP project. In this paper we explore the feasibility and potential benefits associated with expressing
-these specifications through ISO standards. 
+The global policy framework for responding to the multiple threats and challenges of climate change
+draws on regular assessments from the Intergovernmental Panel on Climate Change (IPCC) providing an overview of the state of knowledge
+concerning the science of climate change. Projections of possible future outcomes from climate models based
+on a range of different social and industrial actions provide the foundation for the assessment of the impact of future climate variability.
+The climate projections come from multiple independent research institutions, in a global activity known as the
+Coupled Model Intercomparison Project (CMIP).
+This is an activity of World Climate Research Program (WCRP) which is overseen by the Working Group on Coupled Models (WGCM).
+While the IPCC assessments are developed in a carefully designed framework agreed at an intergovernmental level, 
+the climate projections being assessed are deliverd by the research community through a broad
+range of independentally managed research programmes, projects and activities. Coordination is provided through two
+expert panels set up by WGCM: the CMIP Panel and the WGCM Infrastructure Panel.
+
+The public debates around climate variability focus on a handful of physical parameters, such as temperature, rainfall, and wind speeds.
+The demand for thousands of physical parameters arises from the crucial need to understand the reliabilty of the climate model
+output. The exchange of data serves not only to produce the headline graphs of rising temperatures, but also provides
+the basis for a forensic examination of the processes represented by the models in order to assess their credibility
+and guide future developments \citep[see][]{Eyring2016}. 
+
+The scope of the physical processes covered by the climate models is rapidly expanding.
+Setting the standards to encompass this scope in the context of an extensive community of independent research scientists
+brings many organisational and technical challenges [[specify]].
+
+This paper is not a formal plan for delivering services with agreement among the parties concerned: it is a provider perspective
+on options for improving the accuracy and efficiency of the processes around the 
+
+The CMIP6 Data Request \citep[DREQ][]{juckes2019disc} provides detailed technical specifications of thousands of
+climate parameters which are being
+archived by climate modelling centres around the world as part of a global effort to update the set of reference
+climate simulations which guide global policy on climate change mitigation and adaptation. 
+
+The DREQ is part of a range of infrastructure projects \citep{Balaji2018}. See also ES-DOC \citep{pascoe2019disc}.
+
+The DREQ is built on domain standards which have evolved with the CMIP project. In this paper we explore the
+feasibility and potential benefits associated with expressing these specifications through ISO standards. 
 
 The work cuts across a range of standards which are introduced in Section \ref{sec:iso} below, covering aspects of geospatial referencing, physical quantities, and the organisation and processes inherent in running a registry of metadata specifications. 
 
 The expected benefits will be both in terms of inter-operability with other standards which deal with environmental information and also in terms of learning from and exploiting practises which are embedded in the ISO standards. 
 
-We look at five principle areas of the activity.
-Firstly, the description the overall orangisational structure and community interaction. This involves a broad and rapidly growing network,
+We look at three principle areas of the activity.
+
+Firstly, the description the overall orangisational structure. 
+
+Secondly, community interaction which involves a broad and rapidly growing network,
 with participants from hundreds of institutions and dozens of countries. The structure has evolved organically, always pressured by the rapid 
-expansion of the global climate modelling activity and the societal pressures associated with growing awareness of the risks posed by anthropogenic climate change. One of the consequences of the broad and loosely [who contributes ...]
+expansion of the global climate modelling activity and the societal pressures associated with growing awareness of the
+risks posed by anthropogenic climate change. One of the consequences of the broad and loosely
+coordinated collaboration is that names of some contributors are only recorded in email chains or online discussion.
 
-
-Secondly, the definition of data types, including specification
-of multi-dimensional arrays which combine geospatial coordinates with additional domain specific dimensions.
-
-Thirdly, the specifications of physical quantities and associated units. The DREQ includes thousands of different quantities, 
+Finally, the Information Technology.
+The DREQ includes thousands of different quantities, 
 all of which are defined in and registered in the CF Convention. In order to increase interoperability with
 other communities this paper develops a mapping from the terms in the data request to ISO standard quantities.
-
-Fourthly, the overall design is framed using the Object Management Group's metamodeling standards. 
-
-Finally, the standard for governance of IT can be used to describe the connection between decision centres and services.
+We we also consider the definition of data types, including specification
+of multi-dimensional arrays which combine geospatial coordinates with additional domain specific dimensions.
 
 \begin{figure}[h]
 \begin{tikzpicture}[
@@ -58,17 +93,26 @@ Finally, the standard for governance of IT can be used to describe the connectio
   >=latex,
   declare function/.list={
     outerR=2.0;,
-    innerR=3.3;,
+    innerR=1.6;,
     angleofNode(\a)=\a/5*360-90;},
-  std/.style={rounded rectangle, align=center, fill=blue!40, draw=cyan}
+  std/.style={rounded rectangle, align=center, fill=blue!40, draw=cyan},
+  chpt/.style={rectangle, minimum width=2.5cm, align=center, fill=green!40, draw=cyan}
   ]
 
 \node [circle through=(0:outerR)] (c) {};
+\node [circle through=(0:innerR)] (d) {};
+
+%%\node[draw,chpt,anchor=90] at (d.40) {Organisation};
+%%\node[draw,chpt,anchor=210] at (d.160) {IT};
+%%\node[draw,chpt,anchor=330] at (d.270) {Community};
+\node[draw,chpt] at (d.40) {Organisation};
+\node[draw,chpt] at (d.170) {IT};
+\node[draw,chpt] at (d.280) {Community};
 
 \node[draw,std,anchor=angleofNode(2.5)] at (c.{angleofNode(0)}) {Design\\Meta-modeling\\framework\\19508};
 \node[draw,std,anchor=angleofNode(3.5)] at (c.{angleofNode(1)}) {Organisation\\People, assets\\and decisisons\\38500};
 \node[draw,std,anchor=angleofNode(4.5)] at (c.{angleofNode(2)}) {Registers\\Data Elements,\\Registered Items,\\Status Codes\\11179};
-\node[draw,std,anchor=angleofNode(0.8)] at (c.{angleofNode(3)}) {Geospatial\\Space and Time\\19115};
+\node[draw,std,anchor=angleofNode(0.8)] at (c.{angleofNode(3)}) {Geospatial\\Space and Time\\19115, 19135};
 \node[draw,std,anchor=angleofNode(1.5)] at (c.{angleofNode(4)}) {Quantities and Units\\Properties and Measures\\80000};
 
 \end{tikzpicture}
@@ -77,6 +121,9 @@ there do not appear to be any inconsistencies in the application discussed here.
 \label{fig:pentad}
 \end{figure}
 
+
+\subsection{Exploiting the International Standards Organisation [ISO]}\label{sec:iso}
+
 The ability to discuss the whole range of issues from governance to comprehensive technical details is a valuable 
 strength of the ISO standards. This is of particular relevance in the context of a metadata registry which is
 constructed through wide community engagement. Different categories of technical information require different
@@ -84,44 +131,146 @@ forms of approval and harmonisation. This paper aims to clarify the procedures, 
 through the ISO framework.
 
 
-\subsection{Exploiting the International Standards Organisation [ISO]}\label{sec:iso}
 
-[provisional literature notes]
-
-\cite{sinaci2013} describes the ise of 11179 to facilitate exchange across clinical work and care domains.
-
-
-The main pillars of the work will be: 
-
-\paragraph{ISO 11179} \citep[Metadata Registry][]{Pon2009,iso80000-1} provides a framework for the organisational structure of a metadata registry and for
-the technical specifications of the registers within that registry. Critically, this clarifies the decision processes and responsibilities surrounding 
-the registration of new items. 
-
-\cite{iso38500}
-
-\cite{iso19508}
+The main pillars of the work are the standards listed here: 
 
 \begin{itemize}
-\item QU-GE Quantities and Units (80000-1 {General})
-\item QU-ST Quantities and Units (80000-3 {Space and Time})
-\item QU-ME Quantities and Units (80000-4 {Mechanics})
-\item QU-TH Quantities and Units (80000-5 {Thermodynamics})
-\item QU-AC Quantities and Units (80000-7 {Light and Radiation})
-\item QU-NP Quantities and Units (80000-9 {Physical Chemistry and Molecular Physics})
-\item GI-DS  Geographic Information (19115-1 {Dataset})
-\item GI-MD  Geographic Information (19115-1 {metadata})
+\item QU Quantities and Units: Parts 1: General \cite{iso80000-1},
+         3: Space and Time \cite{iso80000-3}, 4: Mechanics \cite{iso80000-4}, 5: Thermodynamics \cite{iso80000-5},
+         7: Light and Radiation \cite{iso80000-7}, and  9: Physical Chemistry and Molecular Physics \cite{iso80000-9}.
+%%\item QU-ST Quantities and Units (80000-3 {Space and Time})
+%%\item QU-ME Quantities and Units (80000-4 {Mechanics})
+%%\item QU-TH Quantities and Units (80000-5 {Thermodynamics})
+%%\item QU-AC Quantities and Units (80000-7 {Light and Radiation})
+%%\item QU-NP Quantities and Units (80000-9 {Physical Chemistry and Molecular Physics})
+\item GIM Geographic Information --- Metadata (19115-1 \cite{iso19115-1})
+\item GIP Geographic Information --- Procedures (19135-1 \cite{iso19135-1})
 \item MDR Metadata Registries (11179)
+\item ITG Governance of Information Technology \cite{iso38500}
+\item EIF Enterprise integration — Framework for enterprise modelling, \cite{iso19439} 
+\item EIC Enterprise integration — Constructs for enterprise modelling, \cite{iso19440}
+\item MOF OMG Meta Object Facility \cite{iso19508}
+\item GPD General Purpose Datatypes \cite{iso11404}
 \end{itemize}
 
-{\bf NB -- currently using old 80000-4: new version August 2019.}
+[[literature survey needed]]
 
-MD_Metadata describes aspects of datatype, including information about accuracy of georeferencing which of importance in observational contexts.
-Dimensions are present as unordered associates of the MD_Metadata class, with a sequence number. Key information is repeated. 
+\cite{sinaci2013} describes the ise of ISO 11179 to facilitate exchange across clinical work and care domains.
 
 
-Here are two sample references: \cite{iso80000-1}.
+\section{Layering the Technical and Organisational Design}
 
-\cite{iso19135-1} provides information on geospatial referencing.
+\subsection{Modeling approach}
+
+The Object Management Group (OMG) Meta Object Facility (MOF) \citep{iso19508} will be applied, so that the structure
+can be specified in 4[[?]] layers. 
+
+Firstly, the MOF layer (this section) defining the use of MOF, decsribing the objectives of the four layers used, and additional 
+framing assumptions.
+
+The second layer specifies the overall technical and organisational structures of the registry, exploiting the Metadata Registries
+standard \citep{iso11179-1}.
+
+The third layer specifies the structure of the registers within the registry, the organisational units associated with them, and
+their requirements.
+
+Finally, the fourth layer includes the contents of the registries.
+
+\subsubsection{The apex concept}
+
+In MOF, the properties of the apex concept are inheritted by all other classes in the system.
+
+\subsubsection{The self-descriptive registry}
+
+\paragraph{ISO 11179} \citep[Metadata Registry][]{Pon2009} provides a framework for the organisational
+structure of a metadata registry and for the technical specifications of the registers within that registry.
+Critically, this clarifies the decision processes and responsibilities surrounding the registration of new items. 
+
+The ISO 11179 standard requires that all concepts used in the metadata registers should have their metadata declared
+in a manner consistent with the standard. Hence, the registry can be used to maintain a record of the organistational
+structure of the registry. The creation of a \cd{MDR_registeredItem} is defined by 11179 in terms of a set of sub-classing operations:
+\begin{quote}
+\cd{MDR_identifiedItem} $\to$ {MDR_registeredItem} $\to$ {MDR_AdministeredItem}.
+\end{quote}
+
+[see 13.1.8 of UML2 \citep{uml2}: "Stereotype is a kind of Class that extends Classes through Extensions".]
+In order to build this structure into a model which combines features from other standards we will define procedural \cd{stereotypes} on
+the inheritance/generalization relation:
+\begin{itemize}
+\item \cd{identify}: create a sub-class that conforms to \cd{MDR_identifiedItem};
+\item \cd{register}: create a sub-class that conforms to \cd{MDR_registeredItem};
+\item \cd{administer}: create a sub-class that conforms to \cd{MDR_administeredItem}.
+\item \cd{attach}: create a sub-class that conforms to \cd{MDR_attachedItem}.
+\item \cd{XXadopt}: create a sub-class that conforms to \cd{MDR_designatableItem}.
+\item \cd{rdef}: create a sub-class that conforms to \cd{MDR_dataElement}.
+\end{itemize}
+
+The scope and intent of these stereotypes is defined here, the technical specifications will be in layer [[apex-1]].
+
+[[not clear if "Extension" is an acceptable relationship across MOF layers ...]]
+
+[[NB: \cd{UML::valueSpecification} "may reference an instance when evaluated"]]
+
+%%\begin{figure}[h]
+%%\begin{tikzpicture}
+%%\umlsimpleclass[sc1,y=0]{Apex}
+%%\umlsimpleclass[sc1,y=0,x=5,type={concept}]{}
+%%\end{tikzpicture}
+%%\end{figure}
+
+Enumerations are used to classify data element concepts, such as the time interval between data fields in a dataset.
+In DREQ many of the enumerations used in this way are themselves the product of a community registration process. 
+In ISO 11179, however, the elements of an enumeration used to define \cd{MDR_Value_Meaning} must be designatable items
+rather the registered items. The \cd{XXadopt} stereotype is introduced to deal with this. An instantiation with stereotype \cd{XXadopt}
+may be used to create a \cd{MDR_designatableItem} from a \cd{MDR_registeredItem} or \cd{MDR_administeredItem}.
+[[not clear that generalization is the best approach here ... may be better to associate with the registered item]]
+
+This allows a separation of procedures and governance between the registration and administration process for such items and that of the
+other items in the registry which depend on designatable items for their definitions. 
+
+In practice, the procedures for \cd{XXadopt} are likely to run in parallel to \cd{register} and \cd{administer}. The split between these
+two concepts in meta-model resolves a potentially confusing governance structure when item $X$ is defined in
+terms of items $A$, $B$ and $C$ which all have distinctive governance and management workflows. 
+
+The \cd{rdef} stereotype generates a data element class, which may be used to specify the syntax for representing, for instance,
+\cd{ITG_decision_centres}.
+
+
+\subsection{Technical and Organisational Structures}
+
+The ISO 38500 standard on governance is designed to deal with corporate governance structures, but achieves its purpose through 
+a high degree of flexibility. The ability to define cascading chains of responsibility, with the option, at each stage, for 
+organisational units to define their own internal governance structures, makes it suitable for the highly non-corporate 
+structure that assembles the CMIP Data Request.
+
+What 38500 does specify is key concepts of an organisational system (decision centres, assets, competencies etc) and
+a framework for describing them and their connections. In this implementation, these organisational classes will inherit
+the basic aspects governing status etc from the 11179 apex concept.
+
+In addition, the generalization with \cd{administer} stereotype
+will be used to generate a suite of 
+
+\subsubsection{stereotypes}
+
+\cd{identify} adds attribute identifier referencing a \cd{MDR_Scoped_Identifier} [MDR, part 3, chapter 7, figure 5] instance.
+
+Specialisations: require one \cd{MDR_Scoped_Identifier} in the registry namespace. 
+
+\cd{register} adds \cd{MDR_submission_record}. A registered item may also be a designatable item.
+
+\subsubsection{Principles of the technical schema}
+
+Technical specifications are sometimes split between a "schema" and "vocabularies", with vocabularies containing extensible lists of
+terms relevant to a specific domain or technical application. The vocabularies may be structured according to schema, and the "schema" may contain lists, so the distinction is somewhat arbitrary. 
+
+%%Here, we draw the distinction between a aggregating schema, which is defined to include additional information
+Here, the distinction will be betweem register with MDR designated items and one with MDR registered items.
+
+
+\subsection{Actors and Registers}
+
+\subsection{Decisions and Data Elements}
+
 
 \ifsummary
  %% [additional content omitted]
@@ -185,6 +334,45 @@ Here are two sample references: \cite{iso80000-1}.
 \caption{The metadata package is split into 5 sub-packages characterised by different harmonization and conformance requirements and mechanisms.}
 \label{fig:packages}
 \end{figure}
+
+
+
+\begin{tikzpicture}
+%%\draw[cyan] (0,0) -- (12,0) -- (12,-5.5) -- (0,-5.5) -- cycle;
+
+\node [text01,fill=cyan,text width=5.0cm,align=left,anchor=north west]  (text1) {
+{\centering \bf Data Element\par} Configured Variable
+};
+
+\node at (text1.south) [
+    right color=blue!50!cyan,
+    single arrow,
+    anchor=north,
+    minimum height=1cm,
+    inner sep=4pt,
+    shading angle=90+60,
+    rotate=90
+] {};
+
+\node [text01, text width=5cm,align=left, anchor=south west] (object) at ($(text1.north west) + (0.,1.)$) {
+{\centering \bf Object\par} model component being described};
+
+\node [text01, text width=5.5cm, align=left,anchor=south west] (par) at ($(text1.north east) + (0.,1.)$) {
+{\centering \bf Property\par} the quantity being reported};
+
+\node [text01, text width=5.5cm, align=left,anchor=west] (cd) at ($(text1.east)+(0.4,0.)$) {
+{\centering \bf Generic processing\par} applied (spatial averaging, masking)};
+
+\node [text01, text width=6.cm,align=left, anchor=north] (rqv) at ($(text1.south) + (0.,-.5)$) {
+{\centering \bf Data Type\par} organisation of data values};
+
+%%\draw[blue]
+   %%($(sn.south)+(-1.,0)$) edge (text1.north)
+   %%(var.west) edge ($(text1.east)+(0.,.2)$)
+   %%(cmv.west) edge ($(text1.east)+(0.,-.2)$)
+   %%($(rqv.north)+(-1.,0)$) edge (text1.south);
+   
+\end{tikzpicture}
 
 \subsection{The Metadata Region of MDR}\label{sec:mdrmdr}
 
@@ -283,7 +471,7 @@ data:
   lat = {data};
 }
 \end{verbatim}
-Note that in order to apply the POP 3101 templating rules \verb+sequence+ would need to be expressed as a string.
+Note that in order to apply the PEP 3101 templating rules \verb+sequence+ would need to be expressed as a string.
 
 The "data" needs to be expressed as a string .... not really what we want to say.
 
@@ -348,6 +536,16 @@ There does not appear to be any inherent obstacle to full compliance, though it 
 The \cd{structure} record in DREQ-1.0 contained a complex mix of metadata specifications.
 Guided by MDR, this can be divided between specification of a data type and processing instructions.
 The resulting split improves the clarity of the specifications.
+
+\section{FRAGMENTS}
+
+MD_Metadata describes aspects of datatype, including information about accuracy of georeferencing which of importance in observational contexts.
+Dimensions are present as unordered associates of the MD_Metadata class, with a sequence number. Key information is repeated. 
+
+[[Target Data Element Registry: need to think about different MOF layers .....]]
+
+{\bf NB -- currently using old 80000-4: new version August 2019.}
+
 
 \fi
 

@@ -1,0 +1,186 @@
+%\documentclass[review]{elsarticle}
+\documentclass[]{elsarticle}
+\usepackage{underscore}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
+\usepackage{local-tikz-style}
+
+%%\tikzstyle{tikzuml inherit style}=[color=\tikzumlDefaultDrawColor, triangle 90-open triangle 45]%
+%%\renewcommand{\umlinherit}[3][]{\umlrelation[style={tikzuml inherit style}, #1]{#2}{#3}}%
+
+\tikzset{
+  sc1/.style = {
+    minimum width = 3cm,
+    minimum height = 0.3cm,
+    %%execute at begin node=\setlength{\baselineskip}{0em},
+    inner sep=1pt,
+    anchor=south
+    },
+  cl2/.style = {cl1,
+    anchor=west,
+    },
+  note1/.style = {inner sep=4pt, align=left},
+  note2/.style = {inner sep=5pt, align=left},
+}
+
+\begin{document}
+
+
+%%HAS REGISTRY BEEN SKIPPED HERE?
+\begin{figure}[p]
+\begin{tikzpicture}
+
+%% don't know why anchor is not being set here ...
+\begin{scope}[shift={(0.,8cm)}]
+\umlclass[cl2,anchor=west,type={division},name=tech]{tech}{}{}
+\umlnote[note1, x=7cm, width=5cm]{tech}{Other divisions are {organisation} and {community}}
+\umlnote[note2, x=-3cm, width=4cm]{tech}{This layer describes the three main divisions of work};
+\end{scope}
+
+\begin{scope}[shift={(0.,6cm)}]
+\umlsimpleclass[cl2,anchor=west,type={tech}]{register}
+\umlnote[note1, x=7cm, width=5cm]{register}{Other components are {software} and {services}}
+\end{scope}
+
+\begin{scope}[shift={(0.,4cm)}]
+\umlsimpleclass[cl2,anchor=west,type={register}]{variable}
+\umlnote[note1, x=7cm, width=5cm]{variable}{Other components are, for example, {units} and {grids}}
+\end{scope}
+
+\begin{scope}[shift={(0.,0cm)}]
+\umlclass[cl2,x=-1cm,y=0, anchor=west,type={attribute}]{variable::units}{id="....."\\title:"Units of Measure"\\
+                      description="....."\\standard_name : "air_temperature"\\.....}{}
+
+\end{scope}
+\begin{scope}[shift={(0.,-4cm)}]
+\umlclass[cl2,x=-1cm,y=0, anchor=west, type={variable}]{tas}{id="....."\\title:"Near Surface Air Temperature"\\
+                      units="K"\\
+                      description="....."\\standard_name : "air_temperature"\\.....}{}
+\end{scope}
+
+
+
+\end{tikzpicture}
+\caption{MOF layers}
+\label{fig:mofl}
+\end{figure}
+
+The 6 layers may appear excessive for a small project, but each layer is introducing significant generalizations.
+
+Instead, adopt the approach that a package has a parent class in the MOF layer above, and contains a collection of classes. This allows two organisational layers to be placed within a MOF layer. We could, of course, compress it to a single layer and use lots of sub-packages to organise the work, but the MOF layering allows some conceptual clarity. 
+
+The base layer (M0) contains the the records of the meta data registry.
+The layer above (M1) describes the generic record by defining attributes used within each table.
+
+M2 describes the generic table, in terms of the attributes of each table and the syntax of links between tables.
+
+M3 describes the registry as a whole, and other information technology components, particularly the python library
+which supports use of the information in the registers. There are considerable dependencies between these
+two components.
+
+M4 describes the three divisions of activity. The organisation, including staff and resources, the community, including the 
+networks engaged in setting standards, and the information technology.
+
+M5, finally, is the top MOF layer which describes the modeling approach.
+
+{\it
+There are issues with the MOF abstraction layer approach when applied to organisations. The layers should be
+functionally independent, but the teams and individuals identified in the organisation are defined at the lower 
+level .... need to be clear about path of instantiation}
+
+There is no uniquely correct approach to defining MOF layers. The rule that the top layer should define the approach used 
+in other layers gives considerable freedom.
+
+The process of instantiation is intended to be a procedural rather than executive one, bringing about 
+what has been defined in the classes of the parent layer. Instantiation does, however, involve some inputs.
+
+Instantiation of M4 requires the specification of:
+\begin{itemize}
+\item A profile of ISO 11179 for the information technoloy division;
+\item A profile of ISO 19440 for the organisation and community engagement;
+\item Specification of interfaces between these elements;
+\end{itemize}
+
+Instantiation of M4 also involves setting out the principle areas of action 
+in each division, defined as packages, and setting out the objectives and primary resources of each of these packages.
+
+Instantiation of M3 then takes a slightly different form in each division or package. Setting out the implementation
+decisions, such as choice of languages and external resources (libraries, technical standards, etc).
+
+\begin{itemize} 
+\item For information technology, the specification of class factories which
+\end{itemize}
+
+Instantiation of M2: for the python API, this involves defining the core meta-class (implemented as class a factory). For the
+registry, it involves defining the registers. For the community and organisation sections, this involves definition of the
+governance processes for the communication and implementation. Here, the ... concept of multi-level, devolved governance is
+used, with governance bodies defined at the M2 level reporting back to higher level bodies (the fact that higher level
+governance bodies are defined at higher MOF levels is a feature of this implementation ... the level of
+governance and level in the MOF hierarchy are not intrinsically linked ab initio).
+
+Instantiation of M1 then involves defining python classes or database records.
+
+In terms of ISO 19439, the levels can be identified with:
+\begin{itemize} 
+\item M3: domain identification;
+\item M2: concept definition;
+\item M1: requirements definition;
+\item M0: design specification;
+\end{itemize} 
+
+
+Key parts of 19440 are decision centres, functional entities, organizational units, and person profiles.  Decision centres provide
+a basic documentation of the agency that can trigger the change of status of an item in the registry.
+
+For each register there must be one or more organisational units responsible for items in the register, and there must be decision
+centres assigned to enact the necessary status changes of items.
+In plain terms, we identify groups or bodies who can propose to a register and make decisions. This will include harmonisation
+roles as well as groups or networks providing community requirements.
+
+The 19440 and 11179 standards take complimentary approaches. 19440 describes information content requirements, 11179 describes a modelling framework.
+
+This, we might consider the 19440 Person Profile and a 11179 Object, with Property classes defined for Design Authority, Role, Organizational Skills, Operational Skills, Provider of Skills, etc. This mapping will allow a model of the organisational structure behind the decision processes
+of the registry to be represented in the registry.
+
+MDR_Registered_Item needs to conform to EIC_Product (19440). This could be done through an association of classes, but
+here an isomorphism is proposed, through a stereotype of MDR_Registered_Item which conforms to EIC_Product.
+
+\begin{table}[h]
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+Registration Authority & Design Authority & References and EIC_Organizational Unit, or an MDR_Organization: the latter a light-weight basic class with 5 text attributes, the former has a signifcant amount of detail. This detail will be useful in representing the relationship between
+MIPs, groups within MIPs and projects which link several MIPs.  \\
+& Description & \\
+& Nature of Product & has value "INFORMATION" \\
+& Properties &  set of concepts  \\
+& Constraints & Constraint on an object \\
+& Integrity Rules &  Constraints on attributes\\
+\hline
+\end{tabular}
+\caption{mapping DR_Registered_Item to EIC_Product}
+\end{table}
+
+
+The Design Authority for a product will be the Registration Authority, carrying the specific responsibility for ensuring all processes required
+are complete before registration. There is one unique EIC_Design_Authority for each EIC_Product. Within the registry, there will be multiple Registration_authority instances associated with different stakeholders. 
+
+The MDR_Property is a basic concept. Attributes in DREQ are data elements, in the sense that they have a defined meaning and a value domain.
+These can become an identified item with a value specified in a slot.
+
+\subsection{The self-referential bit of DREQ}
+
+The attributes which are used to describe attributes are characterised the fact that they play both the role of MDR_Object_Class and MDR_Property.
+
+As an MDR_Object, attribute.title has properties attribute.title, attribute.label, etc.
+
+For a register record, such as "label:tas, title:Near-surface Air Temperature, ", there is no MDR_Data_Element, just a "Data_element_concept".
+
+
+Registered Item .. can be "Concept" or (is a "Data Element" a concept?)
+
+
+
+\end{document}
