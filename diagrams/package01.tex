@@ -9,9 +9,15 @@
 \usetikzlibrary{through,arrows} % for circle of nodes ...
 \usetikzlibrary{shapes.arrows, fadings}
 
+%% \pgfdeclarelayer{back}
+  %%%%\pgfdeclarelayer{fore}
+  %%\pgfsetlayers{back,fore}
+
 \newif\ifsummary
 \summarytrue % or \draftfalse
 \summaryfalse % or \draftfalse
+
+\newcommand*\rot{\rotatebox{90}}
 
 \usepackage{local-tikz-style}
 
@@ -59,6 +65,18 @@ The CMIP6 Data Request \citep[DREQ][]{juckes2019disc} provides detailed technica
 climate parameters which are being
 archived by climate modelling centres around the world as part of a global effort to update the set of reference
 climate simulations which guide global policy on climate change mitigation and adaptation. 
+
+\subsection{Framing the issues}
+
+A requested variable might be the monthly mean near-surface temperature, evaluated on a global grid for every month through the duration of a simulation. This parameter is defined by a title, a description, specification of units of measure, but also by technical data specifying that the quantity is represents air temperature at about 2m above the ground, information about which numerical experiments are to be measured (almost all for this variable, but other variables are only archived from a small selection of experiments). In all, there are over a hundred technical attributes used to define a variable.
+
+
+In this paper we are not concerned with the definitions of the physical parameters, or even with the definitions of the attributes, but with the systems used to maintain and curate those definitions.
+
+
+The definitions of these attributes have evolved over several cycles of CMIP. Many of the definitions are clear and well understood, but there are ambiguities and many areas of ongoing discussion regarding the best approach to dealing with new requirements which derive from the ever expanding physical complexity of the climate models and the following analysis. 
+
+\subsection{More about the data request}
 
 The DREQ is part of a range of infrastructure projects \citep{Balaji2018}. See also ES-DOC \citep{pascoe2019disc}.
 
@@ -153,6 +171,29 @@ The main pillars of the work are the standards listed here:
 \item GPD General Purpose Datatypes \cite{iso11404}
 \end{itemize}
 
+All these standards can contribute, but the primary focus here will be on the interplay between structures of the metadata registry
+and the organisations around it as seen through the language of MDR and EIC. MOF will be used as an organisational structure.
+
+These three standards are all about standardising modeling approaches for describing implementations (or descibing modelling processes in the case
+of MOF) rather than standardised implementations.
+
+\begin{figure}[h]
+\begin{tikzpicture}
+\umlsimpleclass[sc1,y=0,type={mdr}]{Registry}
+\umlsimpleclass[sc1,y=0,x=8,type={EIC}]{Organisation}
+\umlsimpleclass[sc1,y=-3,x=4,type={mdr}]{Register}
+
+\umlcompo[link1,arg2={Functional Entity},stereo={resource}]{Organisation}{Registry}
+\umlcompo[link1,arg2={Organisational Element}, mult2=*]{Registry}{Register}
+\umldep[link1, % arg1=mdr, arg2=eic,
+            stereo={abstraction}]{Register}{Organisation}
+\end{tikzpicture}
+\caption{Top level relationship between Registry and Organisation. In a sense the Registry contains the Organisation as a modeled concept and the Organisation contains the Registry as a defined function. More precisely, the Registry contains an abstraction of the Organisation.}
+\label{fig:mdr-eic}
+\end{figure}
+
+
+
 [[literature survey needed]]
 
 \cite{sinaci2013} describes the ise of ISO 11179 to facilitate exchange across clinical work and care domains.
@@ -160,6 +201,10 @@ The main pillars of the work are the standards listed here:
 
 \cite{mcclatchkey2018} discusses the use of a MOF layered metamodel to design a systematic approach to collecting provenance information in a distributed software system. Here we are looking at a somewhat different problem of capturing provenance information arising from multiple interacting science teams and institutions. From a modeling perspective, there is some similarity. Setting out the requirements for provenance collection clearly in the upper layers of the m-cake provides a systematic framework for embedding the functionality consistently in a range of different artefacts at the workflow implementation layer. 
 
+
+\section{Roles, Activities and Packages}
+
+\input{useCase01.itex}
 
 \section{Layering the Technical and Organisational Design}
 
@@ -169,7 +214,8 @@ The Object Management Group (OMG) Meta Object Facility (MOF) \citep{iso19508} wi
 can be specified in 4[[?]] layers. 
 
 Firstly, the MOF layer (this section) defining the use of MOF, decsribing the objectives of the four layers used, and additional 
-framing assumptions.
+framing assumptions. Each layer should define all the classes which can be instantiated to create objects in the layer below. MOF defines
+classes to support creation of links, classes, instances. Inheritance across MOF layers need not match instantiation within a layer ....
 
 The second layer specifies the overall technical and organisational structures of the registry, exploiting the Metadata Registries
 standard \citep{iso11179-1}.
@@ -266,9 +312,7 @@ Specialisations: require one \cd{MDR_Scoped_Identifier} in the registry namespac
 Technical specifications are sometimes split between a "schema" and "vocabularies", with vocabularies containing extensible lists of
 terms relevant to a specific domain or technical application. The vocabularies may be structured according to schema, and the "schema" may contain lists, so the distinction is somewhat arbitrary. 
 
-%%Here, we draw the distinction between a aggregating schema, which is defined to include additional information
 Here, the distinction will be betweem register with MDR designated items and one with MDR registered items.
-
 
 \subsection{Actors and Registers}
 
@@ -282,61 +326,10 @@ Here, the distinction will be betweem register with MDR designated items and one
 
 \subsection{Activities and Roles}\label{sec:roles}
 
-\input{useCase01.itex}
+\verb+\input{useCase01.itex}+
 
 \subsection{Metadata Packages}\label{sec:packages}
 
-\begin{figure}[p]
-\begin{tikzpicture}
-
-
-\begin{umlpackage}[fill=green!20]{Metadata}
-\begin{umlpackage}[]{Parameters}
-\umlsimpleclass[sc1,y=0]{units}
-\umlsimpleclass[sc1,y=-0.8cm]{quantities}
-\umlsimpleclass[sc1,y=-1.6cm]{constraints}
-\umlsimpleclass[sc1,y=-2.4cm]{variables}
-\end{umlpackage}
-
-\begin{umlpackage}[]{Data Axes}
-\umlsimpleclass[sc1,x=5cm,y=0]{axes}
-\umlsimpleclass[sc1,x=5cm,y=-1cm]{coordinates}
-\umlsimpleclass[sc1,x=5cm,y=-2cm]{configurations}
-\end{umlpackage}
-
-\begin{umlpackage}[]{Data Types}
-\umlsimpleclass[sc1,x=5cm,y=-4.6cm]{\detokenize{data-type}}
-\umlsimpleclass[sc1,x=5cm,y=-5.4cm]{spatial-grid}
-\umlsimpleclass[sc1,x=5cm,y=-6.2cm]{temporal-grid}
-\umlsimpleclass[sc1,x=5cm,y=-7cm]{\detokenize{cell-methods}}
-\end{umlpackage}
-
-\begin{umlpackage}[]{Request}
-\umlsimpleclass[sc1,x=0cm,y=-4.6cm]{variable-group}
-\umlsimpleclass[sc1,x=0cm,y=-5.4cm]{experiment-group}
-\umlsimpleclass[sc1,x=0cm,y=-6.2cm]{objective}
-\begin{umlpackage}[fill=black!10]{Choices}
-\umlsimpleclass[sc1,x=0.4cm,y=-8.0cm]{options}
-\end{umlpackage}
-\end{umlpackage}
-
-\begin{umlpackage}[]{Imports}
-\umlsimpleclass[sc1,x=0cm,y=-10.2cm]{MIP}
-\umlsimpleclass[sc1,x=0cm,y=-11cm]{standard-name}
-\umlsimpleclass[sc1,x=5cm,y=-10.2cm]{experiment}
-\end{umlpackage}
-
-
-\end{umlpackage}
-
-%%% Request .. linking
-%%% Experiment ... [obsolete ... only need a class with links to experiments]
-%%% Data types (structure).
-%%% Data axes (structure).
-\end{tikzpicture}
-\caption{The metadata package is split into 5 sub-packages characterised by different harmonization and conformance requirements and mechanisms.}
-\label{fig:packages}
-\end{figure}
 
 
 
@@ -510,10 +503,15 @@ We can, however, express the fact that "level" must be one of "hybrid half heigh
 
 
 \begin{verbatim}
-parametric data type: type values_type(n: integer) = array (1...n) of real(8,64);
+parametric data type: type values_type(n: integer) = \
+         array (1...n) of real(8,64);
 
-parametric data type: type regular_longitude(m: integer) = record (values(n),name,long_name,bounds,..) ;
-parametric data type: type regular_lat_lon(n: integer, m: integer) = record (values(n,m),name,dimensions(regular_latitude(n),regular_longitude(m));
+parametric data type: type regular_longitude(m: integer) = \
+         record (values(n),name,long_name,bounds,..) ;
+
+parametric data type: type regular_lat_lon(n: integer, m: integer) = \
+         record (values(n,m),name,dimensions(regular_latitude(n),regular_longitude(m));
+
 type name = string-literal selecting ("latitude");
 \end{verbatim}
 
@@ -548,6 +546,238 @@ Dimensions are present as unordered associates of the MD_Metadata class, with a 
 [[Target Data Element Registry: need to think about different MOF layers .....]]
 
 {\bf NB -- currently using old 80000-4: new version August 2019.}
+
+MULTIPLE INHERITANCE
+
+"multiple inheritance" is allowed (UML2.0) -- but not clear on diagrammatic syntax. 
+
+A MOF Factory describes the activity of instantiating a class. 
+
+\begin{figure}[h]
+\begin{tikzpicture}
+
+\umlclass[type={meta}]{Orchestrate}{factory:MOF-Factory [1]\\
+  isDesign:Boolean [1]\\
+  interface:FactoryInterface [1]\\
+  base:Class [1..*]\\
+  instance:Element [1..*]\\
+  event:Event [1..*]
+   }{
+  buildLinks() : Link [1..*]
+   }
+
+\umlnote[note1, x=7cm, width=5cm]{Orchestrate}{The multiplicity of base must match that of instance: classes and instances occur in matched pairs, the factory orchestrates the instantiation based on the configuration information which arises out of events. 
+{\bf The stereotype \cd{meta} indicates that this is a metaclass which generates an .... [[but ... this instantiates to functional elemenst ...]]}.
+}
+\end{tikzpicture}
+\caption{[[class for following group ...]]}
+\label{fig:factory}
+\end{figure}
+
+\begin{figure}[p]
+\begin{tikzpicture}
+
+\begin{pgfonlayer}{background}
+
+\node[rectangle,fill=cyan!20, anchor=south west,minimum width=12cm,minimum height=2.0cm] at (-5.,0.9) {};
+\node[rectangle,fill=black!10, anchor=north west,minimum width=12cm,minimum height=3.6cm] at (-5.,0.9) {};
+\node[rectangle,fill=green!20, anchor=north west,minimum width=12cm,minimum height=2.0cm] at (-5.,-2.7) {};
+\end{pgfonlayer}{background}
+
+%%\begin{pgfonlayer}{fore}
+\umlsimpleclass[sc1,x=3.2,y=1.8]{Base}
+\umlsimpleclass[sc1,x=-4.2,y=0]{Interface}
+%%\umlclass[sc1,x=-5.,y=-4.5]{Factory}{\rule{0pt}{1.3cm}}{\rule{0pt}{1.3cm}}
+\umlsimpleclass[sc1,x=-4.2,y=-1.8]{Factory}
+\umlsimpleclass[sc1,x=1.5,y=0]{Event}
+
+\umlsimpleclass[sc1,x=3.2,y=-3.6cm]{Class}
+
+\umlimport[arg1=service,mult1=1..*,arg2=data,mult2=1]{Interface}{Event}
+
+\umlimport[arg2=classifier, mult2=1, pos2=1.9, align2=right, geometry=|-]{Interface}{Base}
+
+\umlassoc[geometry=-|, name=assoc, anchors=0 and 30, stereo=orchestrate]{Factory}{Class}
+
+\umlassoc[geometry=|-, anchors=-90 and 180,
+          arg1=producer, mult1=1,
+          arg2=product,mult2=0..*,pos2=1.8]{Factory}{Class}
+
+\umlcompo[arg1=agent, mult1=1,  pos1=0.15, 
+          arg2=CE_interface, mult2=1,  pos2=0.85,
+         %% anchors=10 and 180, geometry=-|-
+          ]{Factory}{Interface}
+
+\umlinherit[arg2=parent,pos2=0.92,
+            mult2=1,arg1=child,pos1=0.08,mult1=0..*,
+            anchors=30 and -30]{Class}{Base}
+
+\umlpoint{assoc-2}
+%%\end{pgfonlayer}{fore}
+
+\end{tikzpicture}
+\caption{[[Would like to have a Factory which can deal with multiple classes .... probably means that class should
+be attached via event -- or leave this logic in the interface? (making the interface more dynamic than, for instance, a python
+interface)(need to take care on interpretation of multiplicity ... this is a diagram of one possible realisation of a pattern. 
+Could have multiple base classes .... each event triggers use of one classifier ....)]].  An Event provides information via an Interface to trigger the creation of a Class element from a Base element. 
+In this formulation, a Class element has links both to the parent class through the inheritance relation, and to the factory which
+describes the process. The Event provides the link to the organisational unit and contains information about the time,
+context and contributors to the input that triggers the creation of the Class.}
+\label{fig:factory}
+\end{figure}
+
+\begin{figure}[h]
+\begin{tikzpicture}
+\tikzset{
+  scloc/.style = {sc1,
+    minimum width = 2.2cm,
+    },
+  }
+
+\begin{umlpackage}[]{Registry}
+\umlsimpleclass[scloc,x=3cm,y=2cm]{Table}
+\umlsimpleclass[scloc,x=3cm,y=1cm]{Row}
+\umlsimpleclass[scloc,x=3cm,y=0cm]{Attributes}
+\umlsimpleclass[scloc, x=3cm, y=3cm, fill=cyan!20, type={design}]{Orchestrate}
+\end{umlpackage}
+
+\begin{umlpackage}[]{Software}
+\umlsimpleclass[scloc,x=7.0cm,y=2cm]{Package}
+\umlsimpleclass[scloc,x=7.0cm,y=1cm]{Module}
+\umlsimpleclass[scloc,x=7.0cm,y=0cm]{Object}
+\umlsimpleclass[x=6.4,y=1cm,minimum width=0.7cm, minimum height=2.4cm,fill=cyan!20]{O}
+\end{umlpackage}
+
+\begin{umlpackage}[]{Organisation}
+\umlsimpleclass[scloc,x=11.0cm,y=2cm]{Org}
+\umlsimpleclass[scloc,x=11.0cm,y=1cm]{Unit}
+\umlsimpleclass[scloc,x=11.0cm,y=0cm]{Event}
+\umlsimpleclass[x=10.4,y=1cm,minimum width=0.7cm, minimum height=2.4cm,fill=cyan!20]{O}
+\end{umlpackage}
+
+\begin{umlpackage}[]{Documents}
+\umlsimpleclass[scloc,x=3cm,y=-2cm]{Collection}
+\umlsimpleclass[scloc,x=3cm,y=-3cm]{Section}
+\umlsimpleclass[scloc,x=3cm,y=-4cm]{Document}
+\umlsimpleclass[x=2.4,y=-3cm,text width=0.7cm, minimum height=2.4cm,fill=cyan!20,
+             label=below:\rotatebox{-90}{a long text},name=Orchest]{O}
+\end{umlpackage}
+
+
+\end{tikzpicture}
+\caption{MOF M2 layer: In this layer the basic building blocks are defined, as well as the procedures
+for creating the M3 model. Classes are grouped with an Orchestration element which will describe the 
+instantiation workflow. 
+}
+\label{fig:m2}
+\end{figure}
+
+\begin{figure}[h]
+\begin{tikzpicture}
+\begin{umlstate}[name=Bgraph, fill=red!20 ]{Variable Design}
+\umlstateinitial[ x=0, y=0, name=Binit ]
+\umlbasicstate[x=0, y=-2, name=submit]{submit}
+\umlbasicstate[x=0, y=-4, name=identify]{identify}
+\umlbasicstate[x=0, y=-6, name=review]{review}
+\umlbasicstate[x=0, y=-8, name=designate]{designate}
+\end{umlstate}
+\end{tikzpicture}
+\caption{State diagram}
+\label{fig:state}
+\end{figure}
+
+
+The Factory is playing a role which could, in principle, be included as a component of the Base class by describing it as a template, 
+but placing it as a separate object gives greater clarity in defining the relationship to the Event providing configuration information.
+The Event is part of the system modelled, but may be in a very different region of the model. 
+The Factory contains re-usable components.
+
+The role ofthe Factory is to clarify the orchestration of instantiation between MOF layers. The model representation also gives clarity
+about the process of instantiation which will be captured in provenance information in the form of event information and factory logs. 
+
+Factories can be defined to push instances into a layer beneath them, or to pull class elements from above to create an instance in
+the same layer as the factory.
+
+
+The orchestration group (Factory, Event, Interface) may occur at the same MOF level as the Base class or in the MOF layer of the
+instantiated class. In the first instance it provides a structured means of expressing a data-driven approach to populating
+a MOF layer, in the latter approach in allows dynamic generation of classes within a MOF layer through orchestration of
+the instantiation of classes from above. 
+
+We will distinguish between these types of factories with two UML stereotypes: 
+\begin{itemize}
+\item {\bf design}: a factory in layer $n$ which orchestrates the instantiation of classes defined in the same layer to generate elements in layer $n+1$. This process may involve a degree of creative design work.
+\item {\bf process}: a factory in layer $n$ which orchestrates the instantiation of elements in the same layer from classes defined in the $n-1$ layer. This process will generally be automated. 
+\end{itemize}
+
+
+M2 Event
+
+The Actors at the M2 level are the design architects.
+
+The primary regions:
+
+\subsection{ICT Meta Data Registry}
+
+An implementation of an ISO 19119 meta-data registry, including model representations of the harmonization and submitting actors.
+
+\subsubsection{Base Attribute values}
+
+\begin{itemize}
+\item {\it standard}: ISO 19119
+\item {\it compliance_level}: PARTIAL
+\item {\it profile}: [[work in progess]]
+\item {\it instantiation_product_decsription}: Instances of ICT Meta Data Registry constitute a full model of the class elements of a registry
+in the language specified in product_language and conforming to \cd{profile} and \cd{standard};
+\item {\it instantiation_description}: Instantiation requires specification of (1) a modelling approach, (2) design requirements and (3) construction of a model representation. 
+\end{itemize}
+
+\subsection{ICT Software Libraries}
+
+A collection of software libraries, constituting a (potentially distributed) collection of packages which support
+the maintenance and use of the registry.
+
+\subsubsection{Base Attribute values}
+
+\begin{itemize}
+\item {\it standard}: ??? (should be something)
+\item {\it profile}: [[in progress]]
+\item {\it instantiation_product_decsription}: Instances of ICT Software-Libraries consistute models of the software. The modeling language
+used and any profiling can be specified at instantiation.
+\item {\it instantiation_description}: Instantiation requires specification of (1) a modelling language and approach, (2) design requirements and (3) construction of a model representation. 
+\end{itemize}
+
+\subsection{ICT Documents}
+
+A collection of documents, including design documents, technical notes, and procedural records.
+
+\subsubsection{Base Attribute values}
+
+\begin{itemize}
+\item {\it standard}: ??? (should be something)
+\item {\it profile}: defines a profile of \cd{standard} which this registry conforms to;
+\item {\it instantiation_product_decsription}: Instances of ICT Documents model a collection of documents which are contained in a common
+governance scope.
+\item {\it instantiation_description}: Instantiation requires specification of (1) design requirements and (2) construction of a model representation. 
+\end{itemize}
+
+\subsection{ORG Operation}
+
+Defines the organistation responsible for operation of the registry.
+
+\subsubsection{Base Attribute values}
+
+\begin{itemize}
+\item {\it standard}: ??? (should be something)
+\item {\it profile}: defines a profile of \cd{standard} which this registry conforms to;
+\item {\it instantiation_product_decsription}: Instances of ICT Documents model a collection of documents which are contained in a common
+governance scope.
+\item {\it instantiation_description}: Instantiation requires specification of (1) design requirements and (2) construction of a model representation. 
+\end{itemize}
+
+
+
+
 
 
 \fi
