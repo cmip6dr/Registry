@@ -14,22 +14,29 @@ reached only as far as he facilitating consortia. {\bf In order to improve the c
 
 \begin{tikzpicture}
 
+## cribbed from http://latexcolor.com/
+\definecolor{fulvous}{rgb}{0.86, 0.52, 0.0}
+\node[shape=alice, minimum size=2cm] at (0,2) {};
+\node[shape=businessman, minimum size=2cm] at (3,2) {};
+\node[shape=alicetwo, hair=fulvous, shirt=red!50!white, minimum size=2cm,skin=brown!20!white] at (6,2) {};
+\node[shape=bob, minimum size=2cm] at (9,2) {};
+
 \begin{umlsystem}[x=4, fill=red!10]{The data request registry}
 %%\umlusecase [empty,x=-4.0cm,y=0cm,fill=,draw=,opacity=0] {}
-\umlusecase [y=0.5cm, name=AA] {Registry}
-\umlusecase [x=-0.5cm,y=-1.5cm, name=A, width=2cm] {Register Collection}
-\umlusecase [x=-0.5cm,y=-3.5cm, name=B] {Register}
-\umlusecase [x=-0.5cm,y=-5.5cm, name=ri, width=2cm] {Registered Item}
-\umlusecase [x=2.8cm,y=-0.5cm, name=ryspec, width=1.8cm] {Register Framework}
-\umlusecase [x=2.8cm,y=-2.5cm, name=regspec, width=1.8cm] {Register Specs}
-\umlusecase [x=2.8cm,y=-4.5cm, name=rispec, width=1.8cm] {Item Specs}
+\umlusecase [x=0.0cm, y=-1.0cm, name=AA] {Registry}
+\umlusecase [x=-0.5cm,y=-3.5cm, name=A, width=2cm] {Register Collection}
+\umlusecase [x=-0.5cm,y=-6.0cm, name=B] {Register}
+\umlusecase [x=-0.5cm,y=-8.5cm, name=ri, width=2cm] {Registered Item}
+\umlusecase [x=2.3cm,y=-2.25cm, name=ryspec, width=1.8cm] {Register Framework}
+\umlusecase [x=2.3cm,y=-4.75cm, name=regspec, width=1.8cm] {Register Specs}
+\umlusecase [x=2.3cm,y=-7.25cm, name=rispec, width=1.8cm] {Item Specs}
 \end{umlsystem}
 
-\umlactor[x=\xactorw+.5cm, y=2.5cm]{registrar}
-\umlactor[x=\xactorw, y=.5cm]{oversight}
-\umlactor[x=\xactorw, y=-1.5cm]{chief editor}
-\umlactor[x=\xactorw, y=-3.5cm]{wg}
-\umlactor[x=\xactorw, y=-5.5cm]{editor}
+\umlactor[x=\xactorw, y=-1.0cm]{registrar}
+\umlactor[x=\xactorw, y=-3.0cm]{chief editor}
+\umlactor[x=\xactorw, y=-5.0cm]{steward}
+\umlactor[x=\xactorw, y=-7.0cm]{submitter}
+\umlactor[x=\xactorw, y=-9.0cm]{editor}
 
 %% not getting definition done ...
 \umldep[stereo style=stereotype highlight cyan, anchor stereo=east, pos stereo=0.25]{AA}{A}
@@ -39,11 +46,11 @@ reached only as far as he facilitating consortia. {\bf In order to improve the c
 \umldep[stereo style=stereotype highlight cyan, anchor stereo=west, pos stereo=0.25]{A}{regspec}
 \umldep[stereo style=stereotype highlight cyan, anchor stereo=west, pos stereo=0.25]{B}{rispec}
 
-\umlactor[x=\xactore-0.5cm,y=2.5cm]{programme}
-\umlactor[x=\xactore,y=-1cm]{advisory}
-\umlactor[x=\xactore,y=-3.3cm]{devel}
-\umlactor[x=\xactore+0.8cm,y=-4.5cm]{specialist}
-\umlactor[x=\xactore,y=-6cm]{user}
+\umlactor[x=\xactore,y=-1.0cm]{programme}
+\umlactor[x=\xactore,y=-3cm]{advisory}
+\umlactor[x=\xactore,y=-5.0cm]{devel}
+\umlactor[x=\xactore,y=-7.0cm,name={specialist xx}]{specialist}
+\umlactor[x=\xactore,y=-9cm]{user}
 
 %% would be nice to place stereotype above line ... probably need to change anchor .... occurs dozens of times in style file
 %% should be straight mapping of code used for "stereo pos"
@@ -52,18 +59,19 @@ reached only as far as he facilitating consortia. {\bf In order to improve the c
 
 \umlassoc[stereo style=stereotype highlight, draw=black!50, very thick, arg1=operate,stereo=own]{registrar}{AA}
 \umlassoc[stereo style=stereotype highlight, arg1=govern,stereo=coordinate]{chief editor}{A}
-\umlassoc[stereo style=stereotype highlight, arg1=define,stereo=ipr]{editor}{ri}
-\umlassoc[stereo style=stereotype highlight, arg1=steward, stereo=review]{wg}{B}
+\umlassoc[stereo style=stereotype highlight, stereo=submit]{submitter}{ri}
+\umlassoc[stereo style=stereotype highlight, arg1=define,stereo=publish]{editor}{ri}
+\umlassoc[stereo style=stereotype highlight, stereo=review]{steward}{A}
 
 \umlassoc[stereo style=stereotype highlight, stereo=exploit, anchor stereo=south]{devel}{regspec}
 \umlassoc[stereo style=stereotype highlight, stereo=exploit]{devel}{rispec}
 \umlassoc[stereo style=stereotype highlight, stereo=exploit]{user}{ri}
-\umlassoc[stereo style=stereotype highlight, stereo=harmonize, anchor stereo=south]{specialist}{ri}
+\umlassoc[stereo style=stereotype highlight, stereo=harmonize, anchor stereo=north]{specialist}{ri}
 
-\umlimpl[stereo style=stereotype highlight orange]{rispec}{ri}
-\umlimpl[stereo style=stereotype highlight orange]{regspec}{B}
-\umlimpl[stereo style=stereotype highlight orange]{regspec}{rispec}
-\umlimpl[stereo style=stereotype highlight orange]{ryspec}{regspec}
+\umlimpl[stereo style=stereotype highlight orange]{ri}{rispec}
+\umlimpl[stereo style=stereotype highlight orange]{B}{regspec}
+\umlimpl[stereo style=stereotype highlight orange]{rispec}{regspec}
+\umlimpl[stereo style=stereotype highlight orange]{regspec}{ryspec}
 
 
 \end{tikzpicture}
@@ -80,7 +88,7 @@ Table \ref{tab:act} below
 \begin{itemize}
 \item {\bf registrar} :  Responsible for the operation of the \cd{registry};
 \item {\bf chief editor} : 
-\item {\bf wg} : The working groups, appointed by the registrar, provide domain specific technical guidance. 
+\item {\bf steward} : The working groups, appointed by the registrar, provide domain specific technical guidance. 
 \item {\bf editor} : Responsible for the management of the items within a register, ensuring compliance in content and procedures; 
 \item {\bf devel} : Developers depend on the structured metadata which facilitates the automated management of downstream products generated by users of the DREQ; they work with other groups to ensure that the information contained in the structured metadata supports the workflows needed to execute planned activities;
 \item {\bf specialist} : The specialist provides domain expertese to ensure that scientific definitions embedded in the metadata are clear and appropriate;  
@@ -95,7 +103,7 @@ Actor & Description & \cr
 registrar & Responsible for the operation of the \cd{registry} & \cr
 oversight & & \cr
 chief editor & & \cr
-wg & The working groups, appointed by the registrar, provide domain specific technical guidance. &  \cr
+steward & The working groups, appointed by the registrar, provide domain specific technical guidance. &  \cr
 editor & Responsible for the management of the items within a register, ensuring compliance in content and procedures. & \cr
 programme & & \cr
 advisory & & \cr
