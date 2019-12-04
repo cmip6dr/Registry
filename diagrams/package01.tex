@@ -28,7 +28,18 @@
 %% beging document is embedded in article-header
 %%\begin{document}
 
-\section{Introduction}\label{sec:intro}
+
+
+Using MOF: https://link.springer.com/chapter/10.1007/978-3-319-67271-7_7 (need to buy/order).
+Model Driven Architecture
+
+\verb+http://www.geocities.ws/pravin_suman/Resources/00-11-05.pdf+
+
+A meta-model for the analysis and design of organizations in multi-agent systems https://ieeexplore.ieee.org/abstract/document/699041,
+
+https://www.semanticscholar.org/paper/Aalaadin\%3A-A-Meta-Model-for-the-Analysis-and-Design-Ferber-Gutknecht/db9a005b8dfdcd98482e27a6faf45c4d8fca50f2 -- appears to describe an information management system .. 
+
+\section{Introduction}
 
 The wide exchange of climate model output underpins a growing awareness of the severe challenges of accelerating climate change.
 This paper considers one aspect of the standardisation work which is needed to ensure the timely distribution of
@@ -37,7 +48,7 @@ institutions. The specifications include definitions of parameters, technical me
 the parameter.
 
 The global policy framework for responding to the multiple threats and challenges of climate change
-draws on regular assessments from the Intergovernmental Panel on Climate Change (IPCC) providing an overview of the state of knowledge
+draws on regular assessments from the Intergovernmental Panel on Climate Change (IPCC) providing an overview of the state of knowledge, where consensus can be found\footnote{this is a significant and substantial caveat}, 
 concerning the science of climate change. Projections of possible future outcomes from climate models based
 on a range of different social and industrial actions provide the foundation for the assessment of the impact of future climate variability.
 The climate projections come from multiple independent research institutions, in a global activity known as the
@@ -59,20 +70,92 @@ Setting the standards to encompass this scope in the context of an extensive com
 brings many organisational and technical challenges [[specify]].
 
 This paper is not a formal plan for delivering services with agreement among the parties concerned: it is a provider perspective
-on options for improving the accuracy and efficiency of the processes around the 
+on options for improving the accuracy and efficiency of the processes that govern the development and the maintenance 
+of the relevant metadata.
 
 The CMIP6 Data Request \citep[DREQ][]{juckes2019disc} provides detailed technical specifications of thousands of
 climate parameters which are being
 archived by climate modelling centres around the world as part of a global effort to update the set of reference
 climate simulations which guide global policy on climate change mitigation and adaptation. 
 
+MOF formalises the process of developing a conceptual outline into a functioning system into discrete steps and
+defines a modeling language to express the procedures for moving the design up to the next level.
+It is a model-based approach, so that the definition of the modeling language preceeds, in the MOF-sequence, the
+definition of key organisational or functional units. In practise, we are building many parts of the model around
+pre-existing structures, so that the model serves as a formalised representation of an existing system rather than a design specification. 
+
+The general scope of the different layers has been introduced in DREQ, where M2-0 are described as the  
+framework, configuration and content respectively.
+The more formal approach described here introduces a clearer
+demarkation of the layers and enables a structured extension to encompass an improved 
+representation of the organisational structures which surround the technical components of the metadata registry.
+
+\begin{table*}[tb]
+        \centering
+        \caption{MOF}
+        \label{tab:mof}
+        \begin{tabular}{|c|l|p{5cm}|p{5cm}|}
+\hline
+3 & Concepts & \multicolumn{2}{c}{MOF Profile, Layers, Modelling languages} \cr
+\hline
+2 & Framework & Configuration Schema, Base Classes, Package Outlines, Profile of MDR &  Profile of EIC \cr
+\hline
+1 & Configuration & Registry Schema, Configuration, Sample, Python Classes & Organisational Elements, Decision Points, Specifications of Roles \cr
+\hline
+0 & Content & & \cr
+\hline
+\end{tabular}
+\end{table*}
+
+         
+
+
+The layers here will be:
+\begin{itemize}
+\item M3: Conceptual outline and design process
+\item M2: Prinicipal modeling units; Specify the language and profile to be used for [[M1]] 
+\item M1: Organisational units and object classes for digital information and software objects;
+\item M0: The database of metadata records and network of scientists maintaining them;
+\end{itemize}
+
+Example:
+\begin{itemize}
+\item M3: 
+\item M2: \cd{mdr.dtypes.title.description=A string subject to punctuation and capitalisation rules specied in the MDR style guide}
+\item M1: \cd{CMIP6.Amon:title.type=mdr:title}
+\item M0: \cd{CMIP6.Amon.tas.title=Air Temperature}
+\end{itemize}
+
+MOF X: Design process
+MOF 
+
+\subsection{Reflection}
+
+In the object modeling community, "reflection" refers to the ability of an object to contain a description of itself. For an example, a library may be reflective if it contains a book describing the construction and maintenance of the building and its contents. 
+
+We follow MOF in creating a naming scheme for model elements, and this naming scheme will be used to embed the model
+in the metadata registry which is to be implemented as the final stage of the work.
+
+We adopt the common notation of a double-colon for scope resolution and a period for attached entities. Thus \cd{OBJECT::DESCENDANT} refers to an entity within the scope of \cd{OBJECT}, and this scope is interpreted as consisting of all entities which are instantiated from \cd{OBJECT} or [[associations?]].
+
+\cd{OBJECT.CHILD} refers to an attribute or method which is defined to be part of \cd{OBJECT}.
+
+[[ is it necessary to create a container for "universal" attributes, so that there is no conflict, e.g. \cd{OBJECT.__global__.parent}? Is double underscore allowed?
+
+The reflective elements of an \cd{OBJECT} will be given by a "parent" and an "origin". The "parent" is the classifier and the "origin"
+is the context in which the classification took place, which should be an instance of a MOF Factory. Generally, the creation of an object
+requires that configuration information be added to the parent. The "origin" object should provide information around this process.
+
+
+\verb+ ID  = "DRM" :: PACKAGE [ ATTRIBUTE | | :: CLASS [ ATTRIBUTE | ] ] +
+
+E.g. \verb+DRM::register.var.tas::title = \+
+
 \subsection{Framing the issues}
 
 A requested variable might be the monthly mean near-surface temperature, evaluated on a global grid for every month through the duration of a simulation. This parameter is defined by a title, a description, specification of units of measure, but also by technical data specifying that the quantity is represents air temperature at about 2m above the ground, information about which numerical experiments are to be measured (almost all for this variable, but other variables are only archived from a small selection of experiments). In all, there are over a hundred technical attributes used to define a variable.
 
-
 In this paper we are not concerned with the definitions of the physical parameters, or even with the definitions of the attributes, but with the systems used to maintain and curate those definitions.
-
 
 The definitions of these attributes have evolved over several cycles of CMIP. Many of the definitions are clear and well understood, but there are ambiguities and many areas of ongoing discussion regarding the best approach to dealing with new requirements which derive from the ever expanding physical complexity of the climate models and the following analysis. 
 
@@ -177,6 +260,7 @@ and the organisations around it as seen through the language of MDR and EIC. MOF
 These three standards are all about standardising modeling approaches for describing implementations (or descibing modelling processes in the case
 of MOF) rather than standardised implementations.
 
+
 \begin{figure}[h]
 \begin{tikzpicture}
 \umlsimpleclass[sc1,y=0,type={mdr}]{Registry}
@@ -190,6 +274,26 @@ of MOF) rather than standardised implementations.
 \end{tikzpicture}
 \caption{Top level relationship between Registry and Organisation. In a sense the Registry contains the Organisation as a modeled concept and the Organisation contains the Registry as a defined function. More precisely, the Registry contains an abstraction of the Organisation.}
 \label{fig:mdr-eic}
+\end{figure}
+
+\begin{figure}[h]
+\begin{tikzpicture}
+\umlsimpleclass[sc1,y=0,type={collection}]{IconicBuildings}
+\umlsimpleclass[sc1,y=0,x=8,type={instance}]{EmpireState}
+\umlsimpleclass[sc1,y=-3,x=0,type={design}]{Quantity}
+\umlsimpleclass[sc1,y=-3,x=8,type={instance}]{Air Temperature}
+\umlsimpleclass[sc1,y=-6,x=0,type={require}]{Work Group}
+\umlsimpleclass[sc1,y=-6,x=8,type={instance}]{Harmonisation Team}
+
+\umlinherit[link1,stereo={admit}]{EmpireState}{IconicBuildings}
+\umlinherit[link1,stereo={create}]{Air Temperature}{Quantity}
+\umlinherit[link1,stereo={co-develop}]{Harmonisation Team}{Work Group}
+%%\umlcompo[link1,arg2={Organisational Element}, mult2=*]{Registry}{Register}
+%%\umldep[link1, % arg1=mdr, arg2=eic,
+            stereo={abstraction}]{Register}{Organisation}
+\end{tikzpicture}
+\caption{}
+\label{fig:mof-inst}
 \end{figure}
 
 
@@ -589,7 +693,7 @@ A MOF Factory describes the activity of instantiating a class.
 \umlsimpleclass[sc1,x=-4.2,y=0]{Interface}
 %%\umlclass[sc1,x=-5.,y=-4.5]{Factory}{\rule{0pt}{1.3cm}}{\rule{0pt}{1.3cm}}
 \umlsimpleclass[sc1,x=-4.2,y=-1.8]{Factory}
-\umlsimpleclass[sc1,x=1.5,y=0]{Event}
+\umlclass[sc1,x=1.5,y=0]{Event}{}{yield()}
 
 \umlsimpleclass[sc1,x=3.2,y=-3.6cm]{Class}
 
@@ -622,7 +726,9 @@ interface)(need to take care on interpretation of multiplicity ... this is a dia
 Could have multiple base classes .... each event triggers use of one classifier ....)]].  An Event provides information via an Interface to trigger the creation of a Class element from a Base element. 
 In this formulation, a Class element has links both to the parent class through the inheritance relation, and to the factory which
 describes the process. The Event provides the link to the organisational unit and contains information about the time,
-context and contributors to the input that triggers the creation of the Class.}
+context and contributors to the input that triggers the creation of the Class. In this example, the full specification
+of the yield method woould be `Event.yield(service::agent::createElement,service::classifier)`.
+[[{\bf NOT QUITE RIGHT HERE ... IS IT THE EVENT THAT HAS THE yield METHOD, OR THE HOST ORGANISATION??}]]}
 \label{fig:factory}
 \end{figure}
 
@@ -715,7 +821,47 @@ M2 Event
 
 The Actors at the M2 level are the design architects.
 
+\subsection{Shared Elements and External Extensions}
+
+The process of setting standard is, by its nature, an open one that entrains contributions from many directions. 
+
+Some organisational elements are partly or completely defined by external bodies. In this case, the relevant registry model element
+is a abstracted representation of the organisational element rather than a structural specification. 
+
+\subsection{e3-Value}
+
+The multiple interactions which are required to establish a registry metadata item can be compared, in modelling terms, with the 
+transactions in an e-Business purchase which will involve, at least, a buyer, seller, two banks and a carrier to deliver the item \citep[e.g.][]{huemer2008}. In the registry case, we have a submitter, an authorisation committee, and editor, and multiple technical standards bodies (playing the role of banks here, as they are liable to provide absolute responses based on rigid procedures). 
+In simple cases the submitter places a request and gets a simple response, but in complex cases the multiple channels of communication can lead to confusion. 
+
+The e3-value model is designed to avoid confusion and ensure due process in financial transactions. The model discussed here aims at
+ensuring efficient handling of submitted items.
+
+The distributed nature of the negotiation which leads to the eventual registration of a metadata item needs to be taken into account
+in the provenance model. 
+
+
+See also the UNECE Reference Data Model for "buy-ship-pay" transactions \citep{bsprdm}. In the present case we talk of 
+"submit-review-confirm" transactions, which map across to "identify-specify-register" status codes in the MDR standard.
+
+We wish to establish, as in \cite{bsprdm}, a clear mapping between a user-orientated description of the process as a whole and the, at times
+opaque, individual processes in the discrete actors.
+
+\subsection{Creativity Within the Process}
+
+The MOF architecture is generally used to express a process that can be put into effect by agents which are external to the model
+(design engineers, an assembly plant, etc). Where one model elements invokes another, the MOF syntax demands that the full
+arguments be specified in the active element. 
+
+In using the model to represent key elements of the organisation of harmonisation and management teams we bring some creative elements
+into the model. In order to represent the potential of some model elements to play a creative role in the organisation, and
+to give due visibility to this critical aspect of registry management and registry item provenance, we define a "yield" method,
+which calls a specified factory method with arguments which are determined by the containing element.
+
+OR: The yield method is assigned to events which bring together the appropriate capabilities.
+
 The primary regions:
+
 
 \subsection{ICT Meta Data Registry}
 
