@@ -1,5 +1,5 @@
 %\documentclass[review]{elsarticle}
-\documentclass[review]{elsarticle}
+\documentclass[]{elsarticle}
 \usepackage{underscore}
 \usepackage{tikz}
 \usepackage{tikz-uml}
@@ -27,6 +27,13 @@
 
 %% beging document is embedded in article-header
 %%\begin{document}
+
+Lopez-Lorca, A. A., Beydoun, G., Valencia-Garcia, R., \& Martinez-
+Bejar, R. (2016). Supporting agent oriented requirement analysis
+with ontologies. International Journal of Human-Computer
+Studies, 87(2016), 20–37.
+%%
+%% referenced in "Agent-based ...." as source of ontologies
 
 
 
@@ -78,150 +85,7 @@ climate parameters which are being
 archived by climate modelling centres around the world as part of a global effort to update the set of reference
 climate simulations which guide global policy on climate change mitigation and adaptation. 
 
-MOF formalises the process of developing a conceptual outline into a functioning system into discrete steps and
-defines a modeling language to express the procedures for moving the design up to the next level.
-It is a model-based approach, so that the definition of the modeling language preceeds, in the MOF-sequence, the
-definition of key organisational or functional units. In practise, we are building many parts of the model around
-pre-existing structures, so that the model serves as a formalised representation of an existing system rather than a design specification. 
-
-The general scope of the different layers has been introduced in DREQ, where M2-0 are described as the  
-framework, configuration and content respectively.
-The more formal approach described here introduces a clearer
-demarkation of the layers and enables a structured extension to encompass an improved 
-representation of the organisational structures which surround the technical components of the metadata registry.
-
-\begin{table*}[tb]
-        \centering
-        \caption{MOF}
-        \label{tab:mof}
-        \begin{tabular}{|c|l|p{5cm}|p{5cm}|}
-\hline
-3 & Concepts & \multicolumn{2}{c}{MOF Profile, Layers, Modelling languages} \cr
-\hline
-2 & Framework & Configuration Schema, Base Classes, Package Outlines, Profile of MDR &  Profile of EIC \cr
-\hline
-1 & Configuration & Registry Schema, Configuration, Sample, Python Classes & Organisational Elements, Decision Points, Specifications of Roles \cr
-\hline
-0 & Content & & \cr
-\hline
-\end{tabular}
-\end{table*}
-
-         
-
-
-The layers here will be:
-\begin{itemize}
-\item M3: Conceptual outline and design process
-\item M2: Prinicipal modeling units; Specify the language and profile to be used for [[M1]] 
-\item M1: Organisational units and object classes for digital information and software objects;
-\item M0: The database of metadata records and network of scientists maintaining them;
-\end{itemize}
-
-Example:
-\begin{itemize}
-\item M3: 
-\item M2: \cd{mdr.dtypes.title.description=A string subject to punctuation and capitalisation rules specied in the MDR style guide}
-\item M1: \cd{CMIP6.Amon:title.type=mdr:title}
-\item M0: \cd{CMIP6.Amon.tas.title=Air Temperature}
-\end{itemize}
-
-MOF X: Design process
-MOF 
-
-\subsection{Reflection}
-
-In the object modeling community, "reflection" refers to the ability of an object to contain a description of itself. For an example, a library may be reflective if it contains a book describing the construction and maintenance of the building and its contents. 
-
-We follow MOF in creating a naming scheme for model elements, and this naming scheme will be used to embed the model
-in the metadata registry which is to be implemented as the final stage of the work.
-
-We adopt the common notation of a double-colon for scope resolution and a period for attached entities. Thus \cd{OBJECT::DESCENDANT} refers to an entity within the scope of \cd{OBJECT}, and this scope is interpreted as consisting of all entities which are instantiated from \cd{OBJECT} or [[associations?]].
-
-\cd{OBJECT.CHILD} refers to an attribute or method which is defined to be part of \cd{OBJECT}.
-
-[[ is it necessary to create a container for "universal" attributes, so that there is no conflict, e.g. \cd{OBJECT.__global__.parent}? Is double underscore allowed?
-
-The reflective elements of an \cd{OBJECT} will be given by a "parent" and an "origin". The "parent" is the classifier and the "origin"
-is the context in which the classification took place, which should be an instance of a MOF Factory. Generally, the creation of an object
-requires that configuration information be added to the parent. The "origin" object should provide information around this process.
-
-
-\verb+ ID  = "DRM" :: PACKAGE [ ATTRIBUTE | | :: CLASS [ ATTRIBUTE | ] ] +
-
-E.g. \verb+DRM::register.var.tas::title = \+
-
-\subsection{Framing the issues}
-
-A requested variable might be the monthly mean near-surface temperature, evaluated on a global grid for every month through the duration of a simulation. This parameter is defined by a title, a description, specification of units of measure, but also by technical data specifying that the quantity is represents air temperature at about 2m above the ground, information about which numerical experiments are to be measured (almost all for this variable, but other variables are only archived from a small selection of experiments). In all, there are over a hundred technical attributes used to define a variable.
-
-In this paper we are not concerned with the definitions of the physical parameters, or even with the definitions of the attributes, but with the systems used to maintain and curate those definitions.
-
-The definitions of these attributes have evolved over several cycles of CMIP. Many of the definitions are clear and well understood, but there are ambiguities and many areas of ongoing discussion regarding the best approach to dealing with new requirements which derive from the ever expanding physical complexity of the climate models and the following analysis. 
-
-\subsection{More about the data request}
-
-The DREQ is part of a range of infrastructure projects \citep{Balaji2018}. See also ES-DOC \citep{pascoe2019disc}.
-
-The DREQ is built on domain standards which have evolved with the CMIP project. In this paper we explore the
-feasibility and potential benefits associated with expressing these specifications through ISO standards. 
-
-The work cuts across a range of standards which are introduced in Section \ref{sec:iso} below, covering aspects of geospatial referencing, physical quantities, and the organisation and processes inherent in running a registry of metadata specifications. 
-
-The expected benefits will be both in terms of inter-operability with other standards which deal with environmental information and also in terms of learning from and exploiting practises which are embedded in the ISO standards. 
-
-We look at three principle areas of the activity.
-
-Firstly, the description the overall orangisational structure. 
-
-Secondly, community interaction which involves a broad and rapidly growing network,
-with participants from hundreds of institutions and dozens of countries. The structure has evolved organically, always pressured by the rapid 
-expansion of the global climate modelling activity and the societal pressures associated with growing awareness of the
-risks posed by anthropogenic climate change. One of the consequences of the broad and loosely
-coordinated collaboration is that names of some contributors are only recorded in email chains or online discussion.
-
-Finally, the Information Technology.
-The DREQ includes thousands of different quantities, 
-all of which are defined in and registered in the CF Convention. In order to increase interoperability with
-other communities this paper develops a mapping from the terms in the data request to ISO standard quantities.
-We we also consider the definition of data types, including specification
-of multi-dimensional arrays which combine geospatial coordinates with additional domain specific dimensions.
-
-\begin{figure}[h]
-\begin{tikzpicture}[
-  thick,
-  every pin edge/.style={<-},
-  >=latex,
-  declare function/.list={
-    outerR=2.0;,
-    innerR=1.6;,
-    angleofNode(\a)=\a/5*360-90;},
-  std/.style={rounded rectangle, align=center, fill=blue!40, draw=cyan},
-  chpt/.style={rectangle, minimum width=2.5cm, align=center, fill=green!40, draw=cyan}
-  ]
-
-\node [circle through=(0:outerR)] (c) {};
-\node [circle through=(0:innerR)] (d) {};
-
-%%\node[draw,chpt,anchor=90] at (d.40) {Organisation};
-%%\node[draw,chpt,anchor=210] at (d.160) {IT};
-%%\node[draw,chpt,anchor=330] at (d.270) {Community};
-\node[draw,chpt] at (d.40) {Organisation};
-\node[draw,chpt] at (d.170) {IT};
-\node[draw,chpt] at (d.280) {Community};
-
-\node[draw,std,anchor=angleofNode(2.5)] at (c.{angleofNode(0)}) {Design\\Meta-modeling\\framework\\19508};
-\node[draw,std,anchor=angleofNode(3.5)] at (c.{angleofNode(1)}) {Organisation\\People, assets\\and decisisons\\38500};
-\node[draw,std,anchor=angleofNode(4.5)] at (c.{angleofNode(2)}) {Registers\\Data Elements,\\Registered Items,\\Status Codes\\11179};
-\node[draw,std,anchor=angleofNode(0.8)] at (c.{angleofNode(3)}) {Geospatial\\Space and Time\\19115, 19135};
-\node[draw,std,anchor=angleofNode(1.5)] at (c.{angleofNode(4)}) {Quantities and Units\\Properties and Measures\\80000};
-
-\end{tikzpicture}
-\caption{The five core standards explored in this paper. The scope of these five standards overlaps in many areas, but
-there do not appear to be any inconsistencies in the application discussed here.}
-\label{fig:pentad}
-\end{figure}
-
+\section{Background}\label{sec:bg}
 
 \subsection{Exploiting the International Standards Organisation [ISO]}\label{sec:iso}
 
@@ -230,8 +94,6 @@ strength of the ISO standards. This is of particular relevance in the context of
 constructed through wide community engagement. Different categories of technical information require different
 forms of approval and harmonisation. This paper aims to clarify the procedures, roles and responsibilities
 through the ISO framework.
-
-
 
 The main pillars of the work are the standards listed here: 
 
@@ -296,15 +158,249 @@ of MOF) rather than standardised implementations.
 \label{fig:mof-inst}
 \end{figure}
 
-
-
 [[literature survey needed]]
 
-\cite{sinaci2013} describes the ise of ISO 11179 to facilitate exchange across clinical work and care domains.
+\cite{sinaci2013} describes the use of ISO 11179 to facilitate exchange across clinical work and care domains.
 5 odp viewpoints
 
 \cite{mcclatchkey2018} discusses the use of a MOF layered metamodel to design a systematic approach to collecting provenance information in a distributed software system. Here we are looking at a somewhat different problem of capturing provenance information arising from multiple interacting science teams and institutions. From a modeling perspective, there is some similarity. Setting out the requirements for provenance collection clearly in the upper layers of the m-cake provides a systematic framework for embedding the functionality consistently in a range of different artefacts at the workflow implementation layer. 
 
+\subsection{Meta Object Facility (MOF)}\label{sec:mof}
+
+The Meta Object Facility\cite{iso19508} (MOF) of the Object Modeling Group (OMG) formalises the process of developing a conceptual
+outline into a functioning system into discrete steps and
+defines a modeling language to express the procedures for moving the design up to the next level.
+It is a model-based approach, so that the definition of the modeling language preceeds, in the MOF-sequence, the
+definition of key organisational or functional units. In practise, we are building many parts of the model around
+pre-existing structures, so that the model serves as a formalised representation of an existing system rather than a design specification. 
+
+The first stage of implementing MOF is define the number and purpose of the MOF layers. A four layer approach is commonly used, 
+though this is not obligatory. Within the four layer approach, there are different characterisations of the layers for
+different kinds of modeling. In engineering, for instance, the lowest level may refer to physical objects which have been created.
+This article [add ref], uses four layers characterised as
+``real world'', ``model'', ``meta-model'', ``MOF''.
+%http://www.jot.fm/issues/issue_2006_11/article4/article4.pdf
+In the software engineering domain, on the other hand, the lowest level is usually described as the application layer.
+This article [add ref] has the following four layers:
+``application'', ``Semantic'', ``Object'', ``Syntax''. [http://infolab.stanford.edu/~melnik/pub/sw00/]
+%% A Layered Approach to Information Modeling and Interoperability on the Web 2000-30.pdf
+
+\subsubsection{The MOF Profile}
+
+MOF provides a flexible framework for modeling, even allowing flexibility around the number of layers. OMG2014 suggest two layers for
+software design, three for a database. Here we wish to describe software, database, and also the surrounding organisation and interactions.
+The objective is to construct executable models, but the concept of "execution" is broad enough to include the usage of "executing a project".
+The apex layer of the MOF stack should describe the four layers.
+
+Hence, we adopt four layers. In many introductions to MOF, the four layers are identified as Real World, Model, Meta-Model and Meta-meta-model or MOF layer.
+%http://www.jot.fm/issues/issue_2006_11/article4/article4.pdf
+Real World -- model -- meta-model -- MOF; model layers --- all except M0, expressible in XMI. 
+\cite{djuric2006}
+For instance, if applied to warehouse construction, the meta-model might be a statement of technical requirements given to a design team,
+the model would be the design document produced by the design team,
+and the final stage would be a construction company comissioned to build the warehouse.
+
+In software engineering projects it is common practice to identify four MOF layesr as representing:
+Application - Semantic - Object - Syntax [http://infolab.stanford.edu/~melnik/pub/sw00/]
+%% A Layered Approach to Information Modeling and Interoperability on the Web 2000-30.pdf -- grey lit ...
+Here, the software application stands in for the "real world" object, and the semantic description of the software is considered
+as a "model". 
+
+In both these MOF Profiles, the people responsible for implementing the transitions between one model layer and the next are,
+intentionally, outside the model. 
+
+\cite{inan2018} model a disaster response system which brings some of the people, called "agents" in this context, into the
+model.
+They follow the common terminology, referring to M0 as "real world" and M1 as "model" layers, but, in an interesting twist,
+their MOF implementation places
+a number of active agents playing managerial and coordination roles in the "model" layer.
+The M0 layer consists of elements which are engaging directly with the physical aspects of disaster response.
+
+For the meta-data registry application considered here it is important to represent the agents responsible for
+the creation of metadata elements, and hence we wish to include the agents in the model and will follow this aspect of Inan et al.
+
+We will also be representing active agents in the M1 layer, and even in the M2 layer. In order to avoid the unfortunate connotation that these are in some way un-real, we introduce new terminology for the layers:
+Delivery -- Design -- Requirements -- Concept
+
+\cite{inan2018} Inan et al.\ consider M0 as the "real world" layer, M1 as the model layer, and M2 as meta-model.
+In their agent-based approach, there are, nevertheless agents and goals defined in the model layer.
+The goals are abstract or managerial in nature, rather than relating to specific problems.
+
+The Delivery layer includes the organisational structures making decisions about the final products in
+the metadata registry, which are the registered metadata items describing environmental quantities.
+
+\subsubsection{MOF Layers and Enterprise Integration Phases}
+
+EIF describes a seven enterprise phases which can be aligned with the MOF layers. Domain Identification and Concept Definition will both be covered by the Concept layer. Requirements Definition will, naturally, be in the Requirements layer. Design specification and implementation
+description will be captured in the design layer, with the functional design elements specified as classes and the implementation rules
+defined through MOF Factory elements.
+
+The use of Factory elements to represent implementation rules allow the model to be responsive, rather than prescriptive. That is, the implementation decisions are taken by the agents working within the design and implementation elements of the model.
+This allows the model to represent community groups which are critical to the process of establishing standards without prescribing 
+structures which constrain them. The model does prescribe some requirements to enable transparency of decision making.
+
+
+
+\begin{table*}[tb]
+        \centering
+        \caption{MOF}
+        \label{tab:mof}
+        \begin{tabular}{|c|l|p{5cm}|p{5cm}|}
+\hline
+3 & Concepts & \multicolumn{2}{c}{MOF Profile, Layers, Modelling languages} \cr
+\hline
+2 & Framework & Configuration Schema, Base Classes, Package Outlines, Profile of MDR &  Profile of EIC \cr
+\hline
+1 & Configuration & Registry Schema, Configuration, Sample, Python Classes & Organisational Elements, Decision Points, Specifications of Roles \cr
+\hline
+0 & Content & & \cr
+\hline
+\end{tabular}
+\end{table*}
+
+
+
+The layers here will be:
+\begin{itemize}
+\item M3: Conceptual outline and design process
+\item M2: Prinicipal modeling units; Specify the language and profile to be used for [[M1]] 
+\item M1: Organisational units and object classes for digital information and software objects;
+\item M0: The database of metadata records and network of scientists maintaining them;
+\end{itemize}
+
+Example:
+\begin{itemize}
+\item M3: 
+\item M2: \cd{mdr.dtypes.title.description=A string subject to punctuation and capitalisation rules specied in the MDR style guide}
+\item M1: \cd{CMIP6.Amon:title.type=mdr:title}
+\item M0: \cd{CMIP6.Amon.tas.title=Air Temperature}
+\end{itemize}
+
+MOF X: Design process
+MOF 
+
+\subsection{Reflection}
+
+In the object modeling community, "reflection" refers to the ability of an object to contain a description of itself. For an example, a library may be reflective if it contains a book describing the construction and maintenance of the building and its contents. 
+
+We follow MOF in creating a naming scheme for model elements, and this naming scheme will be used to embed the model
+in the metadata registry which is to be implemented as the final stage of the work.
+
+We adopt the common notation of a double-colon for scope resolution and a period for attached entities. Thus \cd{OBJECT::DESCENDANT} refers to an entity within the scope of \cd{OBJECT}, and this scope is interpreted as consisting of all entities which are instantiated from \cd{OBJECT} or [[associations?]].
+
+\cd{OBJECT.CHILD} refers to an attribute or method which is defined to be part of \cd{OBJECT}.
+
+[[ is it necessary to create a container for "universal" attributes, so that there is no conflict, e.g. \cd{OBJECT.__global__.parent}? Is double underscore allowed?
+
+The reflective elements of an \cd{OBJECT} will be given by a "parent" and an "origin". The "parent" is the classifier and the "origin"
+is the context in which the classification took place, which should be an instance of a MOF Factory. Generally, the creation of an object
+requires that configuration information be added to the parent. The "origin" object should provide information around this process.
+
+
+\verb+ ID  = "DRM" :: PACKAGE [ ATTRIBUTE | | :: CLASS [ ATTRIBUTE | ] ] +
+
+E.g. \verb+DRM::register.var.tas::title = \+
+
+\subsection{Factories, Orchestration and Provenance}
+
+Management of provenance information is a critical part of the devlopment and maintenance of standards. This is a significant challenge here
+because the development work can involve staff from hundreds of institutions working in ad-hoc teams. We wish to capture the contributiomns
+
+\subsection{More about the data request}
+
+The DREQ is part of a range of infrastructure projects \citep{Balaji2018}. See also ES-DOC \citep{pascoe2019disc}.
+
+The current practise is that the delivery layer includes, in effect, a model in a domain specific syntax. That is, the specifications
+for a data variable can be considered as defining a UML class which is instantiated to create data files.
+
+In the language of this study, the factory which orchestrates the instantiation of data specifications into files ready for archive
+is beyond the scope of this paper. 
+
+The general scope of the different layers has been introduced in DREQ, where M2-0 are described as the  
+framework, configuration and content respectively.
+The more formal approach described here introduces a clearer
+demarkation of the layers and enables a structured extension to encompass an improved 
+representation of the organisational structures which surround the technical components of the metadata registry.
+
+
+The DREQ is built on domain standards which have evolved with the CMIP project. In this paper we explore the
+feasibility and potential benefits associated with expressing these specifications through ISO standards. 
+
+The work cuts across a range of standards which are introduced in Section \ref{sec:iso} below, covering aspects of geospatial referencing, physical quantities, and the organisation and processes inherent in running a registry of metadata specifications. 
+
+The expected benefits will be both in terms of inter-operability with other standards which deal with environmental information and also in terms of learning from and exploiting practises which are embedded in the ISO standards. 
+
+We look at three principle areas of the activity.
+
+Firstly, the description the overall orangisational structure. 
+
+Secondly, community interaction which involves a broad and rapidly growing network,
+with participants from hundreds of institutions and dozens of countries. The structure has evolved organically, always pressured by the rapid 
+expansion of the global climate modelling activity and the societal pressures associated with growing awareness of the
+risks posed by anthropogenic climate change. One of the consequences of the broad and loosely
+coordinated collaboration is that names of some contributors are only recorded in email chains or online discussion.
+
+Finally, the Information Technology.
+The DREQ includes thousands of different quantities, 
+all of which are defined in and registered in the CF Convention. In order to increase interoperability with
+other communities this paper develops a mapping from the terms in the data request to ISO standard quantities.
+We we also consider the definition of data types, including specification
+of multi-dimensional arrays which combine geospatial coordinates with additional domain specific dimensions.
+
+\begin{figure}[h]
+\begin{tikzpicture}[
+  thick,
+  every pin edge/.style={<-},
+  >=latex,
+  declare function/.list={
+    outerR=2.0;,
+    innerR=1.6;,
+    angleofNode(\a)=\a/5*360-90;},
+  std/.style={rounded rectangle, align=center, fill=blue!40, draw=cyan},
+  chpt/.style={rectangle, minimum width=2.5cm, align=center, fill=green!40, draw=cyan}
+  ]
+
+\node [circle through=(0:outerR)] (c) {};
+\node [circle through=(0:innerR)] (d) {};
+
+%%\node[draw,chpt,anchor=90] at (d.40) {Organisation};
+%%\node[draw,chpt,anchor=210] at (d.160) {IT};
+%%\node[draw,chpt,anchor=330] at (d.270) {Community};
+\node[draw,chpt] at (d.40) {Organisation};
+\node[draw,chpt] at (d.170) {IT};
+\node[draw,chpt] at (d.280) {Community};
+
+\node[draw,std,anchor=angleofNode(2.5)] at (c.{angleofNode(0)}) {Design\\Meta-modeling\\framework\\19508};
+\node[draw,std,anchor=angleofNode(3.5)] at (c.{angleofNode(1)}) {Organisation\\People, assets\\and decisisons\\38500};
+\node[draw,std,anchor=angleofNode(4.5)] at (c.{angleofNode(2)}) {Registers\\Data Elements,\\Registered Items,\\Status Codes\\11179};
+\node[draw,std,anchor=angleofNode(0.8)] at (c.{angleofNode(3)}) {Geospatial\\Space and Time\\19115, 19135};
+\node[draw,std,anchor=angleofNode(1.5)] at (c.{angleofNode(4)}) {Quantities and Units\\Properties and Measures\\80000};
+
+\end{tikzpicture}
+\caption{The five core standards explored in this paper. The scope of these five standards overlaps in many areas, but
+there do not appear to be any inconsistencies in the application discussed here.}
+\label{fig:pentad}
+\end{figure}
+
+
+\subsection{Framing the issues}
+
+A requested variable might be the monthly mean near-surface temperature, evaluated on a global grid for every month through the duration of a simulation. This parameter is defined by a title, a description, specification of units of measure, but also by technical data specifying that the quantity is represents air temperature at about 2m above the ground, information about which numerical experiments are to be measured (almost all for this variable, but other variables are only archived from a small selection of experiments). In all, there are over a hundred technical attributes used to define a variable.
+
+In this paper we are not concerned with the definitions of the physical parameters, or even with the definitions of the attributes, but with the systems used to maintain and curate those definitions.
+
+The definitions of these attributes have evolved over several cycles of CMIP. Many of the definitions are clear and well understood, but there are ambiguities and many areas of ongoing discussion regarding the best approach to dealing with new requirements which derive from the ever expanding physical complexity of the climate models and the following analysis. 
+
+\section{Requirements}
+
+\subsection{Areas of the Registry Model}
+
+The registry model should be split into 3 areas, each area identified by a class instance with title and descriptions given
+in the following 3 subsections.
+
+\subsection{The Metadata Registry}
+
+The metadata registry area of the model describes the structure of the metadate registry itself, conforming to the MDR standard.
 
 \section{Roles, Activities and Packages}
 
@@ -704,8 +800,8 @@ A MOF Factory describes the activity of instantiating a class.
 \umlassoc[geometry=-|, name=assoc, anchors=0 and 30, stereo=orchestrate]{Factory}{Class}
 
 \umlassoc[geometry=|-, anchors=-90 and 180,
-          arg1=producer, mult1=1,
-          arg2=product,mult2=0..*,pos2=1.8]{Factory}{Class}
+          arg1=origin, mult1=1,
+          arg2=delivery,mult2=0..*,pos2=1.8]{Factory}{Class}
 
 \umlcompo[arg1=agent, mult1=1,  pos1=0.15, 
           arg2=CE_interface, mult2=1,  pos2=0.85,
@@ -922,6 +1018,34 @@ governance scope.
 \end{itemize}
 
 
+\subsection{MOF modeled}
+
+\begin{figure}[h]
+\begin{tikzpicture}
+
+\umlclass[type={meta}]{ModelLayer}{factory:MOF-Factory [0..]\\
+  package:MOF::Package [0..]\\
+  link:MOF::Link [0..]\\
+  interface:FactoryInterface [0..]\\
+  level:Integer [1]\\
+  isActive: Boolean [1]
+   }{
+  addPackage() 
+  addFactory()
+   }
+
+\umlclass[type={meta}]{DRM::ModelLayerConcept}{%
+title:DRM::TitleStatement [1]\\
+description:DRM::DescriptionStatement[1]\\
+}{}
+
+\umlnote[note1, x=7cm, width=5cm]{ModelLayer}%
+{The layer must contain at least one \cd{package}, which should be derived from a \cd{MOF::Package}.
+}
+\end{tikzpicture}
+\caption{ }
+\label{fig:mlayer}
+\end{figure}
 
 
 
