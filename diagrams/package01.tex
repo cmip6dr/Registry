@@ -126,11 +126,11 @@ of MOF) rather than standardised implementations.
 \begin{figure}[h]
 \begin{tikzpicture}
 \umlsimpleclass[sc1,y=0,type={mdr}]{Registry}
-\umlsimpleclass[sc1,y=-1,x=9,type={EIC}]{Organisation}
-\umlsimpleclass[sc1,y=-3,x=2,type={mdr}]{Register}
+\umlsimpleclass[sc1,y=-3,x=9,type={EIC}]{Organisation}
+\umlsimpleclass[sc1,y=-3,x=0,type={mdr}]{Register}
 
-\umlcompo[link1,arg2={Functional Entity},align2=left,pos2=0.95,stereo={resource}, anchor stereo=north]{Organisation}{Registry}
-\umlcompo[link1,arg2={Organisational Element},align2=right, mult2=*]{Registry}{Register}
+\umlcompo[link1,arg2={Functional Entity},align2=left,pos2=0.95,stereo={resource}, anchor stereo=west]{Organisation}{Registry}
+\umlcompo[link1,arg2={Organisational Element}, mult2=*]{Registry}{Register}
 \umldep[link1, % arg1=mdr, arg2=eic,
             stereo={abstraction}]{Register}{Organisation}
 \end{tikzpicture}
@@ -154,60 +154,60 @@ pre-existing structures, so that the model serves as a formalised representation
 
 The first stage of implementing MOF is define the number and purpose of the MOF layers. A four layer approach is commonly used, 
 though this is not obligatory. Within the four layer approach, there are different characterisations of the layers for
-different kinds of modeling. In engineering, for instance, the lowest level may refer to physical objects which have been created.
-This article [add ref], uses four layers characterised as
-``real world'', ``model'', ``meta-model'', ``MOF''.
+different kinds of modeling. In engineering, for instance, the lowest level may refer to physical objects which have been created, such as
+the four layer model described in the review by Djuric et al.\cite{djuric2006}:
+``Real World'', ``Model'', ``Meta-model'', ``Meta-meta-model''.
 %http://www.jot.fm/issues/issue_2006_11/article4/article4.pdf
+In a variation on this theme, Inan et al.\cite{inan2018} model a disaster response system which brings some of the people,
+called ``agents'' in this context, into the model.
+They follow the above terminology, referring to the M0 layer as ``Real World'' and M1 as ``Model'', but, in an interesting twist,
+their MOF implementation places
+a number of active agents playing managerial and coordination roles in the ``Model'' layer.
+The M0 layer consists of elements which are engaging directly with the physical aspects of disaster response.
+%http://www.jot.fm/issues/issue_2006_11/article4/article4.pdf
+
 In the software engineering domain, on the other hand, the lowest level is usually described as the application layer.
-This article [add ref] has the following four layers:
-``application'', ``Semantic'', ``Object'', ``Syntax''. [http://infolab.stanford.edu/~melnik/pub/sw00/]
+The following four layers:
+``Application'', ``Semantic'', ``Object'', ``Syntax'' have been proposed for information modelling on the web\cite{melnik2000}. 
+%%[http://infolab.stanford.edu/~melnik/pub/sw00/]
 %% A Layered Approach to Information Modeling and Interoperability on the Web 2000-30.pdf
 
+\subsubsection{The MOF Profile}
+
+ON PROVENANCE [they say this is different from MOF -- but not clear -- possibly just a specialisation --- doesn't really matter -- application of layered approach]
 \cite{mcclatchkey2018} discusses the use of a MOF layered metamodel to design a systematic approach to collecting provenance information in a distributed software system.
 Here we are looking at a somewhat different problem of capturing provenance information arising from multiple interacting science teams and institutions.
 From a modeling perspective, there is some similarity.
 Setting out the requirements for provenance collection clearly in the upper layers of the m-cake provides a systematic framework for embedding the functionality consistently in a range of different artefacts at the workflow implementation layer. 
 
-\subsubsection{The MOF Profile}
-
-MOF provides a flexible framework for modeling, even allowing flexibility around the number of layers. OMG2014 suggest two layers for
-software design, three for a database. Here we wish to describe software, database, and also the surrounding organisation and interactions.
-The objective is to construct executable models, but the concept of ``execution'' is broad enough to include the usage of ``executing a project''.
-The apex layer of the MOF stack should describe the four layers.
-
-Hence, we adopt four layers. In many introductions to MOF, the four layers are identified as Real World, Model, Meta-Model and Meta-meta-model or MOF layer.
-%http://www.jot.fm/issues/issue_2006_11/article4/article4.pdf
-Real World -- model -- meta-model -- MOF; model layers --- all except M0, expressible in XMI. 
-\cite{djuric2006}
-For instance, if applied to warehouse construction, the meta-model might be a statement of technical requirements given to a design team,
-the model would be the design document produced by the design team,
-and the final stage would be a construction company comissioned to build the warehouse.
-
-In software engineering projects it is common practice to identify four MOF layesr as representing:
-Application - Semantic - Object - Syntax [http://infolab.stanford.edu/~melnik/pub/sw00/]
-%% A Layered Approach to Information Modeling and Interoperability on the Web 2000-30.pdf -- grey lit ...
-Here, the software application stands in for the ``real world'' object, and the semantic description of the software is considered
-as a ``model''. 
 
 In both these MOF Profiles, the people responsible for implementing the transitions between one model layer and the next are,
 intentionally, outside the model. 
 
-\cite{inan2018} model a disaster response system which brings some of the people, called ``agents'' in this context, into the
-model.
-They follow the common terminology, referring to M0 as ``real world'' and M1 as ``model'' layers, but, in an interesting twist,
-their MOF implementation places
-a number of active agents playing managerial and coordination roles in the ``model'' layer.
-The M0 layer consists of elements which are engaging directly with the physical aspects of disaster response.
+The objective is to construct executable models, but the concept of ``execution'' is broad enough to include the usage of ``executing a project''.
+The apex layer of the MOF stack should describe the four layers.
 
-For the meta-data registry application considered here it is important to represent the agents responsible for
+We wish to describe software, database, and also the surrounding organisation and interactions.
+In order to get full provenance information, it is important to represent the agents responsible for
 the creation of metadata elements, and hence we wish to include the agents in the model and will follow this aspect of Inan et al.
 
-We will also be representing active agents in the M1 layer, and even in the M2 layer. In order to avoid the unfortunate connotation that these are in some way un-real, we introduce new terminology for the layers:
-Delivery -- Design -- Requirements -- Concept
+We will also be representing active agents in the M1 layer, and even in the M2 layer. In order to avoid the unfortunate connotation
+that these are in some way un-real, we introduce new terminology for the layers:
+``Delivery'' -- ``Design'' -- ``Definition'' -- ``Domain''.
 
-\cite{inan2018} Inan et al.\ consider M0 as the ``real world'' layer, M1 as the model layer, and M2 as meta-model.
-In their agent-based approach, there are, nevertheless agents and goals defined in the model layer.
-The goals are abstract or managerial in nature, rather than relating to specific problems.
+EIF specifies seven model phases in the specification of an organisation:
+domain identification, concept definition, requirements definition, design specification, implementation description, domain operation, and decommission definition.
+In order to exploit existing structures, we align the MOF layers with the model phases:
+\begin{itemize}
+\item M3 Domain: domain identification;
+\item M2 Definition: concept definition, requirements definition;
+\item M1 Design: design specification, implementation description;
+\item M0 domain operation, and decommission definition.
+\end{itemize}
+EIC specifies that domain identification should include specification of "inputs and outputs and their respective origins and destinations", 
+and specifies a set of constructs which are needed to adequately identify the domain.
+
+
 
 The Delivery layer includes the organisational structures making decisions about the final products in
 the metadata registry, which are the registered metadata items describing environmental quantities.
