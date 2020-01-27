@@ -230,6 +230,7 @@
 %
 \newcounter{tikzumlPackageClassNum}%
 \newcounter{tikzumlPackageSubPackageNum}%
+\newcounter{tikzumlPackageSubElementNum}%
 \newcounter{tikzumlRelationNum}%
 \setcounter{tikzumlRelationNum}{1}%
 \newcounter{tikzumlNoteNum}%
@@ -263,6 +264,8 @@
   \pgfkeys{/tikzuml/package/.cd, x/.initial=\tikzumlDefaultX, y/.initial=\tikzumlDefaultX, style/.style={},%
                                  name/.initial=tikzumlEmpty, type/.initial=\tikzumlPackageDefaultType, draw/.initial=\tikzumlDefaultDrawColor,% 
                                  fill/.initial=\tikzumlPackageDefaultFillColor, text/.initial=\tikzumlDefaultTextColor,%
+                                 simple/.is if=tikzumlclassSimpleStyle,
+                                 simple=false,%
                                  no coords/.is if=tikzumlpackageWithoutCoords,%
                                  no coords=false,%
                                  .unknown/.code={%
@@ -334,6 +337,7 @@
   %
   \setcounter{tikzumlPackageClassNum}{0}%
   \setcounter{tikzumlPackageSubPackageNum}{0}%
+  %%\setcounter{tikzumlPackageSubElementNum}{1}%
   \stepcounter{tikzumlPackageLevel}%
   %
   \begin{scope}[xshift=\tikzumlPackageXShift cm, yshift=\tikzumlPackageYShift cm]%
@@ -350,6 +354,7 @@
         \node[inner sep=1.5ex, /tikzuml/package/style] (\tikzumlPackage@nodeName-root) at (0,0) {\phantom{\tikzumlPackage@nodeName}};%
       \fi%
       \expandafter\xdef\csname tikzumlPackageFit\tikzumlPackage@parent @@\tikzumlPackage@fitname\endcsname{(\tikzumlPackage@nodeName-root)}%
+      %%\setcounter{tikzumlPackageSubElementNum}{0}%
     \fi%
   \fi%
   %
@@ -359,8 +364,15 @@
     \stepcounter{tikzumlPackageSubPackageNum}%
   \fi%
   %
+  %%\pgfmathparse{\c@tikzumlPackageClassNum=0 && \c@tikzumlPackageSubPackageNum=0?int(1):int(0)}\relax
+  %%\ifnum\c@tikzumlPackageSubElementNum=0%
+  \iftikzumlpackageSimpleStyle%
+     \node[draw=\tikzumlPackageDrawColor, fill=\tikzumlPackageFillColor, text=\tikzumlPackageTextColor, font=\tikzumlDefaultFont, inner sep=1.5ex, /tikzuml/package/style] (\tikzumlPackage@nodeName) {};%
+     \node[draw=\tikzumlPackageDrawColor, fill=\tikzumlPackageFillColor, text=\tikzumlPackageTextColor, font=\tikzumlDefaultFont, minimum height=1.5em, outer ysep=-0.3, anchor=south west] (\tikzumlPackage@nodeName-caption) at (\tikzumlPackage@nodeName.north west) {\begin{tabular}{c} \tikzumlPackageType \textbf{\tikzumlPackage@name}\end{tabular}};%
+  \else%
   \node[draw=\tikzumlPackageDrawColor, fill=\tikzumlPackageFillColor, text=\tikzumlPackageTextColor, font=\tikzumlDefaultFont, inner sep=1.5ex, /tikzuml/package/style, fit = \csname tikzumlPackageFit\tikzumlPackage@parent @@\tikzumlPackage@fitname\endcsname] (\tikzumlPackage@nodeName) {};%
   \node[draw=\tikzumlPackageDrawColor, fill=\tikzumlPackageFillColor, text=\tikzumlPackageTextColor, font=\tikzumlDefaultFont, minimum height=1.5em, outer ysep=-0.3, anchor=south west] (\tikzumlPackage@nodeName-caption) at (\tikzumlPackage@nodeName.north west) {\begin{tabular}{c} \tikzumlPackageType \textbf{\tikzumlPackage@name}\end{tabular}};%
+  \fi%
   \end{pgfonlayer}%
   \end{scope}%
 }%
@@ -754,6 +766,7 @@
                                   anchor1/.initial=tikzumlEmpty, anchor2/.initial=tikzumlEmpty,%
                                   angle1/.initial=\tikzumlRelationDefaultAngleO, angle2/.initial=\tikzumlRelationDefaultAngleT, loopsize/.initial=\tikzumlRelationDefaultLoopSize,%
                                   stereo/.initial={}, pos stereo/.initial=\tikzumlRelationDefaultPosStereo,%
+                                  stereoAsName/.initial={}, 
                                   stereo style/.initial=tikzuml stereotype default style a,%
                                   anchor stereo/.initial=north,%
                                   style/.initial=->, style2/.style={}, name/.initial=relation-\thetikzumlRelationNum,%
@@ -790,6 +803,7 @@
                                   anchor1/.get=\tikzumlRelationSrcAnchor, anchor2/.get=\tikzumlRelationDestAnchor,%
                                   angle1/.get=\tikzumlRelationStartAngle, angle2/.get=\tikzumlRelationEndAngle, loopsize/.get=\tikzumlRelationLoopSize,%
                                   stereo/.get=\tikzumlRelationStereoType, pos stereo/.get=\tikzumlRelationPositionStereotype,%
+                                  stereoAsName/.get=\tikzumlRelationStereoTypeAsName,
                                   stereo style/.get=\tikzumlRelationStereoStyleA,%
                                   anchor stereo/.get=\tikzumlRelationAnchorStereo,%
                                   style/.get=\tikzumlRelationStyle, name/.get=\tikzumlRelationName,%
@@ -871,8 +885,14 @@
   }%
   % def stereotype
   \ifthenelse{\equal{\tikzumlRelationStereoType}{}}{%
-    \def\stereotype{}%
-    \tikzstyle{tikzuml stereotype style}=[]%
+    \ifthenelse{\equal{\tikzumlRelationStereoTypeAsName}{}}{%
+      \def\stereotype{}%
+      \tikzstyle{tikzuml stereotype style}=[]%
+    }{%
+      \def\stereotype{\tikzumlRelationStereoTypeAsName}%
+    }%
+    %% \def\stereotype{}%
+    %% \tikzstyle{tikzuml stereotype style}=[]%
   }{%
     \def\stereotype{$\ll$\tikzumlRelationStereoType$\gg$}%
   }%
@@ -2823,6 +2843,10 @@
   \begingroup%
     \def\_{_}\edef\x{\endgroup%
       \def\noexpand\tikzumlActorNodeName{\tikzumlActorName}}\x%
+%%% NEW -- this causes value to be set for current and all subsequent calls without "name".
+%%% need some logic to use #2 if key name is not present ....
+  %%\pgfkeys{/tikzuml/actor/.cd,%
+           %%name/.get=\tikzumlActorName}
   %
   \def\tikzumlActorPos{\tikzumlActorX,\tikzumlActorY}%
   %
