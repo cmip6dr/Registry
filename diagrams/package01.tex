@@ -21,6 +21,27 @@
 
 \usepackage{local-tikz-style}
 
+
+%% for in-line code: https://tex.stackexchange.com/questions/19004/how-to-format-an-inline-source-code
+\usepackage{listings}
+\usepackage{color}
+\definecolor{lightgray}{gray}{0.9}
+\definecolor{llgray}{gray}{0.9}
+
+\lstset{
+    showstringspaces=false,
+    basicstyle=\ttfamily,
+    keywords={Tier 1, Tier 2},
+    %keywordstyle=\color{blue},
+    keywordstyle=\ttfamily,
+    commentstyle=\color[grey]{0.6},
+    breaklines=true,
+    stringstyle=\ttfamily
+}
+\newcommand{\code}[2]{\lstinline[style=Inline,language=#1]$#2$}
+\newcommand{\cdx}[1]{\code{Python}{#1}}
+%% end in-line extras
+
 \input{article-header}
 
 %% standards references not set well as stands ... can modify the titles or look for other styles in article-header.
@@ -138,8 +159,6 @@ of MOF) rather than standardised implementations.
 \label{fig:mdr-eic}
 \end{figure}
 
-[[literature survey needed]]
-
 \cite{sinaci2013} describes the use of ISO 11179 to facilitate exchange across clinical work and care domains.
 5 odp viewpoints
 
@@ -197,15 +216,141 @@ that these are in some way un-real, we introduce new terminology for the layers:
 
 EIF specifies seven model phases in the specification of an organisation:
 domain identification, concept definition, requirements definition, design specification, implementation description, domain operation, and decommission definition.
+There are also three levels of genericity: "generic", "partial" and "particular".  The these levels allow progressive
+increase in the level of detail provided. The standard is not prescriptive 
 In order to exploit existing structures, we align the MOF layers with the model phases:
 \begin{itemize}
 \item M3 Domain: domain identification;
 \item M2 Definition: concept definition, requirements definition;
 \item M1 Design: design specification, implementation description;
-\item M0 domain operation, and decommission definition.
+\item M0 Delivery: domain operation, and decommission definition.
 \end{itemize}
+
 EIC specifies that domain identification should include specification of "inputs and outputs and their respective origins and destinations", 
 and specifies a set of constructs which are needed to adequately identify the domain.
+
+\begin{table*}[tb]
+        \centering
+        \caption{Domain identification}
+        \label{tab:domi}
+        \begin{tabular}{|p{3cm}|p{9cm}|}
+Name  & Climate Science Metadata Registry \cr
+Design Authority &  \cr
+Description & \cr
+Business Process Description & \cr
+Objectives & Strategic:  \cr
+Constraints & Availability of staff resources; community engagement; \cr
+Object View Inputs &   DM-X Project       OV-1 Data  \cr
+Event Inputs & \cr
+Object View Outputs & \cr
+Event Outputs & \cr
+\end{tabular}
+\end{table*}
+
+% 6.3
+BP Business Process -- describes functionalities, desired results, and objectives. Attached to OV and Enterprise Activity at requirements definition phase an OU at the design specification phase.
+
+% 6.10
+RE Resource -- Capabilities of tools, devices, etc (not people). Named at the identify phase, details added at design specification, including links to Operational Role and Capability.
+
+% 6.6
+EO Enterprise Object -- describing a persistent entity in the organization being modeled: e.g. person, order, file.
+PR Product -- describes a product. Linked to EO and (at design phase) OU and OR
+
+% 6.9
+OR Order -- an instruction for performance of an operation. Links to EO and (at design specification phase) OU.
+
+% 6.17.4
+%%OPR Operational Role -- describes the skill profile needed for undertake defined operational tasks. Job description added at the requirements definition phase.
+% 6.13
+OU Organizational Unit -- a component in the organizational structure of the modeled entity. E.g. department, section, group. Can have EO assets and an Organizational Role
+
+EV Event
+
+OV Object View -- List attributes of an EO needed for a specific purpose.
+%% see fig D.11
+
+\begin{figure}[h]
+\begin{tikzpicture}
+%% perhaps want a longer title here ... of just make this the "SKOS:techLabel" -- map EIC attributes to SKOS ...
+
+\coordinate (ofv) at (7.5,0.5);
+\coordinate (orv) at (5.5,-3.5);
+
+%%\draw[white,fill=black!5] (0.,1.5) rectangle (12.,-4.5);% Function
+%%\draw[orange,fill=orange!30] (ofv) rectangle (12.,-3.5);% Function
+%%\draw[orange,fill=blue!30]   (orv) rectangle (12.,-6.5);% Resource
+%%\draw[orange,fill=red!10]   (0.,-4.0) rectangle (5.,-6.5);% Organisation
+
+\umlsimpleclass[sc1,x=5,y=2,type={Domain}]{Registry Service}
+
+\umlsimpleclass[func,y=+0.1,x=7.8,type={BP}]{Standards}
+\umlsimpleclass[func,y=-1.1,x=8.2,type={BP}]{Registration}
+\umlsimpleclass[func,y=-2.3,x=8.6,type={BP}]{Management}
+\umlsimpleclass[func,y=-3.5,x=8.6,type={BP}]{Activity}
+
+%%\umlsimpleclass[inf,y=-2.5,x=4,type={EO}]{Person}
+\umlsimpleclass[inf,y=1.,x=8,type={EO}]{Document}
+
+
+\umlsimpleclass[inf,y=1.,x=0,type={EO}]{Project}
+%%%\umlsimpleclass[inf,y=1.,x=4,type={EO}]{infrastruc}
+
+\umlsimpleclass[inf,y=-0.5,x=0.5,type={OR}]{Order}
+\umlsimpleclass[inf,y=0.5,x=4,type={EV}]{Agreement}
+
+\umlsimpleclass[inf,y=-2.8,x=4,type={EO}]{Software}
+\umlsimpleclass[inf,y=-2.,x=0.5,type={EO}]{Registry Item}
+
+\umlsimpleclass[resrc,y=-5.3,x=4.5,type={EO}]{Platform}
+
+
+%%\umlsimpleclass[resrc,y=-6,x=8,type={Role}]{Staff} %% added at later model stage ...
+\umlsimpleclass[resrc,y=-4.3,x=8,type={Resource}]{Service}
+\umlsimpleclass[resrc,y=-5.3,x=8,type={Resource}]{Environment}
+
+%%
+%% these don't really belong here .....
+%% wrong category of thing ..
+%%\umlsimpleclass[inf,y=-4,x=1,type={EV}]{Event}  
+%%\umlsimpleclass[inf,y=-2,x=1,type={OV}]{Object View}
+
+\umlsimpleclass[org,y=-3.3,type={OU}, width=7cm]{Community}
+\umlsimpleclass[org,y=-4.5,type={OU}, width=7cm]{Information Technology}
+\umlsimpleclass[org,y=-5.7,x=1,type={OU}, width=7cm]{Communications}
+
+%%\umlnote[note1, y=-6.cm, x=9cm, width=7cm]{Environment}{Linked to Operational Role and Capability descriptions at
+%% the design specification phase}
+
+
+\umlassoc[link1,geometry=|-,arg1=implements]{Agreement}{Standards}
+\umlassoc[link1,geometry=-|-,arg1=creates]{Registry Item}{Registration}
+%%\umlcompo[link1]{Registry Service}{Standards}
+%%\umlcompo[link1]{Registry Service}{Management}
+%%\umldep[link1, % arg1=mdr, arg2=eic, stereo={abstraction}]{Register}{Organisation}
+\end{tikzpicture}
+\caption{Domain identification, generic level. At this level, the Event, Order and Object View classes are modified
+only through the specification that they are sub-classes of the MDR base class. Other classes are named and given descriptons listed in section [[SSS]]. Following figure B.2 of EIF. [[IN TEXT??]] In software systems the distinction between an object and a resource can become blurred: it is natural to treat virtual machines like machines ... but here we stick with the standard and assign ... ; here the resource is }
+\label{fig:domident}
+\end{figure}
+
+% Annex E of EIC lists typical usage of these at the different phases.
+At the M2 level we add Decision Centre, Enterprise Activity, Capability, Organizational Role, Operational Role and
+Decision Centre. 
+
+The Enterprise Activity captures time-limited activities, such as creating a registered item or running a service for 12 months. EA is employed by a single Business Process and is delivered by an Operational Role. 
+
+Organizational Roles, attached to Organisational Units, contain Decision Centres.:w
+
+Decision centre links the functional view and the 
+
+
+%% for implementation, see opmsg2011 .... in particular, also examples of Event etc in EIC .
+%% the completed template defines a class object.
+%% SC5_N1111_OPM_SG_Interim_Report_May_2011.pdf
+
+The \cd{EIC::concept_definition} phase includes a short textual specification of the \cd{EIC::domain} 
+strategies, policies, operational concepts, and business plans. These are given given in section XXX below. In addition,"Decision Functions" should be specified.
 
 
 
@@ -261,6 +406,16 @@ Example:
 
 MOF X: Design process
 MOF 
+
+\subsection{Decision Functions}
+
+The \cd{EIC::Decision_Function} concepts define a set of related decisional activities. The three categories of decisions needed here relate to:
+%% registration and management? 
+\begin{itemize}
+\item \cd{Parameter Registration}
+\item \cd{Standard Registration}
+\item \cd{Standard Registration}
+\end{itemize}
 
 \subsection{Reflection}
 
@@ -609,128 +764,13 @@ The parameters in DREQ which do not appear to fit any of the specific quantities
 
 In this way, it is possible to express the portfolio of parameters in around 100 quantities. Labelling the parameters with appropriate ISO quantities is likely to increase interoperability with other archives supporting fields, such as engineering or medicine, which may be involved in climate mitigation, adaptation or emergency response.
 
+
+
 \section{Data Types}
 
-The aim here is to establish a pathway to formal description. Implementation will continue to be via the CF and NetCDF structures.
-
-It would be possible to develop a complex data type representing the full range of information required in a dataset. This consists of the required data array, the coordinates used to represent the data, and ancillary variables. 
-
-An alternative approach is to represent the data requested as a MDR_data_entity with associated MDR_sub_data_entity concepts, such that each individual element corresponds to a single array of data.
-
-This latter approach conforms to GI-MD. 
-
-The top level data entity is a record specifying the dimensions of all the required arrays, some of which may be user specified.
-e.g.
-\begin{verbatim}
-parametric data type: 
-      type dimensions (lat: integer, lon: integer, time: integer ) = 
-             record ( lat, lon, time, bnd=2);
-\end{verbatim}
-or perhaps, the data array ...
-\begin{verbatim}
-parametric data type:
-      type data (lat: integer, lon: integer, time: integer ) =
-             array ( 1..lat, 1..lon, 1..time) of real(8,64);
-\end{verbatim}
-
-
-The data field itself will then be held in a sub data entity,
-\begin{verbatim}
-parametric data type: type data = array (1...PA_time,1...PA_lon,1...PA_lat) of real(8,64);
-\end{verbatim}
-
-Additional sub-data entity elements will contain data for the dimensions and the ancillary variables.
-This approach allows a fairly direct mapping of DREQ records into data entity concepts, but draws the \cd{dimensions}/\cd{data} data type into the 
-top level data entity.
-
-At this point the details of the mapping are not as important as the demonstration that the mapping is feasible. 
-
-
-Base data types are perhaps more easily specified in CDL, but need to define a templating syntax. - use PEP 3101.
-The values to be replaced are placed in braces, e.g. "{n:d}" should be replaced by the value of "n" using the formatting designated by "d" (a "decimal integer").
-
-
-
-%% perhaps a table of class vs. attribute list {as itemize env}, showing data type and attributes. e.g. long_name : c"Near Surface Air-Temperature", where the 'C"..."' denotes a data entity with value given by the string
-
-This extends \cd{MD_Dimension}
-
-\begin{verbatim}
-bounded latitude (n:integer,data:sequence) {
-dimensions:
-  integer lat = {n};
-variables:
-  double lat(lat);
-     lat.standard name = "latitude";
-     lat.units = "degree north";
-     lat.long name = "latitude" ;
-     lat.bounds = "lat bnds";
-     lat.axes = "Y";
-data:
-  lat = {data};
-}
-\end{verbatim}
-Note that in order to apply the PEP 3101 templating rules \verb+sequence+ would need to be expressed as a string.
-
-The "data" needs to be expressed as a string .... not really what we want to say.
-
-This can be expressed in the language of 11404:
-
-\begin{verbatim}
-parametric data type: type bounded latitude(values: sequence of (real(256,64) ) = \
-      record (values,name: "lat", \
-             long name: "latitude", \
-             lat.bounds,..) ;
-\end{verbatim}
-
-
-The \cd{NetCDF:double} datatype corresponds to ISO 11404 \cd{real(2,64)}, i.e. 64-bit floating point. The remaining parameters are key-value pairs which define the physical
-interpretation of the datatype through the CF Convention.
-
-With this approach, however, the attributes \cd{lat.units} etc become external to the administrative structure of the registry, only the bundled entity 
-is explicitly represented.
-
-Express Datatype as a subclass of {\cd MDR:Concept} and define records to accomodate ....
-
-The required data type elements will be (1) simple dimension, bounded dimension (inc. coordinate), fixed simple dimension, (4) fixed bounded dimension.
-
-There are 35 land surface types used to express masking requirements of data. Desirable to move these to a \cd{mask} record, and express the CMOR grid table via a method of the registry. 
-
-Similarly, there are a significant number of ancillary variables ("a", "b", etc) which should be expressed in the data type. Also "orog", which is a 2-d field.
-
-.e.g \cd{hybrid height half} requires \cd{a, b, a bnds, b bnds, orog}.
-
-The bounds variables have dimensions (n,2), and the orog variable is the shape of the spatial grid.
-
-We can, however, express the fact that "level" must be one of "hybrid half height, alternate hybrid sigma, ...".
-
-
-\begin{verbatim}
-parametric data type: type values_type(n: integer) = \
-         array (1...n) of real(8,64);
-
-parametric data type: type regular_longitude(m: integer) = \
-         record (values(n),name,long_name,bounds,..) ;
-
-parametric data type: type regular_lat_lon(n: integer, m: integer) = \
-         record (values(n,m),name,dimensions(regular_latitude(n),regular_longitude(m));
-
-type name = string-literal selecting ("latitude");
-\end{verbatim}
-
-
-11179 allows data types to be specified via a reference to a document.
-
-Here, we use the notation of 11404 to specify the datatypes, since the underlying standards do not provide a formal specification. [illustrative sample]
-
-The \cd{DREQ:cell measures} atttribute contains a string which is to be transferred into the eventual data files,
-but which also carries some inferred meaning which is derived from the CMIP6 data format specifications and naming rules. 
-
-There are consistency rules.
-
-
-
-
+The data type standard has not been used explicitly. All data types are defined through the UNIDATA NetCDF standard. For information ...... o
+NetCDF follows the IEEE Standard for Floating-Point Arithmetic (IEEE 754); double is $real(2,53)$, single precision $real(2,24)$.
+%% https://www.unidata.ucar.edu/software/netcdf/docs/file_format_specifications.html
 \section{Conclusions}\label{sec:conc}
 
 The mapping of the DREQ onto the ISO standards reveals areas where improvements can be made in terms of clarity of decisions making processes and a structured approach to definingthe attributes which characterise registered items.
@@ -740,6 +780,19 @@ There does not appear to be any inherent obstacle to full compliance, though it 
 The \cd{structure} record in DREQ-1.0 contained a complex mix of metadata specifications.
 Guided by MDR, this can be divided between specification of a data type and processing instructions.
 The resulting split improves the clarity of the specifications.
+
+\subsection{Lessons}
+
+{\bf Registration} of new items in the registry needs to be split into a series of clearly identified steps, with specific steps taking place at each stage. MDR provides a clear structure to support this approach, {\color{red} and a similar approach is set out in [geophysical registry]}. The starting point might be treated as a helpdesk entry, or an element within a helpdesk entry. The nature of the data request is such that there are often request for multiple closely related items which the user group consider as a single proposal. This can be accomodated by defining the \cd{DR_variable_cluster} as an arbitrary collection of variables which are subject of a \cd{DR_discussion} (a specialisation of an \cd{EIC_Event}).
+
+{\bf Provenance} of information and decisions which come out of community discussions can be recorded more clearly by describing key aspects of the community networking structures and decision making processes in terms of key EIC constructs, particularly \cd{EIC_Event}, \cd{EIC_Role}, and \cd{EIC_Person}. The division between person and role is particularly useful here as it makes it possible to clarify the requirements around the decision making process (certain roles need to be represented) without referencing the individuals.
+
+{\bf Harmonisation} is the term used within the ISO standards MDR and GIP {\cf[[check]]} to refer to the process of developing a response to user requests which is consistent with the structures and ethos of the registry in question. There is a significant difference between these two in that XXX places the responsibility for harmonisation within the management structure of the registry whereas YYY places it outside, as an independent body. The extent of tis distinction between the two ISO standards is open to a range of interpretations, but we exploit it here to define two different aspects of harmonisation: (1) a rule based harmonisation to enable automated processing which is managed by systems experts within the organisation, and (2) a conceptual harmonisation which establishes language to describe concepts which is clear, concise and reliably conveys the distinction between different items in  the collection.
+
+{\bf Layering} of the design process, to add more detail across the entire model or regions of the model in a controlled way is a common feature in many standards. MOF provides a generic abstract framework which facilitates both clear description of the approach taken and design of layering concepts. This is helpful in bringing together the organisational and technical aspects of the system design.
+
+{\bf The Quantities and Units} standard provides a means of aggregating the thousands of parameters in the data request into a shorter list of well known quantities. QU does not cover many aspects of the physical environment, and this gap could be filled by the GCOS Essential Climate Variables. Indeed, there is a good case for adding the ECVs as an extra section in QU.
+
 
 \section{FRAGMENTS}
 
@@ -1049,6 +1102,126 @@ description:DRM::DescriptionStatement[1]\\
 \caption{ }
 \label{fig:mlayer}
 \end{figure}
+
+
+\section{Data Types}
+
+The aim here is to establish a pathway to formal description. Implementation will continue to be via the CF and NetCDF structures.
+
+It would be possible to develop a complex data type representing the full range of information required in a dataset. This consists of the required data array, the coordinates used to represent the data, and ancillary variables. 
+
+An alternative approach is to represent the data requested as a MDR_data_entity with associated MDR_sub_data_entity concepts, such that each individual element corresponds to a single array of data.
+
+This latter approach conforms to GI-MD. 
+
+The top level data entity is a record specifying the dimensions of all the required arrays, some of which may be user specified.
+e.g.
+\begin{verbatim}
+parametric data type: 
+      type dimensions (lat: integer, lon: integer, time: integer ) = 
+             record ( lat, lon, time, bnd=2);
+\end{verbatim}
+or perhaps, the data array ...
+\begin{verbatim}
+parametric data type:
+      type data (lat: integer, lon: integer, time: integer ) =
+             array ( 1..lat, 1..lon, 1..time) of real(8,64);
+\end{verbatim}
+
+
+The data field itself will then be held in a sub data entity,
+\begin{verbatim}
+parametric data type: type data = array (1...PA_time,1...PA_lon,1...PA_lat) of real(8,64);
+\end{verbatim}
+
+Additional sub-data entity elements will contain data for the dimensions and the ancillary variables.
+This approach allows a fairly direct mapping of DREQ records into data entity concepts, but draws the \cd{dimensions}/\cd{data} data type into the 
+top level data entity.
+
+At this point the details of the mapping are not as important as the demonstration that the mapping is feasible. 
+
+
+Base data types are perhaps more easily specified in CDL, but need to define a templating syntax. - use PEP 3101.
+The values to be replaced are placed in braces, e.g. "{n:d}" should be replaced by the value of "n" using the formatting designated by "d" (a "decimal integer").
+
+
+
+%% perhaps a table of class vs. attribute list {as itemize env}, showing data type and attributes. e.g. long_name : c"Near Surface Air-Temperature", where the 'C"..."' denotes a data entity with value given by the string
+
+This extends \cd{MD_Dimension}
+
+\begin{verbatim}
+bounded latitude (n:integer,data:sequence) {
+dimensions:
+  integer lat = {n};
+variables:
+  double lat(lat);
+     lat.standard name = "latitude";
+     lat.units = "degree north";
+     lat.long name = "latitude" ;
+     lat.bounds = "lat bnds";
+     lat.axes = "Y";
+data:
+  lat = {data};
+}
+\end{verbatim}
+Note that in order to apply the PEP 3101 templating rules \verb+sequence+ would need to be expressed as a string.
+
+The "data" needs to be expressed as a string .... not really what we want to say.
+
+This can be expressed in the language of 11404:
+
+\begin{verbatim}
+parametric data type: type bounded latitude(values: sequence of (real(256,64) ) = \
+      record (values,name: "lat", \
+             long name: "latitude", \
+             lat.bounds,..) ;
+\end{verbatim}
+
+
+The \cd{NetCDF:double} datatype corresponds to ISO 11404 \cd{real(2,64)}, i.e. 64-bit floating point. The remaining parameters are key-value pairs which define the physical
+interpretation of the datatype through the CF Convention.
+
+With this approach, however, the attributes \cd{lat.units} etc become external to the administrative structure of the registry, only the bundled entity 
+is explicitly represented.
+
+Express Datatype as a subclass of {\cd MDR:Concept} and define records to accomodate ....
+
+The required data type elements will be (1) simple dimension, bounded dimension (inc. coordinate), fixed simple dimension, (4) fixed bounded dimension.
+
+There are 35 land surface types used to express masking requirements of data. Desirable to move these to a \cd{mask} record, and express the CMOR grid table via a method of the registry. 
+
+Similarly, there are a significant number of ancillary variables ("a", "b", etc) which should be expressed in the data type. Also "orog", which is a 2-d field.
+
+.e.g \cd{hybrid height half} requires \cd{a, b, a bnds, b bnds, orog}.
+
+The bounds variables have dimensions (n,2), and the orog variable is the shape of the spatial grid.
+
+We can, however, express the fact that "level" must be one of "hybrid half height, alternate hybrid sigma, ...".
+
+
+\begin{verbatim}
+parametric data type: type values_type(n: integer) = \
+         array (1...n) of real(8,64);
+
+parametric data type: type regular_longitude(m: integer) = \
+         record (values(n),name,long_name,bounds,..) ;
+
+parametric data type: type regular_lat_lon(n: integer, m: integer) = \
+         record (values(n,m),name,dimensions(regular_latitude(n),regular_longitude(m));
+
+type name = string-literal selecting ("latitude");
+\end{verbatim}
+
+
+11179 allows data types to be specified via a reference to a document.
+
+Here, we use the notation of 11404 to specify the datatypes, since the underlying standards do not provide a formal specification. [illustrative sample]
+
+The \cd{DREQ:cell measures} atttribute contains a string which is to be transferred into the eventual data files,
+but which also carries some inferred meaning which is derived from the CMIP6 data format specifications and naming rules. 
+
+There are consistency rules.
 
 
 
