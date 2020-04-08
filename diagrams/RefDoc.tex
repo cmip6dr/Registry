@@ -1,0 +1,55 @@
+\documentclass[]{standalone}
+\usepackage{underscore}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+
+\usepackage{local-tikz-style}
+
+
+\begin{document}
+\begin{tikzpicture}
+
+\umlclass[sc1,x=0,y=0,type={Data Type}]{Reference Document}{
+id: Identifier[1]\\
+type description: Document Type[1]\\
+language identifier: Language Identification[1]\\
+notation: Notation[0..1]\\
+title: Text[1]\\
+provider: Organisation[0..*]\\
+url: String[0..1]
+}{}
+
+\umlclass[sc1,x=9,y=-0,type={Data Type}]{Notation}{
+name: Text[1]\\
+description: Text[0..1]\\
+}
+
+\umlclass[sc1,x=7,y=-6,type={Data Type}]{Language Identification}{
+identifier: String[1]\\
+}
+
+\umlclass[sc1,x=0,y=-5,type={Data Type}]{Organization}{
+name: String[1..*]\\
+mail address: PostalAddress[0..1]\\
+email address: String[0..*]\\
+phone number: Phone Number[0..*]\\
+uri: String[0..1]
+}
+
+\umlclass[sc1,x=8.5,y=-3,type={Data Type}]{Document Type}{
+identifier: String[0..1]\\
+description: Text[0..1]\\
+scheme reference: String[0..1]\\
+}
+
+
+%%
+%% usage following ISO 19773.
+
+\umluniaggreg[link1]{Reference Document}{Notation}
+\umluniaggreg[link1]{Reference Document}{Language Identification}
+\umluniaggreg[link1]{Reference Document}{Organization}
+\umluniaggreg[link1]{Reference Document}{Document Type}
+
+\end{tikzpicture}
+\end{document}

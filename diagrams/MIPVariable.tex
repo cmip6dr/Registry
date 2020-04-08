@@ -1,0 +1,49 @@
+\documentclass[]{standalone}
+\usepackage{underscore}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+
+\usepackage{local-tikz-style}
+
+
+\begin{document}
+\begin{tikzpicture}
+
+\umlclass[sc1,x=0,y=0,type={simpleclass}]{MIP Variable}{
+uid: Identifier[1]\\
+label: SimpleLabel[1]\\
+title: VariableTitle\[1]\
+description: Text[1]\\
+comment: MV Comment[0..1]
+}{}
+
+\umlclass[sc1,x=0,y=-6,type={Data Type}]{MV Comment}{
+usage: Text\\
+preparation: Text\\
+}
+
+\umlclass[sc1,x=0,y=-6,type={Data Type}]{SimpleLabel}{
+description: Text\\
+scheme_reference: Python regex\\
+annotation: "[a-Z][a-Z0-9]*"
+}
+
+\umlclass[sc1,x=0,y=-8,type={Data Type}]{VariableTitle}{
+description: Text\\
+scheme_reference: CMIP Variable Title Style Guide\\
+}
+
+\umlsimpleclass[sc1,x=8,y=1]{Units}
+\umlsimpleclass[sc1,x=7.5,y=0]{Provenance}
+\umlsimpleclass[sc1,x=7,y=-1]{Quantity}
+\umlsimpleclass[sc1,x=6.5,y=-2]{Conceptual Realm}
+\umlsimpleclass[sc1,x=6,y=-3]{Standard Name}
+
+\umlassoc[arg2=units,mult2=1,mult1=0..*]{MIP Variable}{Units}
+\umlassoc[arg2=provenance,mult2=1,mult1=1,stereo={owned}]{MIP Variable}{Provenance}
+\umlassoc[arg2=quantity,mult2=1,mult1=0..*]{MIP Variable}{Quantity}
+\umlassoc[arg2=realm,mult2=1,mult1=0..*]{MIP Variable}{Conceptual Realm}
+\umlassoc[arg2=sn,mult2=1,mult1=0..*]{MIP Variable}{Standard Name}
+
+\end{tikzpicture}
+\end{document}
