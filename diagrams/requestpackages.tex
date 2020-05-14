@@ -1,0 +1,70 @@
+\documentclass[]{standalone}
+\usepackage{underscore}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+
+\usepackage{local-tikz-style}
+
+
+\begin{document}
+
+
+\begin{tikzpicture}
+\tikzset{
+  pkg/.style = {fill=blue!30},
+  scloc/.style = {sc1,
+    minimum width = 2.2cm,
+    draw = blue!30,
+    fill = blue!20,
+    line width=0mm,
+    },
+  }
+
+\begin{umlpackage}[pkg]{Physical Parameters}
+\umlsimpleclass[scloc,x=0,y=0]{MIP Variable}
+\end{umlpackage}
+
+\begin{umlpackage}[pkg]{Configured Parameters}
+\umlsimpleclass[scloc,x=1,y=-3]{CMOR Variable}
+\end{umlpackage}
+
+\begin{umlpackage}[pkg]{Registry Data Types}
+\umlsimpleclass[scloc,x=8,y=0]{Activity}
+\umlsimpleclass[scloc,x=8,y=-.5]{Standard Name}
+\end{umlpackage}
+
+\begin{umlpackage}[pkg]{User Data Types}
+\umlsimpleclass[scloc,x=8,y=-3]{Grid}
+\umlsimpleclass[scloc,x=8,y=-3.5]{Feature}
+\end{umlpackage}
+
+\begin{umlpackage}[pkg]{Configurations}
+\umlsimpleclass[scloc,x=8,y=-6]{Structure}
+\umlsimpleclass[scloc,x=8,y=-6.5]{Auxiliary Coordinate}
+\umlsimpleclass[scloc,x=8,y=-7.0]{Method}
+\end{umlpackage}
+
+\begin{umlpackage}[pkg]{Aggregations}
+\umlsimpleclass[scloc,x=0,y=-6]{Experiment Group}
+\umlsimpleclass[scloc,x=0,y=-6.5]{Variable Group}
+\end{umlpackage}
+
+\begin{umlpackage}[pkg]{Requests}
+\umlsimpleclass[scloc,x=0,y=-9]{Objectives}
+\end{umlpackage}
+
+\begin{umlpackage}[pkg]{Views}
+\umlsimpleclass[scloc,x=8,y=-12]{Expanded CMOR Variable}
+\umlsimpleclass[scloc,x=8,y=-12.5]{Compiled Structure}
+\umlsimpleclass[scloc,x=8,y=-13.]{Dimensions}
+\end{umlpackage}
+
+\umlimport[]{Configured Parameters}{Physical Parameters}
+\umlimport[]{Aggregations}{Configured Parameters}
+\umlimport[]{Requests}{Aggregations}
+\umlimport[geometry=-|-,anchors=0 and 170]{Configured Parameters}{Configurations}
+\umlimport[]{Configurations}{User Data Types}
+
+
+\end{tikzpicture}
+\end{document}
